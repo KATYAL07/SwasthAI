@@ -4,7 +4,7 @@ import { CircleCheck } from 'lucide-react'
 import { cn } from '../../lib/utils'
 
 interface AnimatedConfirmButtonProps {
-    onComplete?: () => void;
+    onComplete?: () => void | Promise<void>;
     initialText: React.ReactNode;
     finalText?: React.ReactNode;
 }
@@ -12,8 +12,15 @@ interface AnimatedConfirmButtonProps {
 const AnimatedConfirmButton = ({ onComplete, initialText, finalText = "Finish" }: AnimatedConfirmButtonProps) => {
     const [step, setStep] = useState(1)
     const [isExpanded, setIsExpanded] = useState(true)
+    // Step 3 stays clickable, so without this guard every extra click re-fires the
+    // action and writes a duplicate row (two OPD tokens, two identical appointments).
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const handleContinue = (e: React.MouseEvent) => {
+    const handleContinue = async (e: React.MouseEvent) => {
+        if (isSubmitting) {
+            e.preventDefault();
+            return;
+        }
         if (step < 3) {
             e.preventDefault();
             setStep(step + 1)
@@ -21,7 +28,16 @@ const AnimatedConfirmButton = ({ onComplete, initialText, finalText = "Finish" }
         } else if (step === 3) {
             if (onComplete) {
                 e.preventDefault();
-                onComplete();
+                setIsSubmitting(true);
+                try {
+                    await onComplete();
+                } finally {
+                    // Rewind to the initial state so a repeat action needs three
+                    // deliberate clicks again rather than one stray double-click.
+                    setIsSubmitting(false);
+                    setStep(1);
+                    setIsExpanded(true);
+                }
             }
         }
     }
@@ -99,12 +115,14 @@ const AnimatedConfirmButton = ({ onComplete, initialText, finalText = "Finish" }
                     <motion.button
                         type={step === 3 ? "submit" : "button"}
                         onClick={handleContinue}
+                        disabled={isSubmitting}
                         animate={{
                             flex: isExpanded ? 1 : 'inherit',
                         }}
                         className={cn(
                             "px-4 py-3 rounded-full text-white bg-[#006cff] transition-colors flex-1 w-full sm:w-56",
-                            !isExpanded && 'w-44'
+                            !isExpanded && 'w-44',
+                            isSubmitting && 'opacity-60 cursor-not-allowed'
                         )}
                     >
                         <div className="flex items-center font-[600] justify-center gap-2 text-sm">

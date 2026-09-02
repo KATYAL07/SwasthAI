@@ -13,7 +13,7 @@
  */
 import { test, before, after, describe } from "node:test";
 import assert from "node:assert/strict";
-import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
+import { spawn, spawnSync, type ChildProcessWithoutNullStreams } from "node:child_process";
 import { existsSync, rmSync } from "node:fs";
 import path from "node:path";
 
@@ -44,16 +44,31 @@ async function api(method: string, route: string, token?: string, body?: unknown
   return { status: res.status, body: payload };
 }
 
+/**
+ * The server starts listening BEFORE it finishes seeding, so /api/health alone is not a
+ * readiness signal: booking against doc-1 can 404 while the doctors table is still empty.
+ * Wait for the seed data the suite depends on, not just for the socket.
+ */
 async function waitForHealth(timeoutMs = 60_000) {
   const deadline = Date.now() + timeoutMs;
+  let healthy = false;
   while (Date.now() < deadline) {
     try {
-      const res = await fetch(`${BASE}/api/health`);
-      if (res.ok) return;
+      if (!healthy) {
+        const res = await fetch(`${BASE}/api/health`);
+        healthy = res.ok;
+      }
+      if (healthy) {
+        const seeded = await fetch(`${BASE}/api/doctors`);
+        if (seeded.ok) {
+          const doctors = (await seeded.json()) as Array<{ id: string }>;
+          if (doctors.some((d) => d.id === "doc-1")) return;
+        }
+      }
     } catch { /* not up yet */ }
     await new Promise((r) => setTimeout(r, 400));
   }
-  throw new Error(`Test server did not become healthy on ${BASE}`);
+  throw new Error(`Test server did not become ready (healthy + seeded) on ${BASE}`);
 }
 
 /** Write the doctor link directly into the throwaway test database. */
@@ -129,12 +144,32 @@ before(async () => {
   });
 });
 
-after(() => {
-  server?.kill();
+/**
+ * On win32 the server is spawned through a shell, so `server` is cmd.exe and killing it
+ * leaves the real `tsx server.ts` grandchild alive. That orphan kept the test port and
+ * the SQLite file open, which hung the runner and made the NEXT run fail in before()
+ * with EPERM on rmSync. Kill the whole process tree instead.
+ */
+function stopServer(): void {
+  if (!server?.pid) return;
+  if (process.platform === "win32") {
+    spawnSync("taskkill", ["/pid", String(server.pid), "/t", "/f"], { stdio: "ignore" });
+  } else {
+    server.kill();
+  }
+}
+
+after(async () => {
+  stopServer();
+  // Give the OS a moment to release the file handle before unlinking it.
+  await new Promise((resolve) => setTimeout(resolve, 500));
   if (existsSync(TEST_DB_PATH)) {
     try { rmSync(TEST_DB_PATH, { force: true }); } catch { /* windows file lock */ }
   }
 });
+
+// A failure between spawn and after() would otherwise leak the server too.
+process.on("exit", stopServer);
 
 // ---------------------------------------------------------------------------
 

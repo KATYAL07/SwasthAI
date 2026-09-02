@@ -1489,6 +1489,12 @@ app.post("/api/chat/:appointmentId", aiRateLimit, async (req, res) => {
     return res.status(400).json({ error: "Message text is required" });
   }
 
+  // sender is NOT NULL in chat_messages, so an omitted value used to surface as a 500
+  // carrying the raw SQLITE_CONSTRAINT text. Validate it here instead.
+  if (sender !== "PATIENT" && sender !== "DOCTOR") {
+    return res.status(400).json({ error: "Message sender must be either PATIENT or DOCTOR." });
+  }
+
   try {
     if (!(await getAppointmentIfParty(req, appointmentId))) {
       return res.status(403).json({ error: "You are not a party to this consultation." });

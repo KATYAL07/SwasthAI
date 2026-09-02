@@ -248,6 +248,10 @@ const getFriendlyAuthErrorMessage = (code: string): string => {
   }
 };
 
+// Per-request ceiling for the initial clinical data load. Anything slower is treated as
+// unavailable so the app still renders instead of holding the boot shimmer indefinitely.
+const DATA_LOAD_TIMEOUT_MS = 12000;
+
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -323,6 +327,14 @@ export default function App() {
   const [lastActivity, setLastActivity] = useState<number>(Date.now());
   const [showTimeoutWarning, setShowTimeoutWarning] = useState<boolean>(false);
   const isResendingVerificationRef = useRef<boolean>(false);
+  // Admin registry writes are reachable from plain submit buttons with no pending state,
+  // so a second click before the request settles used to file a duplicate record.
+  const adminWriteInFlight = useRef<boolean>(false);
+  // True only between an interactive sign-in and the auth-state effect that follows it,
+  // so a restored session never re-shows the granted-role notice.
+  const justSignedInRef = useRef<boolean>(false);
+  // Blocks a second emergency dispatch while the first is still in flight.
+  const sosInFlightRef = useRef<boolean>(false);
 
   const authNameRef = useRef(authName);
   const authPhoneRef = useRef(authPhone);
@@ -889,7 +901,7 @@ export default function App() {
           } else if (authRoleSelection === "DOCTOR") {
             setActiveTab("consultation");
           } else {
-            setActiveTab("overview");
+            setActiveTab("overview_classic");
           }
           
           showToast(`🔒 Secure Biometric unlock approved! Welcome back, ${authName}. Role: ${authRoleSelection}`);
@@ -1221,6 +1233,9 @@ export default function App() {
 
   // UI state overlays
   const [loading, setLoading] = useState<boolean>(true);
+  // True when the last load fell back on defaults because the API did not answer.
+  const [dataDegraded, setDataDegraded] = useState<boolean>(false);
+  const [sosSubmitting, setSosSubmitting] = useState<boolean>(false);
   const [bookingDoc, setBookingDoc] = useState<Doctor | null>(null);
   const [consultingAppt, setConsultingAppt] = useState<Appointment | null>(null);
   const [selectedSOSHospital, setSelectedSOSHospital] = useState<string>("");
@@ -1425,16 +1440,33 @@ export default function App() {
 
   // Scope loadData at component level so it can be re-triggered on network sync re-activation
   const loadData = async () => {
+    let degraded = false;
     try {
       setLoading(true);
-      const safeFetch = async <T,>(promise: Promise<T>, fallback: T, name: string): Promise<T> => {
-        try {
-          return await promise;
-        } catch (e) {
-          console.warn(`[Clinical Fetch Warning] Failed to load ${name} dynamically. Falling back to default:`, e);
-          return fallback;
-        }
-      };
+      // A request that never settles (hung or unreachable API) rejects nothing, so an
+      // await on it blocks the `finally` below forever and the boot shimmer becomes a
+      // permanent spinner with no error and no way out. Bound every call: whatever has
+      // not answered in time falls back to its default and the screen still renders.
+      const withTimeout = <T,>(promise: Promise<T>, fallback: T, name: string): Promise<T> =>
+        new Promise<T>((resolve) => {
+          const timer = setTimeout(() => {
+            degraded = true;
+            console.warn(`[Clinical Fetch Warning] ${name} timed out after ${DATA_LOAD_TIMEOUT_MS}ms. Falling back to default.`);
+            resolve(fallback);
+          }, DATA_LOAD_TIMEOUT_MS);
+          promise.then(
+            (value) => { clearTimeout(timer); resolve(value); },
+            (e) => {
+              clearTimeout(timer);
+              degraded = true;
+              console.warn(`[Clinical Fetch Warning] Failed to load ${name} dynamically. Falling back to default:`, e);
+              resolve(fallback);
+            }
+          );
+        });
+
+      const safeFetch = <T,>(promise: Promise<T>, fallback: T, name: string): Promise<T> =>
+        withTimeout(promise, fallback, name);
 
       const [hData, dData, aData, qData, rData, mData, oData, alData] = await Promise.all([
         safeFetch(api.getHospitals(), [], "hospitals"),
@@ -1462,6 +1494,10 @@ export default function App() {
       showToast("Error loading healthcare registry.");
     } finally {
       setLoading(false);
+      setDataDegraded(degraded);
+      if (degraded) {
+        showToast("Some clinical data could not be reached — showing what loaded. Tap the network badge to retry.");
+      }
     }
   };
 
@@ -1567,6 +1603,7 @@ export default function App() {
           setIsAuthenticated(false);
           setJwtToken("");
           setAuthLoading(false);
+          setLoading(false);
           showToast("Please verify your email first. Check your inbox.");
           return;
         }
@@ -1583,6 +1620,18 @@ export default function App() {
             const userRole = profileData.role || "PATIENT";
             setActiveRole(userRole);
 
+            // The login screen's role picker only applies when the email is registering
+            // for the first time; an existing account keeps the role the server issued.
+            // Say so, or the workspace opens with privileges the token will refuse.
+            const requestedRole = authRoleSelectionRef.current;
+            if (requestedRole && requestedRole !== userRole && justSignedInRef.current) {
+              showToast(
+                `Signed in as ${userRole}. This email is already registered as ${userRole}, so the ` +
+                `selected ${requestedRole} role was not applied — register a different email for that role.`
+              );
+            }
+            justSignedInRef.current = false;
+
             // Route by role only from entry pages — never yank a restored session
             // off a deep link like /dashboard or /pharmacy on reload.
             if (window.location.pathname === "/" || window.location.pathname === "/login") {
@@ -1590,6 +1639,8 @@ export default function App() {
                 setActiveTab("admin");
               } else if (userRole === "DOCTOR") {
                 setActiveTab("consultation");
+              } else {
+                setActiveTab("overview_classic");
               }
             }
           } else {
@@ -1619,11 +1670,14 @@ export default function App() {
 
             // Route by role only from entry pages — never yank a restored session
             // off a deep link on reload.
+            justSignedInRef.current = false;
             if (window.location.pathname === "/" || window.location.pathname === "/login") {
               if (userRole === "ADMIN" || userRole === "HOSPITAL") {
                 setActiveTab("admin");
               } else if (userRole === "DOCTOR") {
                 setActiveTab("consultation");
+              } else {
+                setActiveTab("overview_classic");
               }
             }
           }
@@ -1658,10 +1712,12 @@ export default function App() {
           showToast(`⚠️ Authentication Sync Failed: ${err.message}`);
           setIsAuthenticated(false);
           setJwtToken("");
+          setLoading(false);
         }
       } else {
         setIsAuthenticated(false);
         setJwtToken("");
+        setLoading(false);
       }
       setAuthLoading(false);
     });
@@ -1871,8 +1927,14 @@ export default function App() {
   }, [chatMessages, consultingAppt]);
 
   // Action methods
-  const handleSOSSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSOSSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    // A panic button is the worst place to file duplicates: each click used to dispatch
+    // another ambulance to another hospital, because the trigger is a plain submit with
+    // no pending state. One dispatch per press.
+    if (sosInFlightRef.current) return;
+    sosInFlightRef.current = true;
+    setSosSubmitting(true);
     try {
       const payload = {
         type: emergencyType,
@@ -1893,11 +1955,14 @@ export default function App() {
       setHospitals(hps);
     } catch (err: any) {
       showToast("Trigger failure: " + err.message);
+    } finally {
+      sosInFlightRef.current = false;
+      setSosSubmitting(false);
     }
   };
 
-  const handleBookAppointment = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleBookAppointment = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (!bookingDoc) return;
     try {
       const payload = {
@@ -1927,7 +1992,7 @@ export default function App() {
       setBookingDoc(null);
       setApptSymptoms("");
       showToast(`Appointment scheduled with ${bookingDoc.name}!`);
-      setActiveTab("overview");
+      setActiveTab("overview_classic");
     } catch (err: any) {
       showToast(err.message);
     }
@@ -1946,8 +2011,8 @@ export default function App() {
     }
   };
 
-  const handleCheckSymptoms = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCheckSymptoms = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (!aiSymptoms) {
       showToast("Please detail physical symptoms description.");
       return;
@@ -2281,12 +2346,14 @@ export default function App() {
     }
   };
 
-  const handleOnboardHospital = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleOnboardHospital = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (adminWriteInFlight.current) return;
     if (!onboardName || !onboardAddress) {
       showToast("Hospital name and verified physical address are required.");
       return;
     }
+    adminWriteInFlight.current = true;
     try {
       const splitSpecs = onboardSpecialties.split(",").map((s) => s.trim()).filter(Boolean);
       await api.onboardHospital({
@@ -2315,11 +2382,14 @@ export default function App() {
       showToast(`Verified Network Onboarding Completed: Registered ${onboardName}!`);
     } catch (err: any) {
       showToast(err.message);
+    } finally {
+      adminWriteInFlight.current = false;
     }
   };
 
-  const handleAddClinicalDoctor = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAddClinicalDoctor = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (adminWriteInFlight.current) return;
     if (!adminHospSelect) {
       showToast("Please select a target hospital to add clinical staff.");
       return;
@@ -2328,6 +2398,7 @@ export default function App() {
       showToast("Doctor name and specialty department are required.");
       return;
     }
+    adminWriteInFlight.current = true;
     try {
       await api.addHospitalDoctor(adminHospSelect, {
         name: addDocName,
@@ -2345,6 +2416,8 @@ export default function App() {
       showToast(`Clinical staff onboarded: ${addDocName} has been assigned.`);
     } catch (err: any) {
       showToast(err.message);
+    } finally {
+      adminWriteInFlight.current = false;
     }
   };
 
@@ -2424,6 +2497,7 @@ export default function App() {
     try {
       setAuthError(null);
       setAuthLoading(true);
+      justSignedInRef.current = true;
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider, {
         email: authEmail,
@@ -2431,15 +2505,9 @@ export default function App() {
         role: authRoleSelection
       });
       
-      // Fast route adjustments to showcase views on login based on selected role
-      if (authRoleSelection === "ADMIN" || authRoleSelection === "HOSPITAL") {
-        setActiveTab("admin");
-      } else if (authRoleSelection === "DOCTOR") {
-        setActiveTab("consultation");
-      } else {
-        setActiveTab("overview");
-      }
-      
+      // Routing and the granted-role notice are handled by the auth-state effect once the
+      // session is actually established — navigating here would hit the PrivateRoute guard
+      // while isAuthenticated is still false and bounce straight back to the landing page.
       showToast(`⚡ Fully Authenticated as ${result.user.displayName || result.user.email}! Welcome.`);
     } catch (err: any) {
       console.error("Google Sign-In failed:", err.message);
@@ -2508,7 +2576,7 @@ export default function App() {
       } else if (authRoleSelection === "DOCTOR") {
         setActiveTab("consultation");
       } else {
-        setActiveTab("overview");
+        setActiveTab("overview_classic");
       }
       showToast(`🔑 Verified Session! Welcome back.`);
     } catch (err: any) {
@@ -2614,7 +2682,7 @@ export default function App() {
     } else if (authRoleSelection === "DOCTOR") {
       setActiveTab("consultation");
     } else {
-      setActiveTab("overview");
+      setActiveTab("overview_classic");
     }
     showToast(`⚡ Signed in via offline demo fallback! Role: ${authRoleSelection}`);
   };
@@ -2845,8 +2913,32 @@ export default function App() {
   // Helper selectors
   const totalBedsAvailable = hospitals.reduce((acc, h) => acc + h.availableBeds, 0);
   const totalIcuBedsAvailable = hospitals.reduce((acc, h) => acc + h.icuAvailable, 0);
-  const myAppointments = appointments.filter((a) => a.patientId === "patient-default");
-  const myQueueToken = queueTokens.find((q) => q.patientId === "patient-default" && q.status === "WAITING");
+  // Server ids are per-session ("user-<ts>-<rand>"), so matching a literal patient id
+  // silently emptied both widgets for every real account. Scope to the signed-in uid,
+  // which also keeps these correct when a DOCTOR/HOSPITAL session loads every row.
+  const accountRole = ((): string => {
+    try {
+      const raw = localStorage.getItem("city_healer_user");
+      return raw ? JSON.parse(raw).role || "PATIENT" : "PATIENT";
+    } catch {
+      return "PATIENT";
+    }
+  })();
+  const myPatientId = auth.currentUser?.uid ?? "";
+  // A DOCTOR session's /api/appointments and /api/queue are already scoped server-side to
+  // the doctor record this account is linked to, and those rows carry OTHER people's
+  // patientIds. Filtering them by the viewer's own uid emptied the clinician's consult
+  // list, which in turn made the prescribing console unreachable. Patients (and the
+  // privileged roles, whose feeds are unscoped) still filter down to their own rows.
+  const isClinicianSession = accountRole === "DOCTOR";
+  const myAppointments = isClinicianSession
+    ? appointments
+    : myPatientId
+      ? appointments.filter((a) => a.patientId === myPatientId)
+      : [];
+  const myQueueToken = myPatientId
+    ? queueTokens.find((q) => q.patientId === myPatientId && q.status === "WAITING")
+    : undefined;
 
   const filteredDoctors = doctors.filter((d) => {
     if (!searchQuery) return true;
@@ -3381,9 +3473,20 @@ export default function App() {
           <div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-[10px] tracking-wider uppercase font-semibold text-slate-400">Hub Service Control</span>
-              <span className="rounded-full bg-emerald-50 text-emerald-600 text-[10px] px-2 py-0.5 font-bold flex items-center gap-1">
-                <span className="w-1 px-1 h-1 bg-emerald-500 rounded-full animate-ping"></span> {getTranslation(appLanguage, "regionalNetwork")}
-              </span>
+              <button
+                type="button"
+                onClick={() => loadData()}
+                disabled={loading}
+                title={dataDegraded ? "Some clinical data failed to load — click to retry" : "Clinical grid connected — click to re-sync"}
+                className={`rounded-full text-[10px] px-2 py-0.5 font-bold flex items-center gap-1 cursor-pointer transition-colors disabled:cursor-wait ${
+                  dataDegraded
+                    ? "bg-amber-50 text-amber-700 hover:bg-amber-100"
+                    : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
+                }`}
+              >
+                <span className={`w-1 px-1 h-1 rounded-full ${dataDegraded ? "bg-amber-500" : "bg-emerald-500 animate-ping"}`}></span>{" "}
+                {dataDegraded ? "Reconnect clinical grid" : getTranslation(appLanguage, "regionalNetwork")}
+              </button>
             </div>
             <h1 className={`text-2xl font-black tracking-tight flex items-center gap-2 transition-all ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
               {getTranslation(appLanguage, "brandName")} <span className="text-sm font-medium text-slate-400">{getTranslation(appLanguage, "metropolitanGrid")}</span>
@@ -3417,13 +3520,16 @@ export default function App() {
                   onClick={() => {
                     setActiveRole(role.id as any);
                     showToast(`Switched workspace identity to ${role.label}`);
-                    // Fast route adjustments to showcase views on role change
+                    // Fast route adjustments to showcase views on role change.
+                    // NB: "overview" is the public marketing route ("/"), not the signed-in
+                    // board — sending a patient there logged them out of the app shell.
+                    // The in-app dashboard is "overview_classic" ("/dashboard").
                     if (role.id === "ADMIN" || role.id === "HOSPITAL") {
                       setActiveTab("admin");
                     } else if (role.id === "DOCTOR") {
                       setActiveTab("consultation");
                     } else {
-                      setActiveTab("overview");
+                      setActiveTab("overview_classic");
                     }
                   }}
                   className={`px-3 py-1.5 rounded-lg shrink-0 transition-all cursor-pointer ${
@@ -4007,6 +4113,7 @@ export default function App() {
                             <Brain className="h-4 w-4" /> Run AI Triage Diagnosis
                           </>
                         } 
+                        onComplete={handleCheckSymptoms}
                       />
                     </div>
                   </form>
@@ -4126,12 +4233,13 @@ export default function App() {
                               <p className="text-[10px] leading-snug">Emergency indicators require clinical response.</p>
                               <button
                                 onClick={() => {
-                                  handleSOSSubmit({ preventDefault: () => {} } as any);
+                                  handleSOSSubmit();
                                   setActiveTab("sos");
                                 }}
-                                className="w-full text-center py-2 bg-rose-600 text-white rounded-lg text-[10px] font-black uppercase"
+                                disabled={sosSubmitting}
+                                className="w-full text-center py-2 bg-rose-600 disabled:bg-rose-300 disabled:cursor-wait text-white rounded-lg text-[10px] font-black uppercase"
                               >
-                                Dispatch SOS Ambulance NOW
+                                {sosSubmitting ? "Dispatching…" : "Dispatch SOS Ambulance NOW"}
                               </button>
                             </div>
                           ) : (
@@ -4643,7 +4751,7 @@ export default function App() {
 
                       <div className="flex justify-end gap-2 pt-2">
                         <button type="button" onClick={() => setBookingDoc(null)} className="px-4 py-2 border border-slate-200 rounded-lg">Cancel</button>
-                        <AnimatedConfirmButton initialText="Book Appointment" />
+                        <AnimatedConfirmButton initialText="Book Appointment" onComplete={handleBookAppointment} />
                       </div>
                     </form>
                   </div>
@@ -4943,7 +5051,8 @@ export default function App() {
                           {myAppointments.filter((a) => a.status === "ACCEPTED" || a.status === "PENDING").map((appt) => (
                             <div key={appt.id} className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-xs font-semibold">
                               <div>
-                                <p className="text-slate-800">{appt.doctorName}</p>
+                                {/* A clinician is looking at who is coming in, not at their own name. */}
+                                <p className="text-slate-800">{isClinicianSession ? appt.patientName : appt.doctorName}</p>
                                 <p className="text-[10px] text-slate-400">{appt.time} • {appt.date}</p>
                               </div>
                               <button
@@ -6010,9 +6119,14 @@ export default function App() {
                       </p>
                       <button
                         type="submit"
-                        className="px-6 py-3 bg-red-650 hover:bg-red-600 text-white font-extrabold text-xs rounded-xl shadow cursor-pointer animate-pulse shrink-0 bg-red-600"
+                        disabled={sosSubmitting}
+                        className={`px-6 py-3 text-white font-extrabold text-xs rounded-xl shadow shrink-0 ${
+                          sosSubmitting
+                            ? "bg-red-400 cursor-wait"
+                            : "bg-red-650 hover:bg-red-600 cursor-pointer animate-pulse bg-red-600"
+                        }`}
                       >
-                        TRIGGER SOS DISTRESS PANIC
+                        {sosSubmitting ? "DISPATCHING…" : "TRIGGER SOS DISTRESS PANIC"}
                       </button>
                     </div>
                   </form>
@@ -7277,9 +7391,14 @@ export default function App() {
                       </p>
                       <button
                         type="submit"
-                        className="px-6 py-3 bg-red-650 hover:bg-red-600 text-white font-extrabold text-xs rounded-xl shadow cursor-pointer animate-pulse shrink-0 bg-red-600"
+                        disabled={sosSubmitting}
+                        className={`px-6 py-3 text-white font-extrabold text-xs rounded-xl shadow shrink-0 ${
+                          sosSubmitting
+                            ? "bg-red-400 cursor-wait"
+                            : "bg-red-650 hover:bg-red-600 cursor-pointer animate-pulse bg-red-600"
+                        }`}
                       >
-                        TRIGGER SOS DISTRESS PANIC
+                        {sosSubmitting ? "DISPATCHING…" : "TRIGGER SOS DISTRESS PANIC"}
                       </button>
                     </div>
                   </form>
@@ -7509,7 +7628,7 @@ export default function App() {
                         />
                       </div>
 
-                      <AnimatedConfirmButton initialText="Onboard Partner Clinic Unit" />
+                      <AnimatedConfirmButton initialText="Onboard Partner Clinic Unit" onComplete={handleOnboardHospital} />
                     </form>
                   </div>
 
