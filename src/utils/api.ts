@@ -4,6 +4,32 @@
 import { auth } from "../firebase";
 import * as seed from "../../seedData";
 
+/** Raised when the server rejects our credentials — distinct from a network failure. */
+export class SessionExpiredError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "SessionExpiredError";
+  }
+}
+
+export const SESSION_EXPIRED_EVENT = "cityhealer:session-expired";
+
+// Fires once per dead session. Without the latch, the parallel calls on the dashboard
+// would each announce the same expiry and stack up identical sign-out prompts.
+let sessionExpiryAnnounced = false;
+
+export function resetSessionExpiryNotice(): void {
+  sessionExpiryAnnounced = false;
+}
+
+function notifySessionExpired(reason?: string): void {
+  if (sessionExpiryAnnounced) return;
+  sessionExpiryAnnounced = true;
+  window.dispatchEvent(
+    new CustomEvent(SESSION_EXPIRED_EVENT, { detail: { reason: reason || "Session no longer valid." } })
+  );
+}
+
 // Client-side local recommendation scoring for static environments
 function recommendHospitalsLocal(specialistType: string, urgencyLevel: string, userLat?: number, userLng?: number) {
   const specLower = (specialistType || "").toLowerCase();
@@ -594,6 +620,15 @@ export async function apiFetch<T>(url: string, options?: RequestInit, retries = 
         throw { is404: true };
       }
 
+      // A 401 on a request we sent credentials for means the session is dead, not that
+      // the network is flaky: the server reached us and refused. Retrying it produces the
+      // spinner/dashboard flicker, so announce it once and stop.
+      if (response.status === 401 && token) {
+        const errorData = await response.json().catch(() => ({}));
+        notifySessionExpired(errorData.error);
+        throw new SessionExpiredError(errorData.error || "Session no longer valid.");
+      }
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
@@ -611,6 +646,12 @@ export async function apiFetch<T>(url: string, options?: RequestInit, retries = 
           err.message.includes("NetworkError") ||
           err.message.includes("fetch failed") ||
           err.message.includes("load"));
+
+      // Never retry, and never fall back to the local sandbox, on an expired session —
+      // the sandbox would happily serve stale data to someone the server has logged out.
+      if (err instanceof SessionExpiredError) {
+        throw err;
+      }
 
       if (err.is404 || isNetworkError) {
         // Fall back to client side localStorage database!

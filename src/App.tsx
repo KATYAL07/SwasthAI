@@ -91,7 +91,7 @@ import {
   Line, 
   ReferenceLine 
 } from "recharts";
-import { api } from "./utils/api";
+import { api, SESSION_EXPIRED_EVENT, resetSessionExpiryNotice } from "./utils/api";
 import { getTranslation, LanguageCode, translations } from "./utils/i18n";
 import { useLocation, useNavigate } from "react-router-dom";
 import { 
@@ -252,6 +252,10 @@ const getFriendlyAuthErrorMessage = (code: string): string => {
 // unavailable so the app still renders instead of holding the boot shimmer indefinitely.
 const DATA_LOAD_TIMEOUT_MS = 12000;
 
+// Carries the "your session expired" explanation across the sign-out, which unmounts the
+// shell the toast renders in, and across a reload.
+const SESSION_EXPIRY_NOTICE = "cityhealer:session-expiry-notice";
+
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -335,6 +339,9 @@ export default function App() {
   const justSignedInRef = useRef<boolean>(false);
   // Blocks a second emergency dispatch while the first is still in flight.
   const sosInFlightRef = useRef<boolean>(false);
+  // Set the moment the server rejects our credentials, so the in-flight data load
+  // reports an expired session rather than blaming the network.
+  const sessionExpiredRef = useRef<boolean>(false);
 
   const authNameRef = useRef(authName);
   const authPhoneRef = useRef(authPhone);
@@ -358,7 +365,9 @@ export default function App() {
   }, [authRoleSelection]);
 
   useEffect(() => {
-    setAuthError(null);
+    // Switching login/signup clears a stale form error, but must not swallow the
+    // session-expiry notice — that one explains why the user is on this screen at all.
+    setAuthError((prev) => (prev && prev.code === "auth/session-expired" ? prev : null));
   }, [authMode]);
 
   // Family profile selector state (converted from static array to support adding new patients dynamically)
@@ -1494,8 +1503,11 @@ export default function App() {
       showToast("Error loading healthcare registry.");
     } finally {
       setLoading(false);
-      setDataDegraded(degraded);
-      if (degraded) {
+      // An expired session already told the user what happened and signed them out;
+      // adding "could not be reached" on top would blame the network for a refusal.
+      const expired = sessionExpiredRef.current;
+      setDataDegraded(degraded && !expired);
+      if (degraded && !expired) {
         showToast("Some clinical data could not be reached — showing what loaded. Tap the network badge to retry.");
       }
     }
@@ -1556,6 +1568,52 @@ export default function App() {
       clearInterval(interval);
     };
   }, [isAuthenticated, lastActivity, navigate]);
+
+  /**
+   * A session the server no longer accepts (expired, revoked, or an account removed
+   * underneath a live tab) used to leave the app retrying forever: the dashboard
+   * alternated between the loading shimmer and a half-empty board, under a
+   * "could not be reached" notice that blamed the network for a refusal. Sign out
+   * properly and say what actually happened.
+   */
+  useEffect(() => {
+    const onExpired = () => {
+      sessionExpiredRef.current = true;
+      // Synchronously, before the async signOut: onAuthStateChanged reads these keys and
+      // would otherwise restore the very session the server just rejected.
+      try {
+        localStorage.removeItem("city_healer_jwt");
+        localStorage.removeItem("city_healer_user");
+      } catch { /* storage unavailable — the sign-out below still applies */ }
+      setIsAuthenticated(false);
+      setJwtToken("");
+      setLoading(false);
+      setDataDegraded(false);
+      signOut(auth).catch(() => { /* the local session is cleared regardless */ });
+
+      const notice = "Your session has expired. Please sign in again.";
+      try { sessionStorage.setItem(SESSION_EXPIRY_NOTICE, notice); } catch { /* non-fatal */ }
+      setAuthError({ code: "auth/session-expired", message: notice });
+
+      // Leave via a full navigation rather than a client-side tab change. The expiry can
+      // land mid-boot, while the auth-state listener is still restoring, and the two then
+      // race over whether the shell stays mounted — the symptom being a signed-out user
+      // still looking at the dashboard. A reload starts clean, and the mount handler above
+      // picks the notice back up out of sessionStorage and shows it on the sign-in screen.
+      window.setTimeout(() => { window.location.assign("/"); }, 0);
+    };
+    // A reload during an expired session loses component state, so re-surface the notice.
+    try {
+      const pending = sessionStorage.getItem(SESSION_EXPIRY_NOTICE);
+      if (pending) {
+        setAuthError({ code: "auth/session-expired", message: pending });
+        sessionStorage.removeItem(SESSION_EXPIRY_NOTICE);
+      }
+    } catch { /* storage unavailable */ }
+
+    window.addEventListener(SESSION_EXPIRED_EVENT, onExpired);
+    return () => window.removeEventListener(SESSION_EXPIRED_EVENT, onExpired);
+  }, []);
 
   // PrivateRoute Navigation Protection
   useEffect(() => {
@@ -2498,6 +2556,8 @@ export default function App() {
       setAuthError(null);
       setAuthLoading(true);
       justSignedInRef.current = true;
+      sessionExpiredRef.current = false;
+      resetSessionExpiryNotice();
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider, {
         email: authEmail,
@@ -2705,6 +2765,8 @@ export default function App() {
       setAuthOtpInput("");
       setAuthOtpSent("");
       setJwtToken("");
+      resetSessionExpiryNotice();
+      sessionExpiredRef.current = false;
       showToast("Session security terminated.");
     } catch (err) {
       showToast("Error processing sign-out.");
