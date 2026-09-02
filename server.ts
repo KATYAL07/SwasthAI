@@ -1,3 +1,6 @@
+// MUST stay first: loads .env.local / .env before any import below reads process.env.
+import "./env";
+
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
