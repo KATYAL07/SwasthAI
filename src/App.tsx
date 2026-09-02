@@ -2988,8 +2988,8 @@ export default function App() {
 
           <div className="space-y-5">
             <div>
-              <label className={`text-[10px] uppercase font-bold tracking-wider ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Simulate Role Authorization</label>
-              <p className={`text-[11px] mb-2 ${isAppDarkMode ? "text-slate-500" : "text-slate-400"}`}>Select your role to access different areas of the platform after authentication.</p>
+              <label className={`text-[12px] uppercase font-bold tracking-wider ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Simulate Role Authorization</label>
+              <p className={`text-[12.5px] mb-2 ${isAppDarkMode ? "text-slate-500" : "text-slate-400"}`}>Select your role to access different areas of the platform after authentication.</p>
               <select 
                 value={authRoleSelection}
                 onChange={(e: any) => setAuthRoleSelection(e.target.value)}
@@ -3008,7 +3008,7 @@ export default function App() {
 
             <div className="space-y-3">
               <div>
-                <label className={`text-[10px] uppercase font-bold tracking-wider ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Full Name</label>
+                <label className={`text-[12px] uppercase font-bold tracking-wider ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Full Name</label>
                 <input
                   type="text"
                   value={authName}
@@ -3022,7 +3022,7 @@ export default function App() {
                 />
               </div>
               <div>
-                <label className={`text-[10px] uppercase font-bold tracking-wider ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Email ID</label>
+                <label className={`text-[12px] uppercase font-bold tracking-wider ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Email ID</label>
                 <input
                   type="email"
                   value={authEmail}
@@ -3056,7 +3056,7 @@ export default function App() {
 
             <div className="relative flex py-1 items-center">
               <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
-              <span className="flex-shrink mx-4 text-[10px] text-slate-400 dark:text-slate-500 font-bold tracking-wider uppercase">Or</span>
+              <span className="flex-shrink mx-4 text-[12px] text-slate-400 dark:text-slate-500 font-bold tracking-wider uppercase">Or</span>
               <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
             </div>
 
@@ -3117,7 +3117,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "80px 1fr", gridTemplateRows: "100%" }} className={`h-screen w-full font-sans overflow-hidden relative transition-colors duration-350 ${isAppDarkMode ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"}`}>
+    <div style={{ display: "grid", gridTemplateColumns: "212px 1fr", gridTemplateRows: "100%" }} className={`h-screen w-full font-sans overflow-hidden relative transition-colors duration-350 ${isAppDarkMode ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"}`}>
       <CustomCursor />
       <GrainOverlay />
       <PageTransition activeTab={activeTab} onChangeTab={(tab) => {
@@ -3164,10 +3164,10 @@ export default function App() {
               <div className="flex justify-between items-start border-b border-slate-100 pb-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="p-1 px-2.5 bg-blue-50 text-blue-600 text-[10px] font-black tracking-widest uppercase rounded">
+                    <span className="p-1 px-2.5 bg-blue-50 text-blue-600 text-[12px] font-black tracking-widest uppercase rounded">
                       Clinical Safety Standard
                     </span>
-                    <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
+                    <span className="flex items-center gap-1 text-[12px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
                       <Shield className="h-3 w-3" /> AI Authenticated
                     </span>
                   </div>
@@ -3209,12 +3209,12 @@ export default function App() {
                     />
                     <div className="absolute inset-x-0 bottom-0 bg-slate-950/85 backdrop-blur-xs p-3 text-white z-10 select-none">
                       <p className="text-xs font-black truncate">{activeVerificationPill.name}</p>
-                      <p className="text-[10px] opacity-80 mt-0.5 font-semibold">Category: {activeVerificationPill.category}</p>
+                      <p className="text-[12px] opacity-80 mt-0.5 font-semibold">Category: {activeVerificationPill.category}</p>
                     </div>
                   </div>
 
                   <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl space-y-2.5">
-                    <h4 className="text-[10px] font-black uppercase text-slate-500 tracking-wider">
+                    <h4 className="text-[12px] font-black uppercase text-slate-500 tracking-wider">
                       🧪 Master Pharmaceutical Index
                     </h4>
                     <div className="grid grid-cols-2 gap-3 text-xs">
@@ -3241,7 +3241,7 @@ export default function App() {
                       <h4 className="text-xs font-black text-slate-900 flex items-center gap-1">
                         <Sparkles className="h-3.5 w-3.5 text-blue-500" /> Physical Self-Inspection
                       </h4>
-                      <p className="text-[10px] text-slate-500 mt-1">
+                      <p className="text-[12px] text-slate-500 mt-1">
                         Look closely at the pill you received. Enter its traits to perform safety certification.
                       </p>
                     </div>
@@ -3360,7 +3360,7 @@ export default function App() {
                         <CheckCircle className="h-4.5 w-4.5 text-emerald-600" /> Security Authentication Verified (Score: {verifResult.score}%)
                       </div>
                       <p className="font-medium leading-normal text-emerald-950">{verifResult.message}</p>
-                      <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest block pt-1 font-sans">
+                      <span className="text-[12px] font-black text-emerald-600 uppercase tracking-widest block pt-1 font-sans">
                         🛡️ Consigned batch checked secure. Recommended safe dosage.
                       </span>
                     </div>
@@ -3370,7 +3370,7 @@ export default function App() {
                         <AlertTriangle className="h-4.5 w-4.5 text-amber-600" /> Security Verification Mismatch Alert (Score: {verifResult.score}%)
                       </div>
                       <p className="font-semibold leading-normal text-amber-950">{verifResult.message}</p>
-                      <span className="text-[10px] font-black text-amber-700 uppercase tracking-widest block pt-1 font-sans">
+                      <span className="text-[12px] font-black text-amber-700 uppercase tracking-widest block pt-1 font-sans">
                         ⚠️ High danger caution: DO NOT consume if physical medication doesn't match official reference traits.
                       </span>
                     </div>
@@ -3383,83 +3383,97 @@ export default function App() {
       </AnimatePresence>
 
       {/* LEFT SIDEBAR: Aesthetic Navigation bar from Bento grid mockups */}
-      <aside className={`col-span-1 flex flex-col items-center py-6 justify-between h-screen overflow-y-auto relative z-20 shadow-xs transition-colors duration-300 ${isAppDarkMode ? "bg-slate-900 border-r border-slate-800" : "bg-white border-r border-slate-250"}`}>
-        <div className="flex flex-col items-center gap-6 w-full shrink-0">
+      <aside className={`col-span-1 flex flex-col py-6 justify-between h-screen overflow-y-auto relative z-20 shadow-xs transition-colors duration-300 ${isAppDarkMode ? "bg-slate-900 border-r border-slate-800" : "bg-white border-r border-slate-250"}`}>
+        <div className="flex flex-col gap-2 w-full shrink-0 px-3">
           {/* Logo element */}
-          <div 
+          <button
             onClick={() => setActiveTab("overview")}
-            title="View Cinematic Landing Page"
-            className="w-10 h-10 bg-blue-600 hover:bg-blue-500 transition-all cursor-pointer rounded-xl flex items-center justify-center text-white font-extrabold shadow-md shadow-blue-500/20 shrink-0"
+            title="View the public site"
+            className="flex items-center gap-2.5 px-1 py-1 rounded-xl transition-all cursor-pointer shrink-0 text-left"
           >
-            SA
-          </div>
+            <span className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center text-white font-extrabold shadow-md shadow-blue-500/20 shrink-0">
+              SA
+            </span>
+            <span className={`text-[15px] font-extrabold tracking-tight ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>
+              SwasthAI
+            </span>
+          </button>
 
-          <nav className="flex flex-col space-y-4 pt-4 w-full items-center shrink-0">
+          <nav className="flex flex-col gap-0.5 pt-4 w-full shrink-0 px-2">
             {[
-              { id: "overview_classic", label: getTranslation(appLanguage, "tabOverview"), icon: Grid },
-              { id: "super-app", label: getTranslation(appLanguage, "tabSuperApp"), icon: Sparkles },
-              { id: "smart-network", label: getTranslation(appLanguage, "tabSmartNetwork"), icon: Compass },
-              { id: "chn", label: getTranslation(appLanguage, "tabChn"), icon: MapPin },
-              { id: "symptoms", label: getTranslation(appLanguage, "tabSymptoms"), icon: Brain },
-              { id: "trends", label: getTranslation(appLanguage, "tabTrends"), icon: TrendingUp },
-              { id: "beds", label: getTranslation(appLanguage, "tabBeds"), icon: HospitalIcon },
-              { id: "consultation", label: getTranslation(appLanguage, "tabConsultation"), icon: Activity },
-              { id: "pharmacy", label: getTranslation(appLanguage, "tabPharmacy"), icon: ShoppingBag },
-              { id: "records", label: getTranslation(appLanguage, "tabRecords"), icon: FileText },
-              { id: "insurance", label: getTranslation(appLanguage, "tabInsurance"), icon: Shield },
-              { id: "sos", label: getTranslation(appLanguage, "tabSos"), icon: Ambulance },
-              { id: "admin", label: getTranslation(appLanguage, "tabAdmin"), icon: Settings },
-              { id: "developer-hub", label: getTranslation(appLanguage, "tabDeveloperHub"), icon: Cpu },
-            ].filter(tab => tab.id === "admin" || tab.id === "developer-hub" || enabledFeatures[tab.id] !== false).map((tab) => {
+              // Direction A: destinations carry their names, and are grouped by what a
+              // person came to do. Staff tools sit under their own heading and only
+              // appear for an account that can actually use them.
+              { group: "Care", id: "overview_classic", label: getTranslation(appLanguage, "tabOverview"), icon: Grid },
+              { group: "Care", id: "consultation", label: getTranslation(appLanguage, "tabConsultation"), icon: Activity },
+              { group: "Care", id: "symptoms", label: getTranslation(appLanguage, "tabSymptoms"), icon: Brain },
+              { group: "Care", id: "beds", label: getTranslation(appLanguage, "tabBeds"), icon: HospitalIcon },
+              { group: "Care", id: "sos", label: getTranslation(appLanguage, "tabSos"), icon: Ambulance },
+              { group: "Records & orders", id: "records", label: getTranslation(appLanguage, "tabRecords"), icon: FileText },
+              { group: "Records & orders", id: "pharmacy", label: getTranslation(appLanguage, "tabPharmacy"), icon: ShoppingBag },
+              { group: "Records & orders", id: "insurance", label: getTranslation(appLanguage, "tabInsurance"), icon: Shield },
+              { group: "Explore", id: "super-app", label: getTranslation(appLanguage, "tabSuperApp"), icon: Sparkles },
+              { group: "Explore", id: "smart-network", label: getTranslation(appLanguage, "tabSmartNetwork"), icon: Compass },
+              { group: "Explore", id: "chn", label: getTranslation(appLanguage, "tabChn"), icon: MapPin },
+              { group: "Explore", id: "trends", label: getTranslation(appLanguage, "tabTrends"), icon: TrendingUp },
+              { group: "Staff tools", id: "admin", label: getTranslation(appLanguage, "tabAdmin"), icon: Settings, staff: true },
+              { group: "Staff tools", id: "developer-hub", label: getTranslation(appLanguage, "tabDeveloperHub"), icon: Cpu, staff: true },
+            ]
+              .filter(tab => !tab.staff || accountRole === "HOSPITAL" || accountRole === "ADMIN" || accountRole === "DOCTOR")
+              .filter(tab => tab.id === "admin" || tab.id === "developer-hub" || enabledFeatures[tab.id] !== false)
+              .map((tab, idx, list) => {
+              const startsGroup = idx === 0 || list[idx - 1].group !== tab.group;
               const IconComp = tab.icon;
               const isSelected = activeTab === tab.id;
               return (
-                <button
-                  key={tab.id}
-                  onClick={() => {
-                    const transitionFn = (window as any).cityHealerTransition;
-                    if (transitionFn) {
-                      transitionFn(tab.id);
-                    } else {
-                      setActiveTab(tab.id);
-                    }
-                    // Reset consult views when leaving tab to avoid locked simulation UI
-                    if (tab.id !== "consultation") setConsultingAppt(null);
-                  }}
-                  title={tab.label}
-                  className={`p-3 rounded-xl transition-all cursor-pointer relative group shrink-0 flex items-center justify-center ${
-                    isSelected 
-                      ? "text-blue-600" 
-                      : `${isAppDarkMode ? "text-slate-500 hover:bg-slate-800 hover:text-slate-300" : "text-slate-400 hover:bg-slate-50 hover:text-slate-700"}`
-                  }`}
-                >
-                  {isSelected && (
-                    <motion.div
-                      layoutId="activeTabIndicator"
-                      className={`absolute inset-0 rounded-xl ${isAppDarkMode ? "bg-blue-950/50 border border-blue-900/40" : "bg-blue-50/70 border border-blue-100"}`}
-                      transition={{ type: "spring", stiffness: 350, damping: 28 }}
-                      style={{ originY: "50%" }}
-                    />
+                <React.Fragment key={tab.id}>
+                  {startsGroup && (
+                    <span className={`px-3 pt-4 pb-1 text-[12.5px] font-bold uppercase tracking-wider ${isAppDarkMode ? "text-slate-500" : "text-slate-400"}`}>
+                      {tab.group}
+                    </span>
                   )}
-                  <span className="relative z-10">
-                    <IconComp className="w-5.5 h-5.5" />
-                  </span>
-                  <span className="absolute left-16 scale-0 bg-slate-900 text-white text-[10px] py-1 px-2 rounded font-medium group-hover:scale-100 transition-all z-50 whitespace-nowrap">
-                    {tab.label}
-                  </span>
-                </button>
+                  <button
+                    onClick={() => {
+                      const transitionFn = (window as any).cityHealerTransition;
+                      if (transitionFn) {
+                        transitionFn(tab.id);
+                      } else {
+                        setActiveTab(tab.id);
+                      }
+                      // Reset consult views when leaving tab to avoid locked simulation UI
+                      if (tab.id !== "consultation") setConsultingAppt(null);
+                    }}
+                    aria-current={isSelected ? "page" : undefined}
+                    className={`px-3 py-2.5 rounded-xl transition-all cursor-pointer relative shrink-0 flex items-center gap-3 w-full text-left text-[13.5px] font-semibold ${
+                      isSelected
+                        ? "text-blue-600"
+                        : `${isAppDarkMode ? "text-slate-400 hover:bg-slate-800 hover:text-slate-200" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"}`
+                    }`}
+                  >
+                    {isSelected && (
+                      <motion.div
+                        layoutId="activeTabIndicator"
+                        className={`absolute inset-0 rounded-xl ${isAppDarkMode ? "bg-blue-950/50 border border-blue-900/40" : "bg-blue-50/70 border border-blue-100"}`}
+                        transition={{ type: "spring", stiffness: 350, damping: 28 }}
+                        style={{ originY: "50%" }}
+                      />
+                    )}
+                    <IconComp className="w-[18px] h-[18px] relative z-10 shrink-0" />
+                    <span className="relative z-10 truncate">{tab.label}</span>
+                  </button>
+                </React.Fragment>
               );
             })}
           </nav>
         </div>
 
         {/* Profile and Roles controller indicators at base */}
-        <div className="flex flex-col items-center gap-4 shrink-0 mt-8">
+        <div className="flex flex-col gap-4 shrink-0 mt-8 px-3">
           <div className="relative group">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all cursor-pointer border ${isAppDarkMode ? "bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700 animate-pulse" : "bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200"}`}>
               {activeRole.substring(0, 2)}
             </div>
-            <div className="absolute left-16 bottom-0 scale-0 group-hover:scale-100 bg-slate-900 text-white text-[10px] p-2 rounded transition-all whitespace-nowrap z-50">
+            <div className="absolute left-16 bottom-0 scale-0 group-hover:scale-100 bg-slate-900 text-white text-[12px] p-2 rounded transition-all whitespace-nowrap z-50">
               Active Simulation Account Key: {activeRole}
             </div>
           </div>
@@ -3470,15 +3484,15 @@ export default function App() {
       <main style={{ height: "100vh", overflowY: "auto" }} className={`col-span-1 flex flex-col p-6 relative z-10 transition-colors duration-300 ${isAppDarkMode ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"}`}>
         {/* TOP STATUS HEADER WITH ROLE SWITCH PROTOCOL */}
         <header className={`flex flex-col md:flex-row items-start md:items-center justify-between mb-6 pb-4 border-b shrink-0 gap-4 transition-colors duration-300 ${isAppDarkMode ? "border-slate-850" : "border-slate-100"}`}>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-[10px] tracking-wider uppercase font-semibold text-slate-400">Hub Service Control</span>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-mono text-[12px] tracking-wider uppercase font-semibold text-slate-400 whitespace-nowrap">Hub Service Control</span>
               <button
                 type="button"
                 onClick={() => loadData()}
                 disabled={loading}
                 title={dataDegraded ? "Some clinical data failed to load — click to retry" : "Clinical grid connected — click to re-sync"}
-                className={`rounded-full text-[10px] px-2 py-0.5 font-bold flex items-center gap-1 cursor-pointer transition-colors disabled:cursor-wait ${
+                className={`rounded-full text-[12px] px-2 py-0.5 font-bold flex items-center gap-1 cursor-pointer transition-colors disabled:cursor-wait ${
                   dataDegraded
                     ? "bg-amber-50 text-amber-700 hover:bg-amber-100"
                     : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
@@ -3488,8 +3502,10 @@ export default function App() {
                 {dataDegraded ? "Reconnect clinical grid" : getTranslation(appLanguage, "regionalNetwork")}
               </button>
             </div>
-            <h1 className={`text-2xl font-black tracking-tight flex items-center gap-2 transition-all ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
-              {getTranslation(appLanguage, "brandName")} <span className="text-sm font-medium text-slate-400">{getTranslation(appLanguage, "metropolitanGrid")}</span>
+            <h1 className={`text-2xl font-black tracking-tight truncate transition-all ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
+              {activeRole === "PATIENT"
+                ? `Hello, ${(authName || "there").split(" ")[0]}`
+                : getTranslation(appLanguage, "metropolitanGrid")}
             </h1>
           </div>
 
@@ -3508,7 +3524,7 @@ export default function App() {
 
             {/* DYNAMIC INTEGRATED SIMULATION SWITCHER */}
             <div className={`rounded-xl p-1 flex items-center gap-1 w-full md:w-auto overflow-x-auto text-xs font-semibold transition-all ${isAppDarkMode ? "bg-slate-900" : "bg-slate-100"}`}>
-              <span className={`text-[10px] pl-2 pr-1 uppercase text-left shrink-0 ${isAppDarkMode ? "text-slate-450" : "text-slate-500"}`}>Role:</span>
+              <span className={`text-[12px] pl-2 pr-1 uppercase text-left shrink-0 ${isAppDarkMode ? "text-slate-450" : "text-slate-500"}`}>Role:</span>
               {[
                 { id: "PATIENT", label: getTranslation(appLanguage, "rolePatient") },
                 { id: "DOCTOR", label: getTranslation(appLanguage, "roleDoctor") },
@@ -3546,7 +3562,7 @@ export default function App() {
             {activeRole === "PATIENT" && (
               <div className="flex items-center gap-1.5 shrink-0">
                 <div className="bg-blue-50 border border-blue-100 rounded-xl px-2 py-1.5 flex items-center gap-1 text-xs shrink-0">
-                  <span className="text-[10px] text-blue-600 font-extrabold uppercase shrink-0 pl-1">Profile:</span>
+                  <span className="text-[12px] text-blue-600 font-extrabold uppercase shrink-0 pl-1">Profile:</span>
                   <select
                     value={activeFamilyMember}
                     onChange={(e) => {
@@ -3578,7 +3594,7 @@ export default function App() {
                 )}
                 <button
                   onClick={() => setIsAddPatientOpen(true)}
-                  className="bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-[11px] px-2.5 py-2 rounded-xl transition-all shadow-xs hover:shadow-sm cursor-pointer flex items-center gap-1"
+                  className="bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-[12.5px] px-2.5 py-2 rounded-xl transition-all shadow-xs hover:shadow-sm cursor-pointer flex items-center gap-1"
                   title="Add New Family Profile / Patient"
                 >
                   <Plus className="h-3.5 w-3.5" />
@@ -3663,7 +3679,7 @@ export default function App() {
                         <h2 className="text-2xl font-extrabold mb-1 tracking-tight">Hello, {activeFamilyMember === "Self" ? authName : activeFamilyMember}</h2>
                         <p className="opacity-90 text-xs">Your last clinical review was 14 days ago. Overall health is optimal.</p>
                       </div>
-                      <div className="bg-white/20 p-2 rounded-xl text-[10px] font-bold tracking-wider uppercase">
+                      <div className="bg-white/20 p-2 rounded-xl text-[12px] font-bold tracking-wider uppercase">
                         AI Powered
                       </div>
                     </div>
@@ -3704,14 +3720,14 @@ export default function App() {
                       <Ambulance className="w-8 h-8 text-white text-center" />
                     </div>
                     <span className="font-extrabold text-lg tracking-tight uppercase">EMERGENCY SOS</span>
-                    <span className="text-[10px] opacity-80 uppercase tracking-widest font-semibold mt-1">One-Tap Response Dispatched</span>
+                    <span className="text-[12px] opacity-80 uppercase tracking-widest font-semibold mt-1">One-Tap Response Dispatched</span>
                   </div>
 
                   {/* Card Block 3: QUEUE WAIT TOKEN (Span 1x1, White Glass) */}
                   <div className="col-span-1 sm:col-span-1 lg:col-span-1 row-span-1 bg-white border border-slate-200 rounded-3xl p-6 flex flex-col justify-between shadow-sm">
                     <div>
                       <div className="flex justify-between items-center">
-                        <h3 className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Live OPD Progression</h3>
+                        <h3 className="text-[12px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Live OPD Progression</h3>
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                       </div>
                       <p className="text-3xl font-black text-slate-900 tracking-tight">
@@ -3723,14 +3739,14 @@ export default function App() {
                       <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                         <div className={`h-full bg-blue-500 ${myQueueToken ? 'w-2/3' : 'w-0'}`}></div>
                       </div>
-                      <p className="text-[10px] font-bold text-slate-500">
+                      <p className="text-[12px] font-bold text-slate-500">
                         {myQueueToken ? `Approx. ${myQueueToken.estimatedWaitTimeMin} mins wait index` : "No active clinics waiting token queue"}
                       </p>
                     </div>
 
                     <button
                       onClick={() => setActiveTab("consultation")}
-                      className="w-full text-center text-blue-600 font-bold text-[10px] py-1 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all"
+                      className="w-full text-center text-blue-600 font-bold text-[12px] py-1 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all"
                     >
                       {myQueueToken ? "Review wait line" : "Get Virtual OPD token"}
                     </button>
@@ -3746,10 +3762,10 @@ export default function App() {
                       <div className="space-y-3 flex-1 overflow-y-auto max-h-[220px] lg:max-h-[300px]">
                         {hospitals.slice(0, 3).map((h) => (
                           <div key={h.id} className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                            <p className="text-[10px] font-extrabold text-slate-700 truncate">{h.name}</p>
+                            <p className="text-[12px] font-extrabold text-slate-700 truncate">{h.name}</p>
                             <div className="flex items-center justify-between mt-1">
-                              <span className="text-[9px] text-slate-500">ICU: {h.icuAvailable} vacant</span>
-                              <span className={`text-[10px] font-black ${h.availableBeds > 10 ? 'text-green-600' : 'text-amber-600'}`}>
+                              <span className="text-[12px] text-slate-500">ICU: {h.icuAvailable} vacant</span>
+                              <span className={`text-[12px] font-black ${h.availableBeds > 10 ? 'text-green-600' : 'text-amber-600'}`}>
                                 {h.availableBeds} beds left
                               </span>
                             </div>
@@ -3800,7 +3816,7 @@ export default function App() {
 
                       {/* City Selector Dropdown */}
                       <div className="space-y-1">
-                        <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest pl-1">Selected NCR City</label>
+                        <label className="text-[12px] font-black text-slate-400 uppercase tracking-widest pl-1">Selected NCR City</label>
                         <select
                           value={dashboardSelectedCity}
                           onChange={(e) => setDashboardSelectedCity(e.target.value)}
@@ -3825,7 +3841,7 @@ export default function App() {
                             {/* Score Display */}
                             <div className="p-3 bg-white rounded-2xl border border-slate-150 flex items-center justify-between shadow-xs">
                               <div>
-                                <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Health Rating</p>
+                                <p className="text-[12px] font-extrabold text-slate-500 uppercase tracking-wider">Health Rating</p>
                                 <p className="text-xs font-black text-slate-800 leading-none mt-1">Operating Index</p>
                               </div>
                               <div className="text-center font-sans bg-transparent">
@@ -3837,8 +3853,8 @@ export default function App() {
                             {/* AQI Display */}
                             <div className="p-3 bg-red-50/20 border border-red-100 rounded-2xl flex items-center justify-between">
                               <div>
-                                <p className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">Atmosphere AQI</p>
-                                <p className={`text-[10px] font-black uppercase ${cityData.aqi > 250 ? "text-rose-600" : cityData.aqi > 150 ? "text-amber-600" : "text-emerald-600"}`}>
+                                <p className="text-[12px] font-extrabold text-slate-500 uppercase tracking-wider">Atmosphere AQI</p>
+                                <p className={`text-[12px] font-black uppercase ${cityData.aqi > 250 ? "text-rose-600" : cityData.aqi > 150 ? "text-amber-600" : "text-emerald-600"}`}>
                                   {cityData.aqi > 250 ? "Severe Danger" : cityData.aqi > 150 ? "Poor / Warning" : "Clear Area"}
                                 </p>
                               </div>
@@ -3848,7 +3864,7 @@ export default function App() {
                             {/* General quick alerts */}
                             <div className="p-2.5 bg-slate-100 rounded-xl border border-slate-200/60 flex items-center gap-2">
                               <Activity className="h-4 w-4 text-slate-500 shrink-0 animate-pulse" />
-                              <div className="text-[9px] text-slate-600 leading-normal font-semibold">
+                              <div className="text-[12px] text-slate-600 leading-normal font-semibold">
                                 <span className="font-extrabold text-slate-800">Alerts: </span>
                                 {cityData.outbreakZones[0]?.name || "None documented today"}
                               </div>
@@ -3881,7 +3897,7 @@ export default function App() {
                               setActiveTab("super-app");
                               setSuperActiveSubTab("recommender");
                             }}
-                            className="text-[10px] text-indigo-650 hover:text-indigo-500 font-black cursor-pointer hover:underline flex items-center gap-0.5 bg-indigo-50 px-2.5 py-1 rounded-xl transition-all"
+                            className="text-[12px] text-indigo-650 hover:text-indigo-500 font-black cursor-pointer hover:underline flex items-center gap-0.5 bg-indigo-50 px-2.5 py-1 rounded-xl transition-all"
                           >
                             <Sparkles className="h-3 w-3 animate-pulse" />
                             <span>AI Matcher</span>
@@ -3889,7 +3905,7 @@ export default function App() {
                           <span className="text-slate-300 text-xs">|</span>
                           <span
                             onClick={() => setActiveTab("consultation")}
-                            className="text-[10px] text-blue-600 font-bold cursor-pointer hover:underline"
+                            className="text-[12px] text-blue-600 font-bold cursor-pointer hover:underline"
                           >
                             Book Standard
                           </span>
@@ -3909,12 +3925,12 @@ export default function App() {
                               </div>
                               <div className="flex-1 min-w-0">
                                 <p className="font-extrabold text-sm text-slate-800 truncate">{appt.doctorName}</p>
-                                <p className="text-[10px] text-slate-500 truncate">
+                                <p className="text-[12px] text-slate-500 truncate">
                                   {appt.specialty} • {appt.date}, {appt.time}
                                 </p>
                               </div>
                               <div className="flex items-center gap-2">
-                                <span className={`px-2 py-1 text-[9px] font-bold rounded-full ${
+                                <span className={`px-2 py-1 text-[12px] font-bold rounded-full ${
                                   appt.status === "ACCEPTED" ? "bg-emerald-100 text-emerald-800" :
                                   appt.status === "COMPLETED" ? "bg-slate-200 text-slate-700" :
                                   "bg-amber-100 text-amber-800"
@@ -3927,7 +3943,7 @@ export default function App() {
                                       setConsultingAppt(appt);
                                       setActiveTab("consultation");
                                     }}
-                                    className="px-2.5 py-1 bg-blue-500 hover:bg-blue-600 text-white text-[10px] font-bold rounded-lg"
+                                    className="px-2.5 py-1 bg-blue-500 hover:bg-blue-600 text-white text-[12px] font-bold rounded-lg"
                                   >
                                     Join chat
                                   </button>
@@ -3941,7 +3957,7 @@ export default function App() {
 
                     <div className="mt-4 p-3 bg-blue-50/50 rounded-2xl border border-blue-100/50 flex items-center gap-3">
                       <Info className="h-5 w-5 text-blue-600 shrink-0" />
-                      <p className="text-[11px] text-slate-600 leading-normal">
+                      <p className="text-[12.5px] text-slate-600 leading-normal">
                         To request medications or look up digital records, verify Doctor updates or select <strong>Doctor simulate role</strong> at the top header list!
                       </p>
                     </div>
@@ -3967,7 +3983,7 @@ export default function App() {
                             <span className="text-[7px] text-slate-400 font-bold tracking-widest uppercase mt-0.5 leading-none">Safe Index</span>
                           </div>
                         </div>
-                        <p className="text-left text-[11px] opacity-85 leading-relaxed">
+                        <p className="text-left text-[12.5px] opacity-85 leading-relaxed">
                           Recover rate has advanced 4% over the past fortnight. Keep consistent cardiovascular metrics.
                         </p>
                       </div>
@@ -3975,12 +3991,12 @@ export default function App() {
 
                     <div className="sm:w-52 flex flex-col justify-between gap-3 bg-white/10 rounded-2xl p-4 border border-white/5 shrink-0">
                       <div>
-                        <p className="text-[9px] uppercase font-bold text-cyan-300 tracking-wider mb-1">AI Prediction</p>
+                        <p className="text-[12px] uppercase font-bold text-cyan-300 tracking-wider mb-1">AI Prediction</p>
                         <p className="text-xs opacity-90 leading-tight">
                           Minimal regional influenza exposure based on localized sewage analytics.
                         </p>
                       </div>
-                      <div className="text-[10px] text-cyan-200/50 font-mono">
+                      <div className="text-[12px] text-cyan-200/50 font-mono">
                         Model: Gemini 3.5 Med-Spec
                       </div>
                     </div>
@@ -4015,7 +4031,7 @@ export default function App() {
                     <h2 className="text-xl font-black text-slate-900">Virtual Triage Symptom Checker</h2>
                     <p className="text-xs text-slate-500">Provide physical details below. Powered server-side with Gemini 3.5 medical analytics schema.</p>
                   </div>
-                  <div className="bg-emerald-50 text-emerald-700 px-3 py-1 text-[11px] font-bold rounded-lg flex items-center gap-1">
+                  <div className="bg-emerald-50 text-emerald-700 px-3 py-1 text-[12.5px] font-bold rounded-lg flex items-center gap-1">
                     <Sparkles className="h-3.5 w-3.5" /> HIPAA Compliant Diagnostics
                   </div>
                 </div>
@@ -4031,7 +4047,7 @@ export default function App() {
                           <button
                             type="button"
                             onClick={toggleListening}
-                            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider transition-all shadow-xs shrink-0 cursor-pointer ${
+                            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-black uppercase tracking-wider transition-all shadow-xs shrink-0 cursor-pointer ${
                               isListening 
                                 ? "bg-red-500 text-white animate-pulse" 
                                 : "bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-950 dark:text-cyan-400"
@@ -4070,7 +4086,7 @@ export default function App() {
                         />
                         
                         {isListening && (
-                          <div className="absolute right-3 bottom-3 flex items-center gap-1 py-1 px-2 rounded-lg bg-black/5 dark:bg-white/5 font-mono text-[9px] text-slate-500 dark:text-slate-400 select-none">
+                          <div className="absolute right-3 bottom-3 flex items-center gap-1 py-1 px-2 rounded-lg bg-black/5 dark:bg-white/5 font-mono text-[12px] text-slate-500 dark:text-slate-400 select-none">
                             <span className="w-1 h-3 bg-red-500 animate-[bounce_0.8s_infinite_100ms] rounded-full"></span>
                             <span className="w-1 h-4 bg-red-500 animate-[bounce_0.8s_infinite_200ms] rounded-full"></span>
                             <span className="w-1 h-2 bg-red-500 animate-[bounce_0.8s_infinite_300ms] rounded-full"></span>
@@ -4080,12 +4096,12 @@ export default function App() {
                       </div>
                       
                       {/* Voice action helpers strip */}
-                      <div className="bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-3 rounded-2xl text-[11px] flex flex-wrap justify-between items-center gap-2">
+                      <div className="bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-3 rounded-2xl text-[12.5px] flex flex-wrap justify-between items-center gap-2">
                         <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
                           <Mic className="h-3.5 w-3.5 text-purple-500 shrink-0" />
                           <span>Voice Commands: say <strong>"clear"</strong> to reset, say <strong>"submit"</strong> or <strong>"diagnose"</strong> to analyze.</span>
                         </div>
-                        <div className="text-[10px] bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 font-mono font-bold px-2 py-0.5 rounded-md">
+                        <div className="text-[12px] bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 font-mono font-bold px-2 py-0.5 rounded-md">
                           Lang: {appLanguage === "hi" ? "Hindi (hi-IN)" : "English (en-US)"}
                         </div>
                       </div>
@@ -4104,7 +4120,7 @@ export default function App() {
                     </div>
 
                     <div className="flex items-center justify-between border-t border-slate-100 pt-4">
-                      <p className="text-[11px] text-slate-400 max-w-sm">
+                      <p className="text-[12.5px] text-slate-400 max-w-sm">
                         *AI assessment is strictly for triage guidance. In life-threatening scenarios, trigger individual SOS immediately.
                       </p>
                       <AnimatedConfirmButton 
@@ -4127,27 +4143,27 @@ export default function App() {
                           <span className="w-2.5 h-2.5 rounded-full bg-rose-600 shrink-0"></span>
                           <div>
                             <p className="text-xs font-bold leading-none">CRITICAL / HIGH</p>
-                            <p className="text-[9px] opacity-70 mt-1">Severe dyspnea, heart block, traumatic bleeding</p>
+                            <p className="text-[12px] opacity-70 mt-1">Severe dyspnea, heart block, traumatic bleeding</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
                           <div>
                             <p className="text-xs font-bold leading-none">MEDIUM</p>
-                            <p className="text-[9px] opacity-70 mt-1">Severe gastrointestinal discomfort, migraine pain</p>
+                            <p className="text-[12px] opacity-70 mt-1">Severe gastrointestinal discomfort, migraine pain</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
                           <div>
                             <p className="text-xs font-bold leading-none">LOW</p>
-                            <p className="text-[9px] opacity-70 mt-1">Mild upper body aches, colds, fatigue index</p>
+                            <p className="text-[12px] opacity-70 mt-1">Mild upper body aches, colds, fatigue index</p>
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="border-t border-white/10 pt-4 mt-4 text-[10px] opacity-75 leading-relaxed">
+                    <div className="border-t border-white/10 pt-4 mt-4 text-[12px] opacity-75 leading-relaxed">
                       All clinical evaluations run on custom system prompts to safely isolate urgent cardio-respiratory indicators, recommending responsive specialists and automatic transport dispatch triggers when necessary.
                     </div>
                   </div>
@@ -4162,7 +4178,7 @@ export default function App() {
                   >
                     <div className="flex flex-wrap items-center justify-between border-b border-slate-100 pb-4 gap-4">
                       <div>
-                        <span className="font-mono text-[9px] tracking-wider uppercase font-semibold text-slate-400">Clinical Evaluation Result</span>
+                        <span className="font-mono text-[12px] tracking-wider uppercase font-semibold text-slate-400">Clinical Evaluation Result</span>
                         <h3 className="text-xl font-extrabold text-slate-900 mt-1">
                           Suspected: {aiReport.suspectedCondition}
                         </h3>
@@ -4171,7 +4187,7 @@ export default function App() {
                         <button
                           type="button"
                           onClick={handleRetakeDiagnostic}
-                          className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-[11px] rounded-xl shadow-xs transition-all active:scale-95 cursor-pointer border border-slate-200"
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-[12.5px] rounded-xl shadow-xs transition-all active:scale-95 cursor-pointer border border-slate-200"
                         >
                           <RotateCcw className="h-3.5 w-3.5" /> Retake Diagnostic
                         </button>
@@ -4192,14 +4208,14 @@ export default function App() {
                     <div className="grid gap-6 md:grid-cols-3">
                       <div className="md:col-span-2 space-y-4">
                         <div className="space-y-1.5">
-                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Medical Analysis Reason</label>
+                          <label className="text-[12px] font-black text-slate-400 uppercase tracking-widest">Medical Analysis Reason</label>
                           <p className="text-xs text-slate-600 leading-relaxed font-medium">
                             {aiReport.explanation}
                           </p>
                         </div>
 
                         <div className="space-y-3 pt-2">
-                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Immediate Safety Recommendations</label>
+                          <label className="text-[12px] font-black text-slate-400 uppercase tracking-widest">Immediate Safety Recommendations</label>
                           <ul className="grid gap-2 sm:grid-cols-2 text-xs font-medium text-slate-700">
                             {aiReport.recommendations.map((item, idx) => (
                               <li key={idx} className="flex items-start gap-2 p-2 bg-slate-50 border border-slate-100 rounded-xl">
@@ -4214,30 +4230,30 @@ export default function App() {
                       <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-4 flex flex-col justify-between">
                         <div className="space-y-3">
                           <div>
-                            <span className="text-[9px] font-black uppercase text-slate-400 block pb-1">recommended consultant</span>
+                            <span className="text-[12px] font-black uppercase text-slate-400 block pb-1">recommended consultant</span>
                             <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-extrabold rounded-lg">
                               {aiReport.specialistType}
                             </span>
                           </div>
-                          <p className="text-[11px] text-slate-500 leading-normal">
+                          <p className="text-[12.5px] text-slate-500 leading-normal">
                             We have filtered active doctors. Connect to consult immediately to generate medical prescriptions securely.
                           </p>
                         </div>
 
                         <div className="space-y-2">
                           {aiReport.flagUrgentSOS ? (
-                            <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl text-rose-800 text-[11px] font-bold space-y-2">
+                            <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl text-rose-800 text-[12.5px] font-bold space-y-2">
                               <div className="flex items-center gap-1.5 text-rose-600">
                                 <AlertTriangle className="h-4 w-4" /> HIGH ACUTE RISK THREAT
                               </div>
-                              <p className="text-[10px] leading-snug">Emergency indicators require clinical response.</p>
+                              <p className="text-[12px] leading-snug">Emergency indicators require clinical response.</p>
                               <button
                                 onClick={() => {
                                   handleSOSSubmit();
                                   setActiveTab("sos");
                                 }}
                                 disabled={sosSubmitting}
-                                className="w-full text-center py-2 bg-rose-600 disabled:bg-rose-300 disabled:cursor-wait text-white rounded-lg text-[10px] font-black uppercase"
+                                className="w-full text-center py-2 bg-rose-600 disabled:bg-rose-300 disabled:cursor-wait text-white rounded-lg text-[12px] font-black uppercase"
                               >
                                 {sosSubmitting ? "Dispatching…" : "Dispatch SOS Ambulance NOW"}
                               </button>
@@ -4270,41 +4286,41 @@ export default function App() {
                             <Sparkles className="h-4 w-4 text-emerald-500" />
                             <span className="text-xs font-black text-slate-900 uppercase tracking-wider">AI Clinical Partner Suggestions</span>
                           </div>
-                          <span className="text-[10px] text-slate-400 font-semibold bg-slate-100 px-2 py-0.5 rounded-full">Delhi NCR Partner Network Matcher</span>
+                          <span className="text-[12px] text-slate-400 font-semibold bg-slate-100 px-2 py-0.5 rounded-full">Delhi NCR Partner Network Matcher</span>
                         </div>
                         
                         <div className="grid gap-4 sm:grid-cols-3">
                           {aiReport.recommendedHospitals.map((hosp: any) => (
                             <div key={hosp.id} className="relative bg-slate-50 border border-slate-200/60 hover:border-indigo-200 hover:bg-slate-50/50 rounded-2xl p-4 flex flex-col justify-between transition-all shadow-xs">
                               {/* Match Score Badge */}
-                              <div className="absolute top-3 right-3 text-[9px] font-black px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 flex items-center gap-0.5">
+                              <div className="absolute top-3 right-3 text-[12px] font-black px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 flex items-center gap-0.5">
                                 Match: {hosp.recommendationScore}%
                               </div>
                               
                               <div className="space-y-2">
                                 <h4 className="text-xs font-extrabold text-slate-950 pr-16 truncate" title={hosp.name}>{hosp.name}</h4>
-                                <p className="text-[10px] text-slate-400 line-clamp-1 font-medium">{hosp.address}</p>
+                                <p className="text-[12px] text-slate-400 line-clamp-1 font-medium">{hosp.address}</p>
                                 
                                 {/* Quick metrics */}
-                                <div className="grid grid-cols-2 gap-1.5 pt-1 text-[9px] font-bold text-slate-600">
+                                <div className="grid grid-cols-2 gap-1.5 pt-1 text-[12px] font-bold text-slate-600">
                                   <div className="bg-white border border-slate-100 rounded-xl p-2 flex flex-col shadow-2xs">
-                                    <span className="text-[8px] text-slate-400 font-extrabold uppercase">ICU VACANCY</span>
+                                    <span className="text-[12px] text-slate-400 font-extrabold uppercase">ICU VACANCY</span>
                                     <span className="text-indigo-600 font-extrabold">{hosp.icuAvailable} Vacable</span>
                                   </div>
                                   <div className="bg-white border border-slate-100 rounded-xl p-2 flex flex-col shadow-2xs">
-                                    <span className="text-[8px] text-slate-400 font-extrabold uppercase">GENERAL BEDS</span>
+                                    <span className="text-[12px] text-slate-400 font-extrabold uppercase">GENERAL BEDS</span>
                                     <span className="text-emerald-600 font-extrabold">{hosp.availableBeds} Vacable</span>
                                   </div>
                                 </div>
                                 
-                                <p className="text-[10px] font-bold text-indigo-700 bg-indigo-50/85 p-2 rounded-xl">
+                                <p className="text-[12px] font-bold text-indigo-700 bg-indigo-50/85 p-2 rounded-xl">
                                   ⚡ {hosp.matchReason}
                                 </p>
                               </div>
                               
-                              <div className="flex items-center justify-between border-t border-slate-200/50 pt-3 mt-3 text-[10px] font-bold text-slate-500">
+                              <div className="flex items-center justify-between border-t border-slate-200/50 pt-3 mt-3 text-[12px] font-bold text-slate-500">
                                 <div className="flex flex-col">
-                                  <span className="text-[8px] text-slate-400 font-extrabold uppercase">ETA BY ROAD</span>
+                                  <span className="text-[12px] text-slate-400 font-extrabold uppercase">ETA BY ROAD</span>
                                   <span className="text-slate-800 font-black">{hosp.travelTimeMin} mins ({hosp.distanceKM} km)</span>
                                 </div>
                                 <button
@@ -4313,7 +4329,7 @@ export default function App() {
                                     setActiveTab("beds");
                                     setMapSelectedHospital(hosp);
                                   }}
-                                  className="px-3 py-1.5 bg-slate-900 hover:bg-indigo-600 text-white font-extrabold text-[9px] uppercase rounded-xl transition-all active:scale-95 cursor-pointer"
+                                  className="px-3 py-1.5 bg-slate-900 hover:bg-indigo-600 text-white font-extrabold text-[12px] uppercase rounded-xl transition-all active:scale-95 cursor-pointer"
                                 >
                                   Trace Bed Census
                                 </button>
@@ -4370,10 +4386,10 @@ export default function App() {
                                     <h4 className="text-sm font-extrabold text-slate-900 leading-snug truncate-2-lines h-10">{h.name}</h4>
                                     <span className={`shrink-0 h-2 w-2 rounded-full mt-1.5 ${isSevere ? 'bg-red-500 animate-pulse' : 'bg-green-500'}`}></span>
                                   </div>
-                                  <p className="text-[11px] text-slate-500 flex items-center gap-1">
+                                  <p className="text-[12.5px] text-slate-500 flex items-center gap-1">
                                     <MapPin className="h-3 w-3 shrink-0" /> {h.address}
                                   </p>
-                                  <div className="text-[10px] text-teal-700 bg-teal-50 border border-teal-100/60 px-2 py-1 rounded-xl w-fit font-black flex items-center gap-1 mt-2 shadow-2xs">
+                                  <div className="text-[12px] text-teal-700 bg-teal-50 border border-teal-100/60 px-2 py-1 rounded-xl w-fit font-black flex items-center gap-1 mt-2 shadow-2xs">
                                     <Compass className="h-3.5 w-3.5 shrink-0" />
                                     {getDistanceToUser(h).toFixed(1)} km away
                                   </div>
@@ -4381,21 +4397,21 @@ export default function App() {
 
                                 <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
                                   <div className="p-2.5 bg-slate-50 rounded-xl text-center border border-slate-100 justify-between">
-                                    <span className="text-[9px] text-slate-500 font-bold block">Available Beds</span>
+                                    <span className="text-[12px] text-slate-500 font-bold block">Available Beds</span>
                                     <span className={`text-lg font-black block ${isSevere ? "text-red-600" : "text-emerald-600"}`}>
-                                      {h.availableBeds} <span className="text-[9px] font-medium text-slate-400">/ {h.totalBeds}</span>
+                                      {h.availableBeds} <span className="text-[12px] font-medium text-slate-400">/ {h.totalBeds}</span>
                                     </span>
                                   </div>
                                   <div className="p-2.5 bg-slate-50 rounded-xl text-center border border-slate-100">
-                                    <span className="text-[9px] text-slate-500 font-bold block">ICU Reserve</span>
+                                    <span className="text-[12px] text-slate-500 font-bold block">ICU Reserve</span>
                                     <span className={`text-lg font-black block ${h.icuAvailable === 0 ? "text-red-500" : "text-cyan-600"}`}>
-                                      {h.icuAvailable} <span className="text-[9px] font-medium text-slate-400">/ {h.icuBeds}</span>
+                                      {h.icuAvailable} <span className="text-[12px] font-medium text-slate-400">/ {h.icuBeds}</span>
                                     </span>
                                   </div>
                                 </div>
 
                                 <div className="space-y-1 pt-2">
-                                  <div className="flex justify-between text-[10px] text-slate-500 uppercase font-semibold">
+                                  <div className="flex justify-between text-[12px] text-slate-500 uppercase font-semibold">
                                     <span>Emergency Occupancy</span>
                                     <span>{h.emergencyOccupancy}%</span>
                                   </div>
@@ -4404,7 +4420,7 @@ export default function App() {
                                   </div>
                                 </div>
 
-                                <div className="flex items-center justify-between gap-1 mt-2.5 pt-2 border-t border-slate-100 text-[10px] font-bold">
+                                <div className="flex items-center justify-between gap-1 mt-2.5 pt-2 border-t border-slate-100 text-[12px] font-bold">
                                   <a href={`tel:${h.phone}`} className="text-slate-500 hover:text-slate-900 flex items-center gap-1 shrink-0">
                                     <Phone className="h-3 w-3" /> Call Desk
                                   </a>
@@ -4430,7 +4446,7 @@ export default function App() {
                                   href={getGoogleMapsDirUrl(h.name, h.address)}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="w-full mt-2.5 bg-blue-50/50 hover:bg-blue-50 text-blue-700 hover:text-blue-800 font-extrabold text-[11px] text-center py-2.5 rounded-xl flex items-center justify-center gap-1.5 border border-blue-100 transition-all cursor-pointer shadow-xs"
+                                  className="w-full mt-2.5 bg-blue-50/50 hover:bg-blue-50 text-blue-700 hover:text-blue-800 font-extrabold text-[12.5px] text-center py-2.5 rounded-xl flex items-center justify-center gap-1.5 border border-blue-100 transition-all cursor-pointer shadow-xs"
                                 >
                                   <ExternalLink className="h-3.5 w-3.5" />
                                   Open Google Maps Live Route
@@ -4445,7 +4461,7 @@ export default function App() {
                   {/* Dynamic Map Visualizer side panel */}
                   <div className="space-y-6">
                     <div className="bg-white border border-blue-100 text-slate-800 rounded-[32px] p-6 shadow-sm space-y-4 relative overflow-hidden">
-                      <div className="absolute top-1.5 right-1.5 font-mono text-[8px] text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded uppercase font-bold">Google Maps API Linked</div>
+                      <div className="absolute top-1.5 right-1.5 font-mono text-[12px] text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded uppercase font-bold">Google Maps API Linked</div>
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-3">
                         <h4 className="text-sm font-black uppercase text-blue-900 tracking-wider flex items-center gap-1.5 font-sans">
                           <MapPin className="h-4 w-4 text-blue-500 animate-pulse" /> Delhi NCR Live Trauma Map
@@ -4455,7 +4471,7 @@ export default function App() {
                           onClick={getUserRealTimeLocation}
                           disabled={isLocatingUser}
                           id="btn-detect-gps"
-                          className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer select-none ${
+                          className={`px-3 py-1.5 rounded-xl text-[12px] font-black uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer select-none ${
                             isLocatingUser 
                               ? "bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed" 
                               : userLocationCoords 
@@ -4477,7 +4493,7 @@ export default function App() {
                             <button
                               type="button"
                               onClick={() => setIsMapCenteredOnUser(false)}
-                              className="bg-white/95 backdrop-blur border border-slate-250 hover:bg-slate-50 text-blue-600 hover:text-blue-800 font-extrabold text-[10px] uppercase tracking-wider px-3.5 py-2.5 rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5 cursor-pointer"
+                              className="bg-white/95 backdrop-blur border border-slate-250 hover:bg-slate-50 text-blue-600 hover:text-blue-800 font-extrabold text-[12px] uppercase tracking-wider px-3.5 py-2.5 rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5 cursor-pointer"
                             >
                               <RotateCcw className="h-3.5 w-3.5 animate-spin-slow" />
                               Reset Normal View
@@ -4487,7 +4503,7 @@ export default function App() {
 
                         {/* Floating Radius HUD / Distance Filter Slider */}
                         <div className="absolute top-3 right-3 z-45 bg-white/95 backdrop-blur border border-blue-100/80 p-3 rounded-2xl shadow-md w-44 space-y-2 select-none">
-                          <div className="flex justify-between items-center text-[10px] font-black tracking-wider text-slate-600 uppercase">
+                          <div className="flex justify-between items-center text-[12px] font-black tracking-wider text-slate-600 uppercase">
                             <span className="flex items-center gap-1">
                               <Compass className="h-3 w-3 text-blue-500 rotate-45" /> Radius
                             </span>
@@ -4509,7 +4525,7 @@ export default function App() {
                             }}
                           />
                           
-                          <div className="flex justify-between text-[8px] font-black text-slate-500">
+                          <div className="flex justify-between text-[12px] font-black text-slate-500">
                             <span>3 km</span>
                             <span>15 km</span>
                             <span>Unlimited</span>
@@ -4556,7 +4572,7 @@ export default function App() {
                           )}
 
                           {/* Visual Location Nodes */}
-                          <div className="absolute inset-0 text-[10px]">
+                          <div className="absolute inset-0 text-[12px]">
                             {/* User Location Node (Real-time GPS device position marker) */}
                             <div 
                               style={{ left: "150px", top: "90px" }} 
@@ -4566,7 +4582,7 @@ export default function App() {
                                 <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${userLocationCoords ? "bg-emerald-500" : "bg-cyan-500"} opacity-75`}></span>
                                 <span className={`relative inline-flex rounded-full h-3.5 w-3.5 ${userLocationCoords ? "bg-emerald-600" : "bg-cyan-600"} border border-white`}></span>
                               </span>
-                              <div className={`bg-slate-900 border ${userLocationCoords ? "border-emerald-500/30 text-emerald-300" : "border-slate-800 text-slate-300"} p-1.5 rounded text-[8px] whitespace-nowrap absolute top-4 left-1/2 -translate-x-1/2 opacity-95 font-bold shadow-md`}>
+                              <div className={`bg-slate-900 border ${userLocationCoords ? "border-emerald-500/30 text-emerald-300" : "border-slate-800 text-slate-300"} p-1.5 rounded text-[12px] whitespace-nowrap absolute top-4 left-1/2 -translate-x-1/2 opacity-95 font-bold shadow-md`}>
                                 📍 {userLocationCoords ? `Live GPS: ${userLocationCoords.lat.toFixed(4)}°, ${userLocationCoords.lng.toFixed(4)}°` : "GPS Position Awaiting Grant..."}
                               </div>
                             </div>
@@ -4587,7 +4603,7 @@ export default function App() {
                                     <span className={`flex h-4 w-4 rounded-full border border-white transition-all duration-300 ${
                                       isSelected ? "bg-cyan-500 scale-125 shadow shadow-cyan-300" : h.availableBeds > 0 ? "bg-rose-500 hover:scale-110" : "bg-slate-600 hover:scale-110 opacity-60"
                                     }`} />
-                                    <div className="hidden group-hover:block bg-slate-900 border border-slate-700 p-1 rounded text-[8px] whitespace-nowrap absolute -top-8 left-1/2 -translate-x-1/2 text-white font-bold z-[100]">
+                                    <div className="hidden group-hover:block bg-slate-900 border border-slate-700 p-1 rounded text-[12px] whitespace-nowrap absolute -top-8 left-1/2 -translate-x-1/2 text-white font-bold z-[100]">
                                       {h.name.split(" ")[0]} ({h.availableBeds} beds)
                                     </div>
                                   </button>
@@ -4610,7 +4626,7 @@ export default function App() {
                         </div>
 
                         {/* Mini coordinates tagger overlay */}
-                        <div className="bg-[#f1f5f9] border-t border-slate-100 p-2.5 text-[9px] font-mono flex justify-between z-10 text-slate-700">
+                        <div className="bg-[#f1f5f9] border-t border-slate-100 p-2.5 text-[12px] font-mono flex justify-between z-10 text-slate-700">
                           <div>
                             <span className="text-slate-400">Target Node: </span>
                             <span className="text-blue-600 font-bold">{mapSelectedHospital ? mapSelectedHospital.name.split(" ")[0] : "None Selected"}</span>
@@ -4627,17 +4643,17 @@ export default function App() {
                         <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3 font-semibold text-xs leading-normal text-slate-700">
                           <div className="flex justify-between border-b border-slate-200 pb-2">
                             <div>
-                              <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Est. Distance</span>
+                              <span className="text-[12px] text-slate-400 uppercase tracking-wider block">Est. Distance</span>
                               <span className="text-base font-black text-slate-900">{mapDistance}</span>
                             </div>
                             <div className="text-right">
-                              <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Est. Transit Duration</span>
+                              <span className="text-[12px] text-slate-400 uppercase tracking-wider block">Est. Transit Duration</span>
                               <span className="text-base font-black text-blue-600">{mapDuration}</span>
                             </div>
                           </div>
 
-                          <div className="space-y-1 text-[10px]">
-                            <span className="text-slate-400 uppercase tracking-wider text-[9px] block font-semibold">Live Driving Escort (Delhi CP Gate)</span>
+                          <div className="space-y-1 text-[12px]">
+                            <span className="text-slate-400 uppercase tracking-wider text-[12px] block font-semibold">Live Driving Escort (Delhi CP Gate)</span>
                             <div className="max-h-[100px] overflow-y-auto space-y-1 font-mono text-slate-600">
                               {mapDirectionsSteps.map((stp, idx) => (
                                 <p key={idx} className="truncate">
@@ -4651,11 +4667,11 @@ export default function App() {
                           <div className="pt-2 space-y-2.5">
                             {isAmbulanceTracking ? (
                               <div className={`w-full p-3 rounded-xl border space-y-2 text-center transition-all ${isAppDarkMode ? "bg-blue-950/20 border-blue-900" : "bg-blue-50/50 border-blue-100"}`}>
-                                <span className="text-[10px] font-black uppercase text-blue-700 tracking-wider block animate-pulse">Ambulance GPS Tracker Active</span>
+                                <span className="text-[12px] font-black uppercase text-blue-700 tracking-wider block animate-pulse">Ambulance GPS Tracker Active</span>
                                 <div className="w-full bg-blue-100 h-2 rounded-full overflow-hidden">
                                   <div className="bg-gradient-to-r from-blue-400 to-green-500 h-full" style={{ width: `${ambulanceMarkerProgress}%` }}></div>
                                 </div>
-                                <span className="text-[9px] text-slate-400 block">{ambulanceMarkerProgress}% progress along GPS pathway</span>
+                                <span className="text-[12px] text-slate-400 block">{ambulanceMarkerProgress}% progress along GPS pathway</span>
                               </div>
                             ) : (
                               <button
@@ -4769,13 +4785,13 @@ export default function App() {
                           </div>
                           <div>
                             <h3 className="font-extrabold text-sm text-slate-900">{consultingAppt.doctorName}</h3>
-                            <p className="text-[10px] text-slate-400">Registered on clinical specialization grid • Live Chat session active</p>
+                            <p className="text-[12px] text-slate-400">Registered on clinical specialization grid • Live Chat session active</p>
                           </div>
                         </div>
 
                         <button
                           onClick={() => setConsultingAppt(null)}
-                          className="px-3.5 py-1.5 text-[10px] font-bold border border-slate-200 rounded-lg hover:bg-slate-50"
+                          className="px-3.5 py-1.5 text-[12px] font-bold border border-slate-200 rounded-lg hover:bg-slate-50"
                         >
                           Leave Counsel
                         </button>
@@ -4783,7 +4799,7 @@ export default function App() {
 
                       {/* Chat screen feed */}
                       <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-3 p-3 bg-slate-50 rounded-2xl mb-4 border border-slate-100 shadow-inner">
-                        <div className="p-3 bg-blue-50 text-blue-800 text-[11px] rounded-xl font-medium max-w-md">
+                        <div className="p-3 bg-blue-50 text-blue-800 text-[12.5px] rounded-xl font-medium max-w-md">
                           <strong>City Healer Assistant:</strong> Consultation Room initialized. Send a detailing prompt below. Doctor answers instantly representing specialized evaluation.
                         </div>
 
@@ -4795,7 +4811,7 @@ export default function App() {
                                 isMe ? 'bg-blue-600 text-white rounded-tr-none' : 'bg-white text-slate-800 rounded-tl-none border border-slate-100'
                               }`}>
                                 <p>{msg.text}</p>
-                                <span className={`block text-[8px] text-right mt-1 ${isMe ? 'text-white/70' : 'text-slate-400'}`}>
+                                <span className={`block text-[12px] text-right mt-1 ${isMe ? 'text-white/70' : 'text-slate-400'}`}>
                                   {msg.timestamp}
                                 </span>
                               </div>
@@ -4859,7 +4875,7 @@ export default function App() {
                             <h4 className="text-xs font-black text-amber-600 uppercase tracking-widest flex items-center gap-1">
                               <Sparkles className="h-4 w-4" /> Clinician prescribing console
                             </h4>
-                            <p className="text-[10px] text-slate-500 mt-1">Authorized under doctor signature verification rules.</p>
+                            <p className="text-[12px] text-slate-500 mt-1">Authorized under doctor signature verification rules.</p>
                           </div>
 
                           <div className="space-y-1.5 text-xs font-semibold">
@@ -4880,7 +4896,7 @@ export default function App() {
                               <button
                                 type="button"
                                 onClick={() => setPrescriptionMedicines([...prescriptionMedicines, { name: "", dosage: "", frequency: "", duration: "" }])}
-                                className="text-blue-600 text-[10px] font-bold flex items-center gap-1 cursor-pointer"
+                                className="text-blue-600 text-[12px] font-bold flex items-center gap-1 cursor-pointer"
                               >
                                 <Plus className="h-3.5 w-3.5" /> Add drug
                               </button>
@@ -4910,7 +4926,7 @@ export default function App() {
                                       next[idx].dosage = e.target.value;
                                       setPrescriptionMedicines(next);
                                     }}
-                                    className="border-none text-[10px] p-1 bg-transparent placeholder:text-slate-400 text-slate-700"
+                                    className="border-none text-[12px] p-1 bg-transparent placeholder:text-slate-400 text-slate-700"
                                   />
                                   <input
                                     type="text"
@@ -4921,7 +4937,7 @@ export default function App() {
                                       next[idx].frequency = e.target.value;
                                       setPrescriptionMedicines(next);
                                     }}
-                                    className="border-none text-[10px] p-1 bg-transparent placeholder:text-slate-400 text-slate-700"
+                                    className="border-none text-[12px] p-1 bg-transparent placeholder:text-slate-400 text-slate-700"
                                   />
                                   <input
                                     type="text"
@@ -4932,7 +4948,7 @@ export default function App() {
                                       next[idx].duration = e.target.value;
                                       setPrescriptionMedicines(next);
                                     }}
-                                    className="border-none text-[10px] p-1 bg-transparent placeholder:text-slate-400 text-slate-700"
+                                    className="border-none text-[12px] p-1 bg-transparent placeholder:text-slate-400 text-slate-700"
                                   />
                                 </div>
                               </div>
@@ -4958,11 +4974,11 @@ export default function App() {
                         /* Patient sees instructions and metadata info */
                         <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-sm space-y-4">
                           <h4 className="text-xs font-black uppercase text-cyan-300 tracking-wider">How to test prescribing?</h4>
-                          <p className="text-[11px] text-slate-300 leading-relaxed font-semibold">
+                          <p className="text-[12.5px] text-slate-300 leading-relaxed font-semibold">
                             Switch identity to <strong className="text-cyan-200 font-extrabold">"Doctor Simulate Role"</strong> using the role list selector at the top header to write custom diagnostics.
                           </p>
                           <div className="p-3.5 bg-white/10 rounded-2xl border border-white/5 space-y-2">
-                            <span className="text-[10px] font-black uppercase text-cyan-400 tracking-wider block">Diagnosis Target</span>
+                            <span className="text-[12px] font-black uppercase text-cyan-400 tracking-wider block">Diagnosis Target</span>
                             <p className="text-xs font-medium">Patient {consultingAppt.patientName} reported symptoms: "{consultingAppt.symptoms}"</p>
                           </div>
                         </div>
@@ -4991,33 +5007,40 @@ export default function App() {
                                     <h4 className="text-sm font-extrabold text-slate-900 truncate pr-0.5">{doc.name}</h4>
                                     <span className={`w-2 h-2 rounded-full shrink-0 ${doc.online ? 'bg-emerald-500' : 'bg-slate-300'}`}></span>
                                   </div>
-                                  <p className="text-[11px] text-blue-600 font-bold truncate leading-none">{doc.specialty}</p>
-                                  <p className="text-[10px] text-slate-400 truncate">{doc.hospitalName}</p>
+                                  <p className="text-[12.5px] text-blue-600 font-bold truncate leading-none">{doc.specialty}</p>
+                                  <p className="text-[12px] text-slate-400 truncate">{doc.hospitalName}</p>
                                 </div>
                               </div>
 
                               <div className="grid grid-cols-2 gap-2 text-center text-xs font-bold pt-2.5 border-t border-slate-100">
                                 <div className="p-2 bg-slate-50 border border-slate-100 rounded-xl leading-none">
-                                  <span className="text-[9px] text-slate-400 block font-bold mb-1">Queue Size</span>
+                                  <span className="text-[12px] text-slate-400 block font-bold mb-1">Queue Size</span>
                                   <span className="text-slate-800 text-sm font-black">{doc.queueCount} patients</span>
                                 </div>
                                 <div className="p-2 bg-slate-50 border border-slate-100 rounded-xl leading-none">
-                                  <span className="text-[9px] text-slate-400 block font-bold mb-1">Clinic Wait</span>
+                                  <span className="text-[12px] text-slate-400 block font-bold mb-1">Clinic Wait</span>
                                   <span className={doc.waitTimeMin > 25 ? 'text-amber-600 text-sm font-black' : 'text-slate-800 text-sm font-black'}>
                                     {doc.waitTimeMin} mins
                                   </span>
                                 </div>
                               </div>
 
-                              <div className="flex flex-col sm:flex-row gap-2 pt-1.5">
-                                <AnimatedConfirmButton 
-                                  initialText="Take OPD Token" 
-                                  onComplete={() => handleOPDTokenRequest(doc.id)} 
+                              {/* Direction A: these are two different tasks, so they no longer
+                                  look identical. Booking leads; the walk-in queue is the quiet
+                                  option and states the wait it is asking for. */}
+                              <div className="flex flex-col gap-2 pt-1.5">
+                                <AnimatedConfirmButton
+                                  initialText="Book a date"
+                                  onComplete={() => setBookingDoc(doc)}
                                 />
-                                <AnimatedConfirmButton 
-                                  initialText="Book Slot" 
-                                  onComplete={() => setBookingDoc(doc)} 
-                                />
+                                <button
+                                  type="button"
+                                  onClick={() => handleOPDTokenRequest(doc.id)}
+                                  className="px-4 py-2.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 text-[13px] font-semibold transition-all cursor-pointer w-full"
+                                >
+                                  Join today&rsquo;s queue
+                                  <span className="text-slate-400 font-medium"> · {doc.waitTimeMin} min</span>
+                                </button>
                               </div>
                             </div>
                           ))}
@@ -5033,14 +5056,14 @@ export default function App() {
                           </p>
 
                           <div className="p-3.5 bg-white/10 rounded-2xl border border-white/5 space-y-2">
-                            <span className="text-[9px] font-black uppercase text-cyan-400 tracking-wider block">Active Queue Session Info</span>
+                            <span className="text-[12px] font-black uppercase text-cyan-400 tracking-wider block">Active Queue Session Info</span>
                             {myQueueToken ? (
                               <div className="space-y-1.5 text-xs font-semibold">
                                 <p className="text-cyan-100 text-sm">Issued Token: {myQueueToken.tokenNumber}</p>
                                 <p className="text-slate-300">Wait status index: {myQueueToken.estimatedWaitTimeMin} min</p>
                               </div>
                             ) : (
-                              <p className="text-[11px] text-slate-400 font-medium">To test OPD waiting matrices, allocate a token or select "Doctor role" to simulate calling patient into consultation room.</p>
+                              <p className="text-[12.5px] text-slate-400 font-medium">To test OPD waiting matrices, allocate a token or select "Doctor role" to simulate calling patient into consultation room.</p>
                             )}
                           </div>
                         </div>
@@ -5053,13 +5076,13 @@ export default function App() {
                               <div>
                                 {/* A clinician is looking at who is coming in, not at their own name. */}
                                 <p className="text-slate-800">{isClinicianSession ? appt.patientName : appt.doctorName}</p>
-                                <p className="text-[10px] text-slate-400">{appt.time} • {appt.date}</p>
+                                <p className="text-[12px] text-slate-400">{appt.time} • {appt.date}</p>
                               </div>
                               <button
                                 onClick={() => {
                                   setConsultingAppt(appt);
                                 }}
-                                className="px-3.5 py-1.5 bg-blue-600 text-white text-[10px] font-bold rounded-lg cursor-pointer"
+                                className="px-3.5 py-1.5 bg-blue-600 text-white text-[12px] font-bold rounded-lg cursor-pointer"
                               >
                                 Join Consult
                               </button>
@@ -5102,7 +5125,7 @@ export default function App() {
                     <h4 className="text-xs font-black uppercase text-blue-900 tracking-wider flex items-center gap-1.5 font-sans">
                       🔬 AI-Powered Pill Inspection & Verification Active
                     </h4>
-                    <p className="text-[11px] text-blue-850 leading-relaxed font-semibold">
+                    <p className="text-[12.5px] text-blue-850 leading-relaxed font-semibold">
                       To safeguard patient health, all express catalog medicines include certified 3D clinical visual reference keys. Verify exact pill dimensions, color signatures, and scoring markings against your physical tablets by clicking <strong className="text-blue-900 font-extrabold">"Verify Pill"</strong> on any item card.
                     </p>
                   </div>
@@ -5125,7 +5148,7 @@ export default function App() {
                           {pharmacySearchQuery && (
                             <button
                               onClick={() => setPharmacySearchQuery("")}
-                              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 font-extrabold text-[10px]"
+                              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 font-extrabold text-[12px]"
                             >
                               ✕
                             </button>
@@ -5151,7 +5174,7 @@ export default function App() {
                       </div>
 
                       {/* Info / state indicator */}
-                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-[10px] text-slate-500 font-black tracking-wider uppercase gap-1.5 px-1">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-[12px] text-slate-500 font-black tracking-wider uppercase gap-1.5 px-1">
                         <div>
                           {pharmacySearchQuery ? (
                             <span>
@@ -5249,11 +5272,11 @@ export default function App() {
                                 />
                                 <div className="space-y-1.5">
                                   <div className="flex justify-between items-start">
-                                    <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-600 text-[9px] font-bold border border-blue-100">
+                                    <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-600 text-[12px] font-bold border border-blue-100">
                                       {med.category} • {med.dosageForm}
                                     </span>
                                     {med.requiresPrescription && (
-                                      <span className="px-2 py-0.5 rounded bg-amber-50 text-amber-700 text-[9px] font-bold border border-amber-100 flex items-center gap-0.5">
+                                      <span className="px-2 py-0.5 rounded bg-amber-50 text-amber-700 text-[12px] font-bold border border-amber-100 flex items-center gap-0.5">
                                         <FileText className="h-2.5 w-2.5" /> Rx Key Required
                                       </span>
                                     )}
@@ -5318,16 +5341,16 @@ export default function App() {
                                   <div className="truncate">
                                     <p className="text-slate-800 text-xs font-extrabold truncate">{med.name}</p>
                                     <div className="flex items-center gap-1.5 mt-0.5">
-                                      <span className="text-[10px] text-slate-400 font-medium">₹{med.price.toFixed(2)} each</span>
+                                      <span className="text-[12px] text-slate-400 font-medium">₹{med.price.toFixed(2)} each</span>
                                       {isVerified && (
-                                        <span className="bg-emerald-50 text-emerald-700 text-[8px] font-black px-1 rounded flex items-center gap-0.5">
+                                        <span className="bg-emerald-50 text-emerald-700 text-[12px] font-black px-1 rounded flex items-center gap-0.5">
                                           ✓ Verified
                                         </span>
                                       )}
                                     </div>
                                   </div>
                                 </div>
-                                <div className="flex items-center gap-3 shrink-0 font-bold text-[11px]">
+                                <div className="flex items-center gap-3 shrink-0 font-bold text-[12.5px]">
                                   <span className="text-slate-500">x{q}</span>
                                   <span className="text-slate-800">₹{(med.price * q).toFixed(2)}</span>
                                 </div>
@@ -5346,7 +5369,7 @@ export default function App() {
 
                           {/* Address Delivery parameters */}
                           <div className="space-y-2 pt-2 border-t border-slate-100">
-                            <label className="text-[10px] font-black uppercase text-slate-500 tracking-wider block">Express Delivery Address</label>
+                            <label className="text-[12px] font-black uppercase text-slate-500 tracking-wider block">Express Delivery Address</label>
                             <input
                               type="text"
                               value={checkoutAddress}
@@ -5358,10 +5381,10 @@ export default function App() {
 
                           {/* Rx Upload simulator */}
                           <div className="p-3 bg-amber-50/50 border border-amber-100 rounded-xl space-y-2">
-                            <div className="flex items-center gap-1 text-[11px] font-bold text-amber-800">
+                            <div className="flex items-center gap-1 text-[12.5px] font-bold text-amber-800">
                               <Info className="h-3.5 w-3.5" /> High-hazard drugs check
                             </div>
-                            <p className="text-[10px] text-slate-500">Some vitamins or painkillers might require validation scanner logs.</p>
+                            <p className="text-[12px] text-slate-500">Some vitamins or painkillers might require validation scanner logs.</p>
                             <div className="flex gap-2">
                               <button
                                 type="button"
@@ -5370,7 +5393,7 @@ export default function App() {
                                   setPrescriptionFileName("validated-digital-rx.pdf");
                                   showToast("Digital medical prescriptions automatically checked and linked!");
                                 }}
-                                className="px-3.5 py-1.5 bg-amber-600 text-white rounded-lg text-[9px] font-bold flex-1 text-center"
+                                className="px-3.5 py-1.5 bg-amber-600 text-white rounded-lg text-[12px] font-bold flex-1 text-center"
                               >
                                 {prescriptionAttached ? "Change Linked prescription" : "Link Active prescription"}
                               </button>
@@ -5392,10 +5415,10 @@ export default function App() {
                         <p className="text-xs text-slate-400 font-medium">No active pharmacy orders.</p>
                       ) : (
                         orders.map((o) => (
-                          <div key={o.id} className={`p-3.5 border text-[11px] font-semibold space-y-2.5 rounded-2xl transition-all ${isAppDarkMode ? "bg-slate-900 border-slate-800 text-slate-300" : "bg-slate-50 border-slate-100"}`}>
+                          <div key={o.id} className={`p-3.5 border text-[12.5px] font-semibold space-y-2.5 rounded-2xl transition-all ${isAppDarkMode ? "bg-slate-900 border-slate-800 text-slate-300" : "bg-slate-50 border-slate-100"}`}>
                             <div className={`flex justify-between items-center border-b pb-1.5 mb-1 bg-transparent ${isAppDarkMode ? "border-slate-800" : "border-slate-150"}`}>
                               <span className={`font-mono uppercase font-black text-xs ${isAppDarkMode ? "text-white" : "text-slate-800"}`}>Order {o.id}</span>
-                              <span className={`px-2 py-0.5 rounded-md font-black text-[9px] ${isAppDarkMode ? "bg-emerald-950/40 text-emerald-400" : "bg-emerald-100 text-emerald-800"}`}>
+                              <span className={`px-2 py-0.5 rounded-md font-black text-[12px] ${isAppDarkMode ? "bg-emerald-950/40 text-emerald-400" : "bg-emerald-100 text-emerald-800"}`}>
                                 {o.status}
                               </span>
                             </div>
@@ -5414,19 +5437,19 @@ export default function App() {
                                         <Camera className="h-3.5 w-3.5" />
                                       </div>
                                     )}
-                                    <span className="truncate text-[10px] text-slate-700 font-extrabold font-sans">
+                                    <span className="truncate text-[12px] text-slate-700 font-extrabold font-sans">
                                       {it.name} <span className="text-slate-400 font-semibold">(x{it.quantity})</span>
                                     </span>
                                   </div>
                                   {it.verified && (
-                                    <span className="text-[8px] font-black text-emerald-600 bg-emerald-50 px-1 rounded shrink-0 uppercase tracking-wider">
+                                    <span className="text-[12px] font-black text-emerald-600 bg-emerald-50 px-1 rounded shrink-0 uppercase tracking-wider">
                                       ✓ Verified
                                     </span>
                                   )}
                                 </div>
                               ))}
                             </div>
-                            <p className="text-[9px] text-slate-400 italic pt-1">Deliver to: {o.deliveryAddress}</p>
+                            <p className="text-[12px] text-slate-400 italic pt-1">Deliver to: {o.deliveryAddress}</p>
                           </div>
                         ))
                       )}
@@ -5462,8 +5485,8 @@ export default function App() {
                   <div className="absolute right-0 top-0 w-32 h-32 bg-cyan-400/10 rounded-full blur-2xl"></div>
                   <div className="space-y-2 z-10">
                     <div className="flex items-center gap-2">
-                      <span className="bg-cyan-500/20 text-cyan-300 font-mono text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded">Vault ID Approved</span>
-                      <span className="text-[10px] text-slate-400 font-medium">Policy: CH-POL-98101-A</span>
+                      <span className="bg-cyan-500/20 text-cyan-300 font-mono text-[12px] font-bold uppercase tracking-widest px-2.5 py-1 rounded">Vault ID Approved</span>
+                      <span className="text-[12px] text-slate-400 font-medium">Policy: CH-POL-98101-A</span>
                     </div>
                     <h2 className="text-xl font-black text-white tracking-tight">Clinical Health Ledger: {activeFamilyMember} ({familyMembers.find(f => f.name === activeFamilyMember)?.relation || "Self"})</h2>
                     <p className="text-xs text-slate-300 max-w-xl leading-relaxed">
@@ -5471,11 +5494,11 @@ export default function App() {
                     </p>
                   </div>
                   <div className="bg-white/10 border border-white/10 rounded-2xl p-4 shrink-0 text-center z-10 w-full sm:w-auto">
-                    <span className="text-[9px] uppercase font-bold text-cyan-300 tracking-wider block">Family Blood Type</span>
+                    <span className="text-[12px] uppercase font-bold text-cyan-300 tracking-wider block">Family Blood Type</span>
                     <span className="text-2xl font-black text-white block">
                       {familyMembers.find(f => f.name === activeFamilyMember)?.bloodGroup || "O+"}
                     </span>
-                    <span className="text-[10px] text-slate-300">Age: {familyMembers.find(f => f.name === activeFamilyMember)?.age || 34} yr</span>
+                    <span className="text-[12px] text-slate-300">Age: {familyMembers.find(f => f.name === activeFamilyMember)?.age || 34} yr</span>
                   </div>
                 </div>
 
@@ -5483,7 +5506,7 @@ export default function App() {
                 <div className="flex flex-wrap border-b border-slate-200 gap-1 mb-2">
                   <button
                     onClick={() => setRecordsSubTab("vault")}
-                    className={`py-3 px-5 text-[11px] font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
+                    className={`py-3 px-5 text-[12.5px] font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
                       recordsSubTab === "vault"
                         ? "border-blue-600 text-blue-600 font-black"
                         : "border-transparent text-slate-400 hover:text-slate-600"
@@ -5493,7 +5516,7 @@ export default function App() {
                   </button>
                   <button
                     onClick={() => setRecordsSubTab("abha")}
-                    className={`py-3 px-5 text-[11px] font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
+                    className={`py-3 px-5 text-[12.5px] font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
                       recordsSubTab === "abha"
                         ? "border-blue-600 text-blue-600 font-black"
                         : "border-transparent text-slate-400 hover:text-slate-600"
@@ -5503,7 +5526,7 @@ export default function App() {
                   </button>
                   <button
                     onClick={() => setRecordsSubTab("analyzer")}
-                    className={`py-3 px-5 text-[11px] font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
+                    className={`py-3 px-5 text-[12.5px] font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
                       recordsSubTab === "analyzer"
                         ? "border-blue-600 text-blue-600 font-black"
                         : "border-transparent text-slate-400 hover:text-slate-600"
@@ -5513,7 +5536,7 @@ export default function App() {
                   </button>
                   <button
                     onClick={() => setRecordsSubTab("vaccines")}
-                    className={`py-3 px-5 text-[11px] font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
+                    className={`py-3 px-5 text-[12.5px] font-black uppercase tracking-wider border-b-2 transition-all cursor-pointer ${
                       recordsSubTab === "vaccines"
                         ? "border-blue-600 text-blue-600 font-black"
                         : "border-transparent text-slate-400 hover:text-slate-600"
@@ -5529,26 +5552,26 @@ export default function App() {
                     <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
                   <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Pulse Rate</span>
+                      <span className="text-[12px] uppercase font-bold text-slate-400 tracking-wider">Pulse Rate</span>
                       <Heart className="h-5 w-5 text-rose-500 animate-pulse" />
                     </div>
                     <div>
                       <span className="text-3xl font-black text-slate-900">74</span>
-                      <span className="text-[10px] text-slate-500 font-bold ml-1">BPM</span>
+                      <span className="text-[12px] text-slate-500 font-bold ml-1">BPM</span>
                     </div>
-                    <span className="rounded-full bg-emerald-50 text-emerald-700 text-[10px] px-2 py-0.5 font-bold inline-block">
+                    <span className="rounded-full bg-emerald-50 text-emerald-700 text-[12px] px-2 py-0.5 font-bold inline-block">
                       ● Stable rhythm
                     </span>
                   </div>
 
                   <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Blood Oxygen</span>
+                      <span className="text-[12px] uppercase font-bold text-slate-400 tracking-wider">Blood Oxygen</span>
                       <Droplet className="h-5 w-5 text-blue-500" />
                     </div>
                     <div>
                       <span className="text-3xl font-black text-slate-900">98</span>
-                      <span className="text-[10px] text-slate-500 font-bold ml-1">% SpO2</span>
+                      <span className="text-[12px] text-slate-500 font-bold ml-1">% SpO2</span>
                     </div>
                     <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
                       <div className="bg-blue-500 h-full w-[98%]"></div>
@@ -5557,28 +5580,28 @@ export default function App() {
 
                   <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Blood Pressure</span>
+                      <span className="text-[12px] uppercase font-bold text-slate-400 tracking-wider">Blood Pressure</span>
                       <Activity className="h-5 w-5 text-emerald-500" />
                     </div>
                     <div>
                       <span className="text-3xl font-black text-slate-900">120/80</span>
-                      <span className="text-[10px] text-slate-500 font-bold ml-1">mmHg</span>
+                      <span className="text-[12px] text-slate-500 font-bold ml-1">mmHg</span>
                     </div>
-                    <span className="rounded-full bg-emerald-50 text-emerald-700 text-[10px] px-2 py-0.5 font-bold inline-block">
+                    <span className="rounded-full bg-emerald-50 text-emerald-700 text-[12px] px-2 py-0.5 font-bold inline-block">
                       ● Optimal range
                     </span>
                   </div>
 
                   <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Air Smog Asthma Warning</span>
+                      <span className="text-[12px] uppercase font-bold text-slate-400 tracking-wider">Air Smog Asthma Warning</span>
                       <AlertTriangle className="h-5 w-5 text-amber-500" />
                     </div>
                     <div>
                       <span className="text-3xl font-black text-slate-900">58%</span>
-                      <span className="text-[10px] text-slate-500 font-bold ml-1">Sensitivity</span>
+                      <span className="text-[12px] text-slate-500 font-bold ml-1">Sensitivity</span>
                     </div>
-                    <span className="rounded-full bg-amber-50 text-amber-700 text-[10px] px-2 py-0.5 font-bold inline-block">
+                    <span className="rounded-full bg-amber-50 text-amber-700 text-[12px] px-2 py-0.5 font-bold inline-block">
                       ▲ Inhaler Carry Alert
                     </span>
                   </div>
@@ -5702,26 +5725,26 @@ export default function App() {
                         <div className="space-y-2.5">
                           {/* Log category selector */}
                           <div className="space-y-1">
-                            <label className="text-[9px] uppercase tracking-wider font-extrabold text-slate-500">Metric Type</label>
+                            <label className="text-[12px] uppercase tracking-wider font-extrabold text-slate-500">Metric Type</label>
                             <div className="grid grid-cols-3 gap-1 bg-slate-200/50 p-0.5 rounded-lg">
                               <button
                                 type="button"
                                 onClick={() => setVitalInputType("bp")}
-                                className={`py-1 text-[10px] font-bold rounded-md transition-all cursor-pointer ${vitalInputType === "bp" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-500"}`}
+                                className={`py-1 text-[12px] font-bold rounded-md transition-all cursor-pointer ${vitalInputType === "bp" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-500"}`}
                               >
                                 BP
                               </button>
                               <button
                                 type="button"
                                 onClick={() => setVitalInputType("glucose")}
-                                className={`py-1 text-[10px] font-bold rounded-md transition-all cursor-pointer ${vitalInputType === "glucose" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-500"}`}
+                                className={`py-1 text-[12px] font-bold rounded-md transition-all cursor-pointer ${vitalInputType === "glucose" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-500"}`}
                               >
                                 Sugar
                               </button>
                               <button
                                 type="button"
                                 onClick={() => setVitalInputType("pulse")}
-                                className={`py-1 text-[10px] font-bold rounded-md transition-all cursor-pointer ${vitalInputType === "pulse" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-500"}`}
+                                className={`py-1 text-[12px] font-bold rounded-md transition-all cursor-pointer ${vitalInputType === "pulse" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-500"}`}
                               >
                                 Pulse
                               </button>
@@ -5732,7 +5755,7 @@ export default function App() {
                           {vitalInputType === "bp" && (
                             <div className="grid grid-cols-2 gap-2 animate-fade-in">
                               <div className="space-y-1">
-                                <label className="text-[9px] uppercase tracking-wider font-extrabold text-slate-500">Systolic (mmHg)</label>
+                                <label className="text-[12px] uppercase tracking-wider font-extrabold text-slate-500">Systolic (mmHg)</label>
                                 <input
                                   type="number"
                                   value={inputBPSystolic}
@@ -5744,7 +5767,7 @@ export default function App() {
                                 />
                               </div>
                               <div className="space-y-1">
-                                <label className="text-[9px] uppercase tracking-wider font-extrabold text-slate-500">Diastolic (mmHg)</label>
+                                <label className="text-[12px] uppercase tracking-wider font-extrabold text-slate-500">Diastolic (mmHg)</label>
                                 <input
                                   type="number"
                                   value={inputBPDiastolic}
@@ -5760,7 +5783,7 @@ export default function App() {
 
                           {vitalInputType === "glucose" && (
                             <div className="space-y-1 animate-fade-in">
-                              <label className="text-[9px] uppercase tracking-wider font-extrabold text-slate-500">Sugar Value (mg/dL)</label>
+                              <label className="text-[12px] uppercase tracking-wider font-extrabold text-slate-500">Sugar Value (mg/dL)</label>
                               <input
                                 type="number"
                                 value={inputGlucose}
@@ -5775,7 +5798,7 @@ export default function App() {
 
                           {vitalInputType === "pulse" && (
                             <div className="space-y-1 animate-fade-in">
-                              <label className="text-[9px] uppercase tracking-wider font-extrabold text-slate-500">Pulse BPM (beats/min)</label>
+                              <label className="text-[12px] uppercase tracking-wider font-extrabold text-slate-500">Pulse BPM (beats/min)</label>
                               <input
                                 type="number"
                                 value={inputPulse}
@@ -5790,7 +5813,7 @@ export default function App() {
 
                           {/* Shared Logging Date Pin */}
                           <div className="space-y-1">
-                            <label className="text-[9px] uppercase tracking-wider font-extrabold text-slate-500">Log Date</label>
+                            <label className="text-[12px] uppercase tracking-wider font-extrabold text-slate-500">Log Date</label>
                             <input
                               type="date"
                               value={inputVitalDate}
@@ -5821,7 +5844,7 @@ export default function App() {
                       </h3>
                       <p className="text-xs text-slate-500">Real-time daily pill checklist alarms scheduler synchronized with pharmacy prescriptions.</p>
                     </div>
-                    <span className="bg-blue-100 text-blue-800 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shrink-0">
+                    <span className="bg-blue-100 text-blue-800 text-[12px] font-black uppercase tracking-widest px-3 py-1 rounded-full shrink-0">
                       Adherence Rate: {Math.round((pillReminders.filter(p => p.takenToday).length / pillReminders.length) * 100) || 0}% Taken
                     </span>
                   </div>
@@ -5852,14 +5875,14 @@ export default function App() {
                                 <p className={`font-extrabold text-sm ${reminder.takenToday ? "text-slate-400 line-through truncate" : "text-slate-800 truncate"}`}>
                                   {reminder.name}
                                 </p>
-                                <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                                <p className="text-[12.5px] text-slate-500 truncate mt-0.5">
                                   Dosage: {reminder.dosage} • Time Check: <strong>{reminder.time}</strong> • Frequency: {reminder.frequency}
                                 </p>
                               </div>
                             </div>
 
                             <div className="shrink-0 flex items-center gap-2">
-                              <span className={`px-2 py-1 rounded-lg text-[9px] font-bold ${
+                              <span className={`px-2 py-1 rounded-lg text-[12px] font-bold ${
                                 reminder.takenToday ? "bg-emerald-50 text-emerald-800" : "bg-blue-50 text-blue-800"
                               }`}>
                                 {reminder.takenToday ? "Checked" : "Pending"}
@@ -5886,7 +5909,7 @@ export default function App() {
                       </h4>
                       
                       <div className="space-y-1">
-                        <label className="text-[9px] uppercase tracking-wider font-extrabold text-slate-500">Pill Name</label>
+                        <label className="text-[12px] uppercase tracking-wider font-extrabold text-slate-500">Pill Name</label>
                         <input 
                           type="text"
                           value={newPillName}
@@ -5899,7 +5922,7 @@ export default function App() {
 
                       <div className="grid grid-cols-2 gap-2">
                         <div className="space-y-1">
-                          <label className="text-[9px] uppercase tracking-wider font-extrabold text-slate-500">Dosage</label>
+                          <label className="text-[12px] uppercase tracking-wider font-extrabold text-slate-500">Dosage</label>
                           <input 
                             type="text"
                             value={newPillDosage}
@@ -5909,7 +5932,7 @@ export default function App() {
                           />
                         </div>
                         <div className="space-y-1">
-                          <label className="text-[9px] uppercase tracking-wider font-extrabold text-slate-500">Alarm Hour</label>
+                          <label className="text-[12px] uppercase tracking-wider font-extrabold text-slate-500">Alarm Hour</label>
                           <input 
                             type="time"
                             value={newPillTime}
@@ -5920,7 +5943,7 @@ export default function App() {
                       </div>
 
                       <div className="space-y-1 text-xs">
-                        <label className="text-[9px] uppercase tracking-wider font-extrabold text-slate-500">Frequency</label>
+                        <label className="text-[12px] uppercase tracking-wider font-extrabold text-slate-500">Frequency</label>
                         <select
                           value={newPillFrequency}
                           onChange={(e) => setNewPillFrequency(e.target.value)}
@@ -5958,11 +5981,11 @@ export default function App() {
                         <div key={rec.id} className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-3 hover:border-blue-100 transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                           <div className="space-y-1.5 min-w-0 flex-1">
                             <div className="flex items-center gap-2">
-                              <span className="font-mono text-[9px] tracking-wider text-slate-400">{rec.date}</span>
-                              <span className="px-2 py-0.5 text-[9px] font-bold bg-blue-100 text-blue-700 rounded uppercase">Certified</span>
+                              <span className="font-mono text-[12px] tracking-wider text-slate-400">{rec.date}</span>
+                              <span className="px-2 py-0.5 text-[12px] font-bold bg-blue-100 text-blue-700 rounded uppercase">Certified</span>
                             </div>
                             <h4 className="text-sm font-extrabold text-slate-900 truncate">{rec.title}</h4>
-                            <p className="text-[11px] text-slate-500 italic">Issued under: {rec.doctorName}</p>
+                            <p className="text-[12.5px] text-slate-500 italic">Issued under: {rec.doctorName}</p>
                             <p className="text-xs text-slate-600 leading-relaxed font-semibold max-w-xl">
                               {rec.diagnoseSummary}
                             </p>
@@ -5971,14 +5994,14 @@ export default function App() {
                           {rec.attachmentName && (
                             <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between gap-4 shrink-0 w-full sm:w-auto">
                               <div>
-                                <span className="text-[9px] font-black uppercase text-slate-400 block">linked attachment</span>
+                                <span className="text-[12px] font-black uppercase text-slate-400 block">linked attachment</span>
                                 <span className="text-xs font-bold text-slate-700 truncate block max-w-[120px]">{rec.attachmentName}</span>
                               </div>
                               <button
                                 onClick={() => {
                                   showToast(`Initializing medical scanner for dynamic document download: ${rec.attachmentName}`);
                                 }}
-                                className="px-3.5 py-1.5 bg-slate-900 text-white rounded-xl text-[10px] font-bold shrink-0 shadow-sm"
+                                className="px-3.5 py-1.5 bg-slate-900 text-white rounded-xl text-[12px] font-bold shrink-0 shadow-sm"
                               >
                                 Download Scanner
                               </button>
@@ -5994,11 +6017,11 @@ export default function App() {
                     <form onSubmit={handleUploadRecord} className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
                       <div className="border-b border-blue-50 pb-2">
                         <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest pl-1">Simulate Medical Scan upload</h4>
-                        <p className="text-[10px] text-slate-500 mt-1">Patients can upload direct clinical records to secure digital vaults.</p>
+                        <p className="text-[12px] text-slate-500 mt-1">Patients can upload direct clinical records to secure digital vaults.</p>
                       </div>
 
                       <div className="space-y-1.5 text-xs font-semibold">
-                        <label className="text-slate-600 font-bold uppercase text-[9px] tracking-wider block">Document title / Clinic node</label>
+                        <label className="text-slate-600 font-bold uppercase text-[12px] tracking-wider block">Document title / Clinic node</label>
                         <input
                           type="text"
                           value={newRecordTitle}
@@ -6010,7 +6033,7 @@ export default function App() {
                       </div>
 
                       <div className="space-y-1.5 text-xs font-semibold">
-                        <label className="text-slate-600 font-bold uppercase text-[9px] tracking-wider block">Attending Physician</label>
+                        <label className="text-slate-600 font-bold uppercase text-[12px] tracking-wider block">Attending Physician</label>
                         <input
                           type="text"
                           value={newRecordDoctor}
@@ -6021,7 +6044,7 @@ export default function App() {
                       </div>
 
                       <div className="space-y-1.5 text-xs font-semibold">
-                        <label className="text-slate-600 font-bold uppercase text-[9px] tracking-wider block">File description & diagnostics summaries</label>
+                        <label className="text-slate-600 font-bold uppercase text-[12px] tracking-wider block">File description & diagnostics summaries</label>
                         <textarea
                           rows={3}
                           value={newRecordSummary}
@@ -6033,7 +6056,7 @@ export default function App() {
                       </div>
 
                       <div className="space-y-1.5 text-xs font-semibold">
-                        <label className="text-slate-600 font-bold uppercase text-[9px] tracking-wider block">Mock Diagnostic scan filename</label>
+                        <label className="text-slate-600 font-bold uppercase text-[12px] tracking-wider block">Mock Diagnostic scan filename</label>
                         <input
                           type="text"
                           value={newRecordAttachment}
@@ -6049,7 +6072,7 @@ export default function App() {
                     </form>
 
                     <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-sm space-y-3 text-xs leading-relaxed">
-                      <h4 className="text-[10px] font-black uppercase text-cyan-300 tracking-wider">Metropolitan health credentials compliance</h4>
+                      <h4 className="text-[12px] font-black uppercase text-cyan-300 tracking-wider">Metropolitan health credentials compliance</h4>
                       <p className="opacity-80">
                         City Healer implements symmetric cryptographic encryption protocols for decentralized health document safety, protecting patient profiles from data breaches.
                       </p>
@@ -6114,7 +6137,7 @@ export default function App() {
                     </div>
 
                     <div className="flex items-center justify-between border-t border-slate-100 pt-4">
-                      <p className="text-[11px] text-slate-400 max-w-sm">
+                      <p className="text-[12.5px] text-slate-400 max-w-sm">
                         *SOS transmission uses localized GPS calculations to assign nearby clinics and dispatch an ambulance instantly.
                       </p>
                       <button
@@ -6141,7 +6164,7 @@ export default function App() {
                       >
                         <div className="border-b border-white/10 pb-2">
                           <span className="w-2.5 h-2.5 bg-red-500 rounded-full inline-block animate-ping mr-2"></span>
-                          <span className="text-[10px] font-black uppercase tracking-widest text-red-400">AMBULANCE EN ROUTE</span>
+                          <span className="text-[12px] font-black uppercase tracking-widest text-red-400">AMBULANCE EN ROUTE</span>
                           <h4 className="font-extrabold text-sm mt-1">{sosDispatched.assignedAmbulanceRef ? sosDispatched.assignedAmbulanceRef : "AMB-231"}</h4>
                         </div>
 
@@ -6150,7 +6173,7 @@ export default function App() {
                           <p>Location coordinate: <span className="text-slate-400 italic block mt-0.5">{sosDispatched.address}</span></p>
                         </div>
 
-                        <div className="font-mono text-[9px] text-slate-400 p-2.5 bg-slate-950 rounded-xl space-y-1">
+                        <div className="font-mono text-[12px] text-slate-400 p-2.5 bg-slate-950 rounded-xl space-y-1">
                           <div className="flex justify-between">
                             <span>Status:</span> <span className="text-cyan-400">DISPATCHED</span>
                           </div>
@@ -6173,7 +6196,7 @@ export default function App() {
                       <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-4 font-semibold text-xs text-slate-700 leading-normal">
                         <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest border-b border-slate-100 pb-2">SOS Protocol status</h4>
                         <p className="text-slate-500">No active sirens dispatches connected currently in your region.</p>
-                        <div className="p-3 bg-red-50 text-red-800 rounded-xl text-[11px]">
+                        <div className="p-3 bg-red-50 text-red-800 rounded-xl text-[12.5px]">
                           <strong>Note:</strong> Dispatcher monitors physical coordinates directly. Tap red panic button to simulate ambulance router.
                         </div>
                       </div>
@@ -6191,13 +6214,13 @@ export default function App() {
                       {alerts.map((al) => (
                         <div key={al.id} className="p-3 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-between text-xs font-semibold">
                           <div>
-                            <span className="px-2 py-0.5 rounded bg-rose-100 text-rose-800 text-[9px] font-bold uppercase mr-2">{al.type}</span>
+                            <span className="px-2 py-0.5 rounded bg-rose-100 text-rose-800 text-[12px] font-bold uppercase mr-2">{al.type}</span>
                             <span className="text-slate-800 font-bold">{al.patientName}</span>
-                            <p className="text-[10px] text-slate-400 mt-1">{al.address}</p>
+                            <p className="text-[12px] text-slate-400 mt-1">{al.address}</p>
                           </div>
                           <div className="text-right">
-                            <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[9px] font-extrabold uppercase block">{al.status}</span>
-                            <span className="text-[9px] text-blue-600 font-mono mt-1 block">Clinic: {al.hospitalName}</span>
+                            <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[12px] font-extrabold uppercase block">{al.status}</span>
+                            <span className="text-[12px] text-blue-600 font-mono mt-1 block">Clinic: {al.hospitalName}</span>
                           </div>
                         </div>
                       ))}
@@ -6213,10 +6236,10 @@ export default function App() {
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs flex flex-wrap items-center justify-between gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="p-1 px-2.5 bg-blue-100 text-blue-800 rounded font-mono text-[9px] font-black uppercase tracking-widest">
+                      <span className="p-1 px-2.5 bg-blue-100 text-blue-800 rounded font-mono text-[12px] font-black uppercase tracking-widest">
                         Government & Private Partner Network Portal
                       </span>
-                      <span className="text-[10px] text-slate-400 font-bold">Managed Core: {hospitals.length} Units</span>
+                      <span className="text-[12px] text-slate-400 font-bold">Managed Core: {hospitals.length} Units</span>
                     </div>
                     <h2 className={`text-xl font-black mt-1 ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>City Healer Delhi NCR Partner Network Hub</h2>
                     <p className="text-xs text-slate-400 font-medium">
@@ -6237,7 +6260,7 @@ export default function App() {
                       <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
                         <PlusCircle className="h-4 w-4 text-blue-600" /> Onboard New NCR Partner Hospital
                       </h3>
-                      <p className="text-[10px] text-slate-400 mt-1 font-semibold">Integrate private or municipal clinical facilities into City Healer channels instantly.</p>
+                      <p className="text-[12px] text-slate-400 mt-1 font-semibold">Integrate private or municipal clinical facilities into City Healer channels instantly.</p>
                     </div>
 
                     <form onSubmit={handleOnboardHospital} className="space-y-4 text-xs font-semibold text-slate-700">
@@ -6338,7 +6361,7 @@ export default function App() {
                           ].map((catName) => {
                             const isCh = onboardCategories.includes(catName);
                             return (
-                              <label key={catName} className="flex items-center gap-2 cursor-pointer text-[10px] font-bold text-slate-600">
+                              <label key={catName} className="flex items-center gap-2 cursor-pointer text-[12px] font-bold text-slate-600">
                                 <input
                                   type="checkbox"
                                   checked={isCh}
@@ -6359,7 +6382,7 @@ export default function App() {
                       </div>
 
                       {/* Capabilities flags */}
-                      <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100 space-y-2.5 text-[10px] font-bold text-slate-700">
+                      <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100 space-y-2.5 text-[12px] font-bold text-slate-700">
                         <div className="flex items-center justify-between">
                           <span className="flex items-center gap-1.5">
                             <Ambulance className="h-3.5 w-3.5 text-blue-600" /> Active Ambulance Fleet
@@ -6435,7 +6458,7 @@ export default function App() {
                           <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
                             <Settings className="h-4 w-4 text-indigo-600" /> Clinic Management & Control Deck
                           </h3>
-                          <p className="text-[10px] text-slate-400 mt-1 font-semibold">Select and manage variables, clinicians, and allocations live.</p>
+                          <p className="text-[12px] text-slate-400 mt-1 font-semibold">Select and manage variables, clinicians, and allocations live.</p>
                         </div>
                         
                         <div className="min-w-[200px]">
@@ -6474,17 +6497,17 @@ export default function App() {
                                   <h4 className="text-xs font-extrabold text-slate-950 flex items-center gap-1">
                                     <Building className="h-3.5 w-3.5 text-blue-600 animate-pulse" /> {selectedHospDetails.name}
                                   </h4>
-                                  <p className="text-[10px] text-slate-500 font-medium leading-relaxed">{selectedHospDetails.address}</p>
+                                  <p className="text-[12px] text-slate-500 font-medium leading-relaxed">{selectedHospDetails.address}</p>
                                   <div className="flex flex-wrap gap-1.5 pt-1.5">
-                                    <span className={`px-2 py-0.5 rounded text-[8px] font-extrabold ${selectedHospDetails.isGovernment ? "bg-amber-100 text-amber-800" : "bg-blue-100 text-blue-800"}`}>
+                                    <span className={`px-2 py-0.5 rounded text-[12px] font-extrabold ${selectedHospDetails.isGovernment ? "bg-amber-100 text-amber-800" : "bg-blue-100 text-blue-800"}`}>
                                       {selectedHospDetails.isGovernment ? "Government" : "Private Verified"}
                                     </span>
-                                    <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 text-[8px] font-extrabold">
+                                    <span className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 text-[12px] font-extrabold">
                                       ⭐ {selectedHospDetails.rating ? selectedHospDetails.rating.toFixed(1) : "5.0"}
                                     </span>
                                   </div>
                                 </div>
-                                <div className="space-y-1.5 text-[10px] font-bold text-slate-600 flex flex-col justify-center">
+                                <div className="space-y-1.5 text-[12px] font-bold text-slate-600 flex flex-col justify-center">
                                   <div className="flex justify-between">
                                     <span>Hotline Emergency:</span>
                                     <span className="text-slate-800 font-extrabold">{selectedHospDetails.phone}</span>
@@ -6505,14 +6528,14 @@ export default function App() {
                                 {/* SUB SECTION 1: LIVE VACANCIES ADJUSTMENT */}
                                 <div className="space-y-3 bg-slate-50/50 p-4 rounded-2xl border border-slate-200/50 text-xs font-semibold">
                                   <div className="border-b border-slate-200/60 pb-1.5 flex justify-between items-center">
-                                    <h4 className="text-[10px] font-black text-indigo-900 uppercase">Live Capacity Allocator</h4>
-                                    <span className="text-[8px] bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded animate-pulse">Live HUD</span>
+                                    <h4 className="text-[12px] font-black text-indigo-900 uppercase">Live Capacity Allocator</h4>
+                                    <span className="text-[12px] bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded animate-pulse">Live HUD</span>
                                   </div>
 
                                   <form onSubmit={handleUpdateClinicalBeds} className="space-y-3.5">
                                     <div className="grid grid-cols-2 gap-3">
                                       <div className="space-y-1">
-                                        <label className="text-[10px] text-slate-500 block">General Beds Available</label>
+                                        <label className="text-[12px] text-slate-500 block">General Beds Available</label>
                                         <input
                                           type="number"
                                           max={selectedHospDetails.totalBeds}
@@ -6520,10 +6543,10 @@ export default function App() {
                                           onChange={(e) => setAdminAvailBeds(Number(e.target.value))}
                                           className="w-full border border-slate-200 p-2 rounded-lg bg-white text-xs text-slate-850 font-black text-center"
                                         />
-                                        <span className="text-[8px] text-slate-400 block text-center mt-0.5">of {selectedHospDetails.totalBeds} total</span>
+                                        <span className="text-[12px] text-slate-400 block text-center mt-0.5">of {selectedHospDetails.totalBeds} total</span>
                                       </div>
                                       <div className="space-y-1">
-                                        <label className="text-[10px] text-slate-500 block">ICU Beds Available</label>
+                                        <label className="text-[12px] text-slate-500 block">ICU Beds Available</label>
                                         <input
                                           type="number"
                                           max={selectedHospDetails.icuBeds}
@@ -6531,12 +6554,12 @@ export default function App() {
                                           onChange={(e) => setAdminIcuAvail(Number(e.target.value))}
                                           className="w-full border border-slate-200 p-2 rounded-lg bg-white text-xs text-slate-850 font-black text-center"
                                         />
-                                        <span className="text-[8px] text-slate-400 block text-center mt-0.5">of {selectedHospDetails.icuBeds} total</span>
+                                        <span className="text-[12px] text-slate-400 block text-center mt-0.5">of {selectedHospDetails.icuBeds} total</span>
                                       </div>
                                     </div>
 
                                     <div className="space-y-1">
-                                      <div className="flex justify-between text-[10px]">
+                                      <div className="flex justify-between text-[12px]">
                                         <label className="text-slate-500 font-bold">Emergency occupancy index (%)</label>
                                         <span className="font-extrabold text-indigo-650">{adminOccupancy}%</span>
                                       </div>
@@ -6550,7 +6573,7 @@ export default function App() {
                                       />
                                     </div>
 
-                                    <button type="submit" className="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-[10px] uppercase rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer">
+                                    <button type="submit" className="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-[12px] uppercase rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer">
                                       Update Census live
                                     </button>
                                   </form>
@@ -6559,12 +6582,12 @@ export default function App() {
                                 {/* SUB SECTION 2: ADD CLINICAL STAFF / DOCTORS */}
                                 <div className="space-y-3 bg-slate-50/50 p-4 rounded-2xl border border-slate-200/50 text-xs font-semibold">
                                   <div className="border-b border-slate-200/60 pb-1.5">
-                                    <h4 className="text-[10px] font-black text-indigo-900 uppercase">Onboard clinical staff</h4>
+                                    <h4 className="text-[12px] font-black text-indigo-900 uppercase">Onboard clinical staff</h4>
                                   </div>
 
                                   <form onSubmit={handleAddClinicalDoctor} className="space-y-3">
                                     <div className="space-y-1">
-                                      <label className="text-[10px] text-slate-500">Clinician Name</label>
+                                      <label className="text-[12px] text-slate-500">Clinician Name</label>
                                       <input
                                         type="text"
                                         value={addDocName}
@@ -6577,11 +6600,11 @@ export default function App() {
 
                                     <div className="grid grid-cols-2 gap-2">
                                       <div className="space-y-1">
-                                        <label className="text-[10px] text-slate-500">Specialist Type</label>
+                                        <label className="text-[12px] text-slate-500">Specialist Type</label>
                                         <select
                                           value={addDocSpecialty}
                                           onChange={(e) => setAddDocSpecialty(e.target.value)}
-                                          className="w-full border border-slate-200 p-2 rounded-lg bg-white text-[10px] font-bold text-slate-700"
+                                          className="w-full border border-slate-200 p-2 rounded-lg bg-white text-[12px] font-bold text-slate-700"
                                         >
                                           <option value="Cardiologist">Cardiologist (Heart)</option>
                                           <option value="Pulmonologist">Pulmonologist (Lungs)</option>
@@ -6594,7 +6617,7 @@ export default function App() {
                                         </select>
                                       </div>
                                       <div className="space-y-1">
-                                        <label className="text-[10px] text-slate-500">Exp (years)</label>
+                                        <label className="text-[12px] text-slate-500">Exp (years)</label>
                                         <input
                                           type="number"
                                           min="1"
@@ -6605,7 +6628,7 @@ export default function App() {
                                       </div>
                                     </div>
 
-                                    <button type="submit" className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-[10px] uppercase rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer">
+                                    <button type="submit" className="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-[12px] uppercase rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer">
                                       Register clinician staff
                                     </button>
                                   </form>
@@ -6614,22 +6637,22 @@ export default function App() {
 
                               {/* Telemetry settings live modifiers */}
                               <div className="p-4 bg-indigo-50/40 rounded-2xl border border-indigo-100/60 text-xs font-semibold space-y-3">
-                                <h4 className="text-[10px] font-black text-indigo-950 uppercase tracking-widest pl-0.5 border-b border-indigo-100/50 pb-1.5 flex items-center justify-between">
+                                <h4 className="text-[12px] font-black text-indigo-950 uppercase tracking-widest pl-0.5 border-b border-indigo-100/50 pb-1.5 flex items-center justify-between">
                                   <span>Digital consultation / Fleet Settings</span>
-                                  <span className="text-[8px] text-indigo-500">Live Switchers</span>
+                                  <span className="text-[12px] text-indigo-500">Live Switchers</span>
                                 </h4>
                                 
                                 <div className="grid sm:grid-cols-3 gap-3">
                                   <div className="bg-white border border-slate-200/50 p-3 rounded-xl flex flex-col justify-between items-center gap-2 shadow-2xs">
-                                    <span className="text-[8px] text-slate-400 font-extrabold uppercase">Telemedicine Status</span>
+                                    <span className="text-[12px] text-slate-400 font-extrabold uppercase">Telemedicine Status</span>
                                     <div className="flex items-center gap-2">
-                                      <span className={`text-[10px] font-black ${selectedHospDetails.hasTelemedicine ? "text-emerald-600" : "text-slate-400"}`}>
+                                      <span className={`text-[12px] font-black ${selectedHospDetails.hasTelemedicine ? "text-emerald-600" : "text-slate-400"}`}>
                                         {selectedHospDetails.hasTelemedicine ? "ENABLED" : "DISABLED"}
                                       </span>
                                       <button
                                         type="button"
                                         onClick={() => handleUpdateHospitalCapabilities({ hasTelemedicine: !selectedHospDetails.hasTelemedicine })}
-                                        className="px-2 py-1 bg-slate-100 border text-slate-750 text-[8px] font-black uppercase rounded hover:bg-indigo-50 hover:text-indigo-700 transition"
+                                        className="px-2 py-1 bg-slate-100 border text-slate-750 text-[12px] font-black uppercase rounded hover:bg-indigo-50 hover:text-indigo-700 transition"
                                       >
                                         Toggle
                                       </button>
@@ -6637,15 +6660,15 @@ export default function App() {
                                   </div>
 
                                   <div className="bg-white border border-slate-200/50 p-3 rounded-xl flex flex-col justify-between items-center gap-2 shadow-2xs">
-                                    <span className="text-[8px] text-slate-400 font-extrabold uppercase">OPD Digital Booking</span>
+                                    <span className="text-[12px] text-slate-400 font-extrabold uppercase">OPD Digital Booking</span>
                                     <div className="flex items-center gap-2">
-                                      <span className={`text-[10px] font-black ${selectedHospDetails.hasOpdBooking ? "text-emerald-600" : "text-slate-400"}`}>
+                                      <span className={`text-[12px] font-black ${selectedHospDetails.hasOpdBooking ? "text-emerald-600" : "text-slate-400"}`}>
                                         {selectedHospDetails.hasOpdBooking ? "ENABLED" : "DISABLED"}
                                       </span>
                                       <button
                                         type="button"
                                         onClick={() => handleUpdateHospitalCapabilities({ hasOpdBooking: !selectedHospDetails.hasOpdBooking })}
-                                        className="px-2 py-1 bg-slate-100 border text-slate-750 text-[8px] font-black uppercase rounded hover:bg-indigo-50 hover:text-indigo-700 transition"
+                                        className="px-2 py-1 bg-slate-100 border text-slate-750 text-[12px] font-black uppercase rounded hover:bg-indigo-50 hover:text-indigo-700 transition"
                                       >
                                         Toggle
                                       </button>
@@ -6653,7 +6676,7 @@ export default function App() {
                                   </div>
 
                                   <div className="bg-white border border-slate-200/50 p-3 rounded-xl flex flex-col justify-between items-center gap-2 shadow-2xs">
-                                    <span className="text-[8px] text-slate-400 font-extrabold uppercase">Ambulance Fleet</span>
+                                    <span className="text-[12px] text-slate-400 font-extrabold uppercase">Ambulance Fleet</span>
                                     <div className="flex items-center gap-1.5">
                                       <button
                                         type="button"
@@ -6685,9 +6708,9 @@ export default function App() {
 
                               {/* SUB SECTION 3: APPOINTMENT FLOW FOR SELECTED UNIT */}
                               <div className="bg-slate-50/50 rounded-2xl p-4 border border-slate-200/50 space-y-3.5">
-                                <h4 className="text-[10px] font-black text-slate-800 uppercase tracking-widest pl-0.5 border-b border-slate-200/60 pb-1.5 flex items-center justify-between">
+                                <h4 className="text-[12px] font-black text-slate-800 uppercase tracking-widest pl-0.5 border-b border-slate-200/60 pb-1.5 flex items-center justify-between">
                                   <span>Assigned Clinician Appointment Queues</span>
-                                  <span className="text-[8px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-extrabold uppercase">Core bookings</span>
+                                  <span className="text-[12px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-extrabold uppercase">Core bookings</span>
                                 </h4>
 
                                 {(() => {
@@ -6699,7 +6722,7 @@ export default function App() {
                                   );
 
                                   if (linkedAppts.length === 0) {
-                                    return <p className="text-[10px] text-slate-400 pl-0.5 font-bold">No active bookings registered for this clinical unit currently.</p>;
+                                    return <p className="text-[12px] text-slate-400 pl-0.5 font-bold">No active bookings registered for this clinical unit currently.</p>;
                                   }
 
                                   return (
@@ -6709,9 +6732,9 @@ export default function App() {
                                           <div className={`flex items-center justify-between gap-2 border-b pb-1.5 ${isAppDarkMode ? "border-slate-800" : "border-slate-100"}`}>
                                             <div>
                                               <span className={`font-extrabold ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>{appt.patientName}</span>
-                                              <span className="text-[9px] font-semibold text-slate-400 block mt-0.5">ID: {appt.id} | Department: {appt.specialty}</span>
+                                              <span className="text-[12px] font-semibold text-slate-400 block mt-0.5">ID: {appt.id} | Department: {appt.specialty}</span>
                                             </div>
-                                            <span className={`px-2 py-0.5 text-[8.5px] font-black uppercase rounded ${
+                                            <span className={`px-2 py-0.5 text-[12px] font-black uppercase rounded ${
                                               appt.status === "ACCEPTED" ? "bg-emerald-50 text-emerald-800 border border-emerald-100" :
                                               appt.status === "COMPLETED" ? "bg-slate-100 text-slate-600" :
                                               appt.status === "CANCELLED" ? "bg-rose-50 text-rose-850" :
@@ -6721,13 +6744,13 @@ export default function App() {
                                             </span>
                                           </div>
                                           
-                                          <div className="flex sm:items-center justify-between gap-3 text-[10px]">
+                                          <div className="flex sm:items-center justify-between gap-3 text-[12px]">
                                             <span className="text-slate-500 font-bold">Attending: <b className="text-slate-800">{appt.doctorName}</b></span>
                                             <span className="font-mono text-slate-400 font-bold">{appt.date} | {appt.time}</span>
                                           </div>
 
                                           {appt.symptoms && (
-                                            <p className="p-1 px-2 bg-slate-50 rounded-lg text-[9px] text-slate-500 border border-slate-100 italic">
+                                            <p className="p-1 px-2 bg-slate-50 rounded-lg text-[12px] text-slate-500 border border-slate-100 italic">
                                               Symptoms: {appt.symptoms}
                                             </p>
                                           )}
@@ -6746,7 +6769,7 @@ export default function App() {
                                                     showToast(err.message);
                                                   }
                                                 }}
-                                                className="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[9px] font-black uppercase rounded-lg active:scale-95 cursor-pointer text-center"
+                                                className="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[12px] font-black uppercase rounded-lg active:scale-95 cursor-pointer text-center"
                                               >
                                                 Confirm Booking
                                               </button>
@@ -6762,7 +6785,7 @@ export default function App() {
                                                     showToast(err.message);
                                                   }
                                                 }}
-                                                className="flex-1 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-[9px] font-black uppercase rounded-lg active:scale-95 cursor-pointer text-center"
+                                                className="flex-1 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-[12px] font-black uppercase rounded-lg active:scale-95 cursor-pointer text-center"
                                               >
                                                 Decline
                                               </button>
@@ -6782,7 +6805,7 @@ export default function App() {
                                                   showToast(err.message);
                                                 }
                                               }}
-                                              className="w-full py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-[9px] font-black uppercase rounded-lg active:scale-95 cursor-pointer text-center"
+                                              className="w-full py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-[12px] font-black uppercase rounded-lg active:scale-95 cursor-pointer text-center"
                                             >
                                               De-classify (Mark Completed)
                                             </button>
@@ -6800,7 +6823,7 @@ export default function App() {
                         <div className="p-12 text-center text-slate-400 space-y-2 border-2 border-dashed border-slate-200 rounded-3xl">
                           <Building className="h-10 w-10 text-slate-300 mx-auto" strokeWidth={1} />
                           <h4 className="text-xs font-extrabold text-slate-500 uppercase tracking-widest pt-1">Select healthcare unit above</h4>
-                          <p className="text-[10px] text-slate-400 max-w-sm mx-auto leading-normal">
+                          <p className="text-[12px] text-slate-400 max-w-sm mx-auto leading-normal">
                             Choose any representing hospital to manage their doctors, update live emergency bed vacancies, confirm/cancel dynamic appointments, or change telemedicine toggle status.
                           </p>
                         </div>
@@ -6821,17 +6844,17 @@ export default function App() {
                             <div key={al.id} className="p-4 bg-slate-50 border border-slate-200/50 rounded-2xl space-y-2.5">
                               <div className="flex items-center justify-between gap-3 flex-wrap">
                                 <div className="space-y-0.5">
-                                  <span className="font-mono text-[9px] uppercase font-bold text-slate-400">Emergency Dispatch ID: {al.id}</span>
+                                  <span className="font-mono text-[12px] uppercase font-bold text-slate-400">Emergency Dispatch ID: {al.id}</span>
                                   <h4 className="text-slate-900 font-extrabold text-xs leading-snug">{al.patientName} &bull; <b className="text-rose-600">{al.type}</b></h4>
                                 </div>
-                                <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase ${
+                                <span className={`px-2.5 py-0.5 rounded-full text-[12px] font-black uppercase ${
                                   al.status === "RESOLVED" ? "bg-slate-200 text-slate-700" : "bg-amber-100 text-amber-800 animate-pulse"
                                 }`}>
                                   {al.status}
                                 </span>
                               </div>
 
-                              <div className="text-[10px] text-slate-500 font-bold space-y-1">
+                              <div className="text-[12px] text-slate-500 font-bold space-y-1">
                                 <p>📍 Address Location: <span className={`font-black ${isAppDarkMode ? "text-slate-200" : "text-slate-800"}`}>{al.address || "Live Coordinate GPS Pin"}</span></p>
                                 <p>🚑 Assigned Partner Clinic: <span className="text-blue-600 font-black">{al.hospitalName}</span></p>
                               </div>
@@ -6847,7 +6870,7 @@ export default function App() {
                                         showToast("Ambulance dispatched live inside Delhi NCR!");
                                       } catch (err: any) { showToast(err.message); }
                                     }}
-                                    className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[9px] font-black rounded-lg uppercase cursor-pointer"
+                                    className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[12px] font-black rounded-lg uppercase cursor-pointer"
                                   >
                                     Dispatch Vehicle
                                   </button>
@@ -6862,7 +6885,7 @@ export default function App() {
                                         showToast("Siren resolved successfully.");
                                       } catch (err: any) { showToast(err.message); }
                                     }}
-                                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[9px] font-black rounded-lg uppercase cursor-pointer"
+                                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[12px] font-black rounded-lg uppercase cursor-pointer"
                                   >
                                     Mark Resolved
                                   </button>
@@ -6889,14 +6912,14 @@ export default function App() {
                               <div className="min-w-0">
                                 <span className="font-mono text-xs font-black text-slate-900 mr-2 bg-slate-200 px-1.5 py-0.5 rounded">{tok.tokenNumber}</span>
                                 <span className="text-slate-800 font-bold">{tok.patientName}</span>
-                                <p className="text-[10px] text-slate-400 mt-1 font-semibold">Assigned Clinic Clinician: {tok.doctorName} ({tok.checkpointTime})</p>
+                                <p className="text-[12px] text-slate-400 mt-1 font-semibold">Assigned Clinic Clinician: {tok.doctorName} ({tok.checkpointTime})</p>
                               </div>
 
                               <div className="flex gap-1.5 shrink-0 animate-fade-in">
                                 {tok.status === "WAITING" && (
                                   <button
                                     onClick={() => handleUpdateTokenStatus(tok.id, "IN_CONSULTATION")}
-                                    className="px-2.5 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-[10px] font-bold rounded-lg cursor-pointer"
+                                    className="px-2.5 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-[12px] font-bold rounded-lg cursor-pointer"
                                   >
                                     Call in
                                   </button>
@@ -6904,7 +6927,7 @@ export default function App() {
                                 {tok.status === "IN_CONSULTATION" && (
                                   <button
                                     onClick={() => handleUpdateTokenStatus(tok.id, "COMPLETED")}
-                                    className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold rounded-lg cursor-pointer"
+                                    className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[12px] font-bold rounded-lg cursor-pointer"
                                   >
                                     Complete
                                   </button>
@@ -6912,7 +6935,7 @@ export default function App() {
                                 {tok.status !== "COMPLETED" && tok.status !== "SKIPPED" && (
                                   <button
                                     onClick={() => handleUpdateTokenStatus(tok.id, "SKIPPED")}
-                                    className="px-2.5 py-1.5 bg-slate-200 text-slate-600 text-[10px] font-bold rounded-lg cursor-pointer"
+                                    className="px-2.5 py-1.5 bg-slate-200 text-slate-600 text-[12px] font-bold rounded-lg cursor-pointer"
                                   >
                                     Skip
                                   </button>
@@ -6936,7 +6959,7 @@ export default function App() {
                         <h3 className="text-sm font-black text-slate-950 uppercase tracking-widest flex items-center gap-2">🆔 NDHM / Ayushman Bharat Digital Health ID</h3>
                         <p className="text-xs text-slate-500 mt-1">Acquire and compile your official 14-digit national ABHA address linked with Aadhaar security protocols.</p>
                       </div>
-                      <span className="bg-blue-50 text-blue-700 px-3 py-1 text-[10px] font-bold rounded-lg shrink-0">
+                      <span className="bg-blue-50 text-blue-700 px-3 py-1 text-[12px] font-bold rounded-lg shrink-0">
                         🔒 UIDAI Secure Gateway
                       </span>
                     </div>
@@ -6944,7 +6967,7 @@ export default function App() {
                     {abhaStep === "AADHAAR" && (
                       <form onSubmit={handleTriggerABHAOTP} className="space-y-4 max-w-md mx-auto py-6 animate-fade-in">
                         <div className="space-y-1.5">
-                          <label className="text-[10px] font-black uppercase text-slate-450 tracking-wider">Aadhaar Identity Card Key (12 Digits)</label>
+                          <label className="text-[12px] font-black uppercase text-slate-450 tracking-wider">Aadhaar Identity Card Key (12 Digits)</label>
                           <input
                             type="text"
                             maxLength={14}
@@ -6960,7 +6983,7 @@ export default function App() {
                           />
                         </div>
 
-                        <div className="bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-start gap-2.5 text-[11px] text-slate-500 font-semibold leading-relaxed">
+                        <div className="bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-start gap-2.5 text-[12.5px] text-slate-500 font-semibold leading-relaxed">
                           <span className="text-sm">🛡️</span>
                           <p>
                             Consent authorization: I allow City Healer to coordinate with UIDAI National Portal rules to trigger verification OTP codes on my registered phone.
@@ -6980,7 +7003,7 @@ export default function App() {
                     {abhaStep === "OTP" && (
                       <form onSubmit={handleVerifyABHAOTP} className="space-y-4 max-w-md mx-auto py-6 animate-fade-in">
                         <div className="space-y-1.5">
-                          <label className="text-[10px] font-black uppercase text-slate-450 tracking-wider">India Gateway SMS verification Code</label>
+                          <label className="text-[12px] font-black uppercase text-slate-450 tracking-wider">India Gateway SMS verification Code</label>
                           <input
                             type="text"
                             maxLength={6}
@@ -6992,7 +7015,7 @@ export default function App() {
                           />
                         </div>
 
-                        <p className="text-center text-[11px] font-semibold text-slate-400">
+                        <p className="text-center text-[12.5px] font-semibold text-slate-400">
                           Bypass Test Code: <strong className="text-blue-600">123456</strong>
                         </p>
 
@@ -7016,9 +7039,9 @@ export default function App() {
                           <div className="flex justify-between items-start pb-2 border-b border-slate-200">
                             <div>
                               <span className="text-[7px] font-black text-slate-400 uppercase tracking-widest block">NDHM Govt Registry Of India</span>
-                              <span className="text-[10px] font-extrabold text-slate-800 block">Ministry of Health & Family Welfare</span>
+                              <span className="text-[12px] font-extrabold text-slate-800 block">Ministry of Health & Family Welfare</span>
                             </div>
-                            <span className="text-[9px] bg-slate-900 text-white px-2 py-0.5 rounded font-black uppercase tracking-wider">Aayushman Bharat</span>
+                            <span className="text-[12px] bg-slate-900 text-white px-2 py-0.5 rounded font-black uppercase tracking-wider">Aayushman Bharat</span>
                           </div>
 
                           {/* Card Body Core */}
@@ -7061,7 +7084,7 @@ export default function App() {
                           </div>
 
                           {/* Card Footer */}
-                          <div className="border-t border-slate-200 pt-2 flex justify-between items-center text-[9px] font-bold text-slate-500">
+                          <div className="border-t border-slate-200 pt-2 flex justify-between items-center text-[12px] font-bold text-slate-500">
                             <div>
                               <span className="text-[7px] text-slate-400 font-extrabold uppercase block leading-none">ABHA NUMBER</span>
                               <span className="text-slate-900 font-black tracking-wider block mt-0.5">{abhaCardData.abhaNumber}</span>
@@ -7095,7 +7118,7 @@ export default function App() {
                         <h3 className="text-sm font-black text-slate-950 uppercase tracking-widest flex items-center gap-2">🧪 AI Clinical Report interpreter & OCR scan</h3>
                         <p className="text-xs text-slate-500 mt-1">Feed simulated clinical lab assays to extract diagnostics indicators using Gemini 3.5-flash pathology parser.</p>
                       </div>
-                      <span className="bg-emerald-50 text-emerald-700 px-3 py-1 text-[10px] font-bold rounded-lg shrink-0 flex items-center gap-1">
+                      <span className="bg-emerald-50 text-emerald-700 px-3 py-1 text-[12px] font-bold rounded-lg shrink-0 flex items-center gap-1">
                         <Sparkles className="h-3.5 w-3.5" /> High Precision AI
                       </span>
                     </div>
@@ -7103,7 +7126,7 @@ export default function App() {
                     <div className="grid md:grid-cols-3 gap-6 text-xs text-slate-800 animate-fade-in">
                       <div className="md:col-span-1 space-y-4">
                         <div className="space-y-1.5">
-                          <label className="text-[10px] font-black uppercase text-slate-500 tracking-wider">Select Laboratory Scanned report</label>
+                          <label className="text-[12px] font-black uppercase text-slate-500 tracking-wider">Select Laboratory Scanned report</label>
                           <select
                             value={selectedReportTemplate}
                             onChange={(e) => setSelectedReportTemplate(e.target.value)}
@@ -7116,7 +7139,7 @@ export default function App() {
                         </div>
 
                         <div className="bg-slate-50 border border-slate-100 p-4 rounded-2xl space-y-2 leading-relaxed">
-                          <span className="text-[9px] uppercase font-bold text-slate-400 block tracking-wider">Template Biomarkers profile</span>
+                          <span className="text-[12px] uppercase font-bold text-slate-400 block tracking-wider">Template Biomarkers profile</span>
                           {selectedReportTemplate === "blood_cbc" && (
                             <p className="font-semibold text-slate-600">Contains scanned fields: Hemoglobin (11.2 dL), WBC (11,800), RBC (4.1M), Platelets (1.8L).</p>
                           )}
@@ -7139,14 +7162,14 @@ export default function App() {
 
                       <div className="md:col-span-2 space-y-4">
                         {isReportAnalyzing && (
-                          <div className="p-5 bg-slate-900 border border-slate-800 text-slate-300 font-mono text-[11px] rounded-2xl min-h-[160px] flex flex-col justify-between">
+                          <div className="p-5 bg-slate-900 border border-slate-800 text-slate-300 font-mono text-[12.5px] rounded-2xl min-h-[160px] flex flex-col justify-between">
                             <div className="space-y-1.5">
-                              <p className="text-cyan-400 font-bold uppercase tracking-wider text-[10px]">📟 OCR Scanner logs active</p>
+                              <p className="text-cyan-400 font-bold uppercase tracking-wider text-[12px]">📟 OCR Scanner logs active</p>
                               {ocrLogs.map((log, index) => (
                                 <p key={index} className="animate-fade-in">✓ {log}</p>
                               ))}
                             </div>
-                            <span className="text-right text-[10px] text-slate-500 animate-pulse mt-4 block">PROCESSING SCHEMATICS...</span>
+                            <span className="text-right text-[12px] text-slate-500 animate-pulse mt-4 block">PROCESSING SCHEMATICS...</span>
                           </div>
                         )}
 
@@ -7155,10 +7178,10 @@ export default function App() {
                             <div className="bg-slate-900 text-slate-100 p-5 rounded-2xl border border-slate-800 space-y-4 shadow-md">
                               <div className="flex justify-between items-start border-b border-slate-800 pb-3">
                                 <div>
-                                  <span className="text-[8px] uppercase tracking-wider text-slate-400 font-black">AI CLINICAL RESULTS</span>
+                                  <span className="text-[12px] uppercase tracking-wider text-slate-400 font-black">AI CLINICAL RESULTS</span>
                                   <h4 className="font-black text-sm text-white">{reportAnalysisResult.reportType}</h4>
                                 </div>
-                                <span className={`px-2.5 py-1 text-[9px] font-bold rounded uppercase ${
+                                <span className={`px-2.5 py-1 text-[12px] font-bold rounded uppercase ${
                                   reportAnalysisResult.urgencyRating === "LOW" ? "bg-emerald-500/10 text-emerald-350" : "bg-amber-500/15 text-amber-300"
                                 }`}>
                                   Urgency: {reportAnalysisResult.urgencyRating}
@@ -7166,17 +7189,17 @@ export default function App() {
                               </div>
 
                               <div className="space-y-2 mt-2">
-                                <span className="text-[9px] uppercase font-black text-slate-405 tracking-wider">Scanned Biomarkers Assay</span>
+                                <span className="text-[12px] uppercase font-black text-slate-405 tracking-wider">Scanned Biomarkers Assay</span>
                                 <div className="grid gap-2 sm:grid-cols-2 text-slate-300">
                                   {reportAnalysisResult.biomarkers?.map((mark: any, idx: number) => (
                                     <div key={idx} className="p-3 bg-slate-850 rounded-xl border border-slate-850 flex justify-between items-center gap-2">
                                       <div>
                                         <p className="font-extrabold text-white">{mark.name}</p>
-                                        <p className="text-[9px] text-slate-500">Ref: {mark.referenceRange}</p>
+                                        <p className="text-[12px] text-slate-500">Ref: {mark.referenceRange}</p>
                                       </div>
                                       <div className="text-right">
                                         <p className="font-black text-white">{mark.value}</p>
-                                        <span className={`text-[8px] font-black uppercase tracking-wider ${
+                                        <span className={`text-[12px] font-black uppercase tracking-wider ${
                                           mark.status === "NORMAL" ? "text-emerald-400" : "text-rose-400"
                                         }`}>{mark.status}</span>
                                       </div>
@@ -7186,7 +7209,7 @@ export default function App() {
                               </div>
 
                               <div className="space-y-1 text-slate-300 leading-normal border-t border-slate-800/80 pt-3">
-                                <span className="text-[9px] text-cyan-400 font-black uppercase block tracking-wider">AI DIAGNOSTICS DECODER</span>
+                                <span className="text-[12px] text-cyan-400 font-black uppercase block tracking-wider">AI DIAGNOSTICS DECODER</span>
                                 <p className="font-medium">{reportAnalysisResult.aiInterpretation}</p>
                               </div>
 
@@ -7196,7 +7219,7 @@ export default function App() {
                             </div>
 
                             <div className="bg-slate-50 border border-slate-200/50 p-4 rounded-2xl space-y-2 text-slate-700">
-                              <span className="text-[9px] uppercase tracking-wider text-slate-400 font-black">Post-analysis Recommended clinical actions</span>
+                              <span className="text-[12px] uppercase tracking-wider text-slate-400 font-black">Post-analysis Recommended clinical actions</span>
                               <div className="space-y-1.5">
                                 {reportAnalysisResult.actions?.map((act: string, idx: number) => (
                                   <p key={idx} className="flex gap-2.5 items-start font-medium text-xs">
@@ -7206,13 +7229,13 @@ export default function App() {
                                 ))}
                               </div>
                               <div className="pt-3 border-t border-slate-100 mt-3 flex flex-wrap justify-between items-center gap-3">
-                                <span className="text-[10px] text-slate-400 font-bold">Recommended Consultant: <strong className="text-slate-900 font-extrabold">{reportAnalysisResult.recommendedSpecialist}</strong></span>
+                                <span className="text-[12px] text-slate-400 font-bold">Recommended Consultant: <strong className="text-slate-900 font-extrabold">{reportAnalysisResult.recommendedSpecialist}</strong></span>
                                 <button
                                   onClick={() => {
                                     setActiveTab("doctors");
                                     showToast(`Seeking available clinicians matching: ${reportAnalysisResult.recommendedSpecialist}`);
                                   }}
-                                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-[9px] uppercase rounded-lg active:scale-95 transition-all text-center cursor-pointer"
+                                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-[12px] uppercase rounded-lg active:scale-95 transition-all text-center cursor-pointer"
                                 >
                                   Register Doctor Consultation
                                 </button>
@@ -7240,21 +7263,21 @@ export default function App() {
                         <p className="text-xs text-slate-500 mt-1">Universal Immunization Schedule of India (Mission Indradhanush parameters) tracking child development charts.</p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-[11px] font-black text-slate-500">Live completeness:</span>
+                        <span className="text-[12.5px] font-black text-slate-500">Live completeness:</span>
                         <div className="w-24 bg-slate-100 h-2 rounded-full overflow-hidden relative border border-slate-200">
                           <div
                             className="bg-emerald-500 h-full transition-all"
                             style={{ width: `${(checkedVaccines.length / 10) * 100}%` }}
                           ></div>
                         </div>
-                        <span className="text-[10px] font-black text-emerald-600">{Math.floor((checkedVaccines.length / 10) * 100)}%</span>
+                        <span className="text-[12px] font-black text-emerald-600">{Math.floor((checkedVaccines.length / 10) * 100)}%</span>
                       </div>
                     </div>
 
                     <div className="border border-slate-200 rounded-2xl overflow-hidden text-xs">
                       <table className="w-full text-left border-collapse bg-white bg-white">
                         <thead>
-                          <tr className="bg-slate-50 text-slate-400 border-b border-slate-200 uppercase tracking-widest text-[8px] font-black">
+                          <tr className="bg-slate-50 text-slate-400 border-b border-slate-200 uppercase tracking-widest text-[12px] font-black">
                             <th className="p-3 w-12 text-center">Done</th>
                             <th className="p-3">Schedule Age</th>
                             <th className="p-3">Vaccine Dose</th>
@@ -7298,7 +7321,7 @@ export default function App() {
                                 <td className="p-3 text-slate-900 font-extrabold">{vac.name}</td>
                                 <td className="p-3 text-slate-500 font-medium">{vac.targets}</td>
                                 <td className="p-3 text-right">
-                                  <span className={`px-2 py-0.5 text-[10px] font-bold rounded ${
+                                  <span className={`px-2 py-0.5 text-[12px] font-bold rounded ${
                                     isDone ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"
                                   }`}>
                                     {isDone ? "ADMINISTERED" : "AWAITING SCHEDULER"}
@@ -7312,7 +7335,7 @@ export default function App() {
                     </div>
 
                     <div className="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-3 text-slate-650">
-                      <p className="font-semibold text-[11px]">
+                      <p className="font-semibold text-[12.5px]">
                         Need help matching clinical dates with local hospitals registry? Book a paediatric check session directly from dashboard controls.
                       </p>
                       <button
@@ -7320,7 +7343,7 @@ export default function App() {
                           setActiveTab("doctors");
                           showToast("Acquiring regional vaccination pediatric doctors list...");
                         }}
-                        className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-[11px] rounded-xl shrink-0 cursor-pointer active:scale-95 transition-all"
+                        className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-[12.5px] rounded-xl shrink-0 cursor-pointer active:scale-95 transition-all"
                       >
                         Locate Baby Vaccination Clinic
                       </button>
@@ -7386,7 +7409,7 @@ export default function App() {
                     </div>
 
                     <div className="flex items-center justify-between border-t border-slate-100 pt-4 font-sans">
-                      <p className="text-[11px] text-slate-400 max-w-sm">
+                      <p className="text-[12.5px] text-slate-400 max-w-sm">
                         *SOS transmission uses localized GPS calculations to assign nearby clinics and dispatch an ambulance instantly.
                       </p>
                       <button
@@ -7411,7 +7434,7 @@ export default function App() {
                       >
                         <div className="border-b border-white/10 pb-2">
                           <span className="w-2.5 h-2.5 bg-red-500 rounded-full inline-block animate-ping mr-2"></span>
-                          <span className="text-[10px] font-black uppercase tracking-widest text-red-400">AMBULANCE EN ROUTE</span>
+                          <span className="text-[12px] font-black uppercase tracking-widest text-red-400">AMBULANCE EN ROUTE</span>
                           <h4 className="font-extrabold text-sm mt-1">{sosDispatched.assignedAmbulanceRef ? sosDispatched.assignedAmbulanceRef : "AMB-231"}</h4>
                         </div>
 
@@ -7420,7 +7443,7 @@ export default function App() {
                           <p>Location coordinate: <span className="text-slate-400 italic block mt-0.5">{sosDispatched.address}</span></p>
                         </div>
 
-                        <div className="font-mono text-[9px] text-slate-400 p-2.5 bg-slate-950 rounded-xl space-y-1">
+                        <div className="font-mono text-[12px] text-slate-400 p-2.5 bg-slate-950 rounded-xl space-y-1">
                           <div className="flex justify-between">
                             <span>Status:</span> <span className="text-cyan-400">DISPATCHED</span>
                           </div>
@@ -7443,7 +7466,7 @@ export default function App() {
                       <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-4 font-semibold text-xs text-slate-700 leading-normal">
                         <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest border-b border-slate-100 pb-2 font-sans">SOS Protocol status</h4>
                         <p className="text-slate-500">No active sirens dispatches connected currently in your region.</p>
-                        <div className="p-3 bg-red-50 text-red-800 rounded-xl text-[11px]">
+                        <div className="p-3 bg-red-50 text-red-800 rounded-xl text-[12.5px]">
                           <strong>Note:</strong> Dispatcher monitors physical coordinates directly. Tap red panic button to simulate ambulance router.
                         </div>
                       </div>
@@ -7461,13 +7484,13 @@ export default function App() {
                       {alerts.map((al) => (
                         <div key={al.id} className="p-3 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-between text-xs font-semibold">
                           <div>
-                            <span className="px-2 py-0.5 rounded bg-rose-100 text-rose-800 text-[9px] font-bold uppercase mr-2">{al.type}</span>
+                            <span className="px-2 py-0.5 rounded bg-rose-100 text-rose-800 text-[12px] font-bold uppercase mr-2">{al.type}</span>
                             <span className="text-slate-800 font-bold">{al.patientName}</span>
-                            <p className="text-[10px] text-slate-400 mt-1">{al.address}</p>
+                            <p className="text-[12px] text-slate-400 mt-1">{al.address}</p>
                           </div>
                           <div className="text-right">
-                            <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[9px] font-bold uppercase block">{al.status}</span>
-                            <span className="text-[9px] text-blue-600 font-mono mt-1 block">Clinic: {al.hospitalName}</span>
+                            <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[12px] font-bold uppercase block">{al.status}</span>
+                            <span className="text-[12px] text-blue-600 font-mono mt-1 block">Clinic: {al.hospitalName}</span>
                           </div>
                         </div>
                       ))}
@@ -7483,10 +7506,10 @@ export default function App() {
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs flex flex-wrap items-center justify-between gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="p-1 px-2.5 bg-blue-100 text-blue-800 rounded font-mono text-[9px] font-black uppercase tracking-widest">
+                      <span className="p-1 px-2.5 bg-blue-100 text-blue-800 rounded font-mono text-[12px] font-black uppercase tracking-widest">
                         Government & Private Partner Network Portal
                       </span>
-                      <span className="text-[10px] text-slate-400 font-bold">Managed Core: {hospitals.length} Units</span>
+                      <span className="text-[12px] text-slate-400 font-bold">Managed Core: {hospitals.length} Units</span>
                     </div>
                     <h2 className={`text-xl font-black mt-1 ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>City Healer Delhi NCR Partner Network Hub</h2>
                     <p className={`text-xs font-medium font-sans ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>
@@ -7511,7 +7534,7 @@ export default function App() {
                       }`}>
                         <PlusCircle className="h-4 w-4 text-blue-600" /> Onboard New NCR Partner Hospital
                       </h3>
-                      <p className={`text-[10px] mt-1 font-semibold font-sans ${
+                      <p className={`text-[12px] mt-1 font-semibold font-sans ${
                         isAppDarkMode ? "text-slate-400" : "text-slate-500"
                       }`}>Integrate private or municipal clinical facilities into City Healer channels instantly.</p>
                     </div>
@@ -7520,7 +7543,7 @@ export default function App() {
                       isAppDarkMode ? "text-slate-300" : "text-slate-750"
                     }`}>
                       <div className="space-y-1.5 font-sans">
-                        <label className={`text-[11px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Hospital Legal Name</label>
+                        <label className={`text-[12.5px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Hospital Legal Name</label>
                         <input
                           type="text"
                           value={onboardName}
@@ -7534,7 +7557,7 @@ export default function App() {
                       </div>
 
                       <div className="space-y-1.5 font-sans">
-                        <label className={`text-[11px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Regional Street Address</label>
+                        <label className={`text-[12.5px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Regional Street Address</label>
                         <input
                           type="text"
                           value={onboardAddress}
@@ -7549,7 +7572,7 @@ export default function App() {
 
                       <div className="grid grid-cols-2 gap-3.5 font-sans">
                         <div className="space-y-1.5">
-                          <label className={`text-[11px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Total Bed Census</label>
+                          <label className={`text-[12.5px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Total Bed Census</label>
                           <input
                             type="number"
                             value={onboardTotalBeds}
@@ -7561,7 +7584,7 @@ export default function App() {
                           />
                         </div>
                         <div className="space-y-1.5">
-                          <label className={`text-[11px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Critical care (ICU)</label>
+                          <label className={`text-[12.5px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Critical care (ICU)</label>
                           <input
                             type="number"
                             value={onboardIcuBeds}
@@ -7576,7 +7599,7 @@ export default function App() {
 
                       <div className="grid grid-cols-2 gap-3.5 font-sans">
                         <div className="space-y-1.5">
-                          <label className={`text-[11px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-700"}`}>Emergency Desk Line</label>
+                          <label className={`text-[12.5px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-700"}`}>Emergency Desk Line</label>
                           <input
                             type="text"
                             value={onboardPhone}
@@ -7587,7 +7610,7 @@ export default function App() {
                           />
                         </div>
                         <div className="space-y-1.5">
-                          <label className={`text-[11px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-700"}`}>Primary Support Mail</label>
+                          <label className={`text-[12.5px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-700"}`}>Primary Support Mail</label>
                           <input
                             type="email"
                             value={onboardEmail}
@@ -7601,7 +7624,7 @@ export default function App() {
 
                       {onboardHasAmbulance && (
                         <div className="space-y-1.5 animate-fade-in font-sans">
-                          <label className={`text-[11px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Active Ambulances Fleet Census Count</label>
+                          <label className={`text-[12.5px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Active Ambulances Fleet Census Count</label>
                           <input
                             type="number"
                             value={onboardAmbulanceCount}
@@ -7615,7 +7638,7 @@ export default function App() {
                       )}
 
                       <div className="space-y-1.5 font-sans">
-                        <label className={`text-[11px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Attested Clinical Specialties (comma separated)</label>
+                        <label className={`text-[12.5px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Attested Clinical Specialties (comma separated)</label>
                         <input
                           type="text"
                           value={onboardSpecialties}
@@ -7642,7 +7665,7 @@ export default function App() {
                           <h3 className={`text-xs font-black uppercase tracking-wider flex items-center gap-1.5 ${
                             isAppDarkMode ? "text-white" : "text-slate-900"
                           }`}>⚙️ Live Beds Availability Census</h3>
-                          <p className={`text-[10px] mt-0.5 font-semibold ${
+                          <p className={`text-[12px] mt-0.5 font-semibold ${
                             isAppDarkMode ? "text-slate-400" : "text-slate-500"
                           }`}>Tweak regional bed tallies matching real distress situations.</p>
                         </div>
@@ -7650,7 +7673,7 @@ export default function App() {
 
                       <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-1.5 text-xs font-semibold font-sans">
-                          <label className={`text-[11px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Target Hospital Center Node</label>
+                          <label className={`text-[12.5px] font-bold tracking-tight block ${isAppDarkMode ? "text-slate-300" : "text-slate-800"}`}>Target Hospital Center Node</label>
                           <select
                             value={adminHospSelect}
                             onChange={(e) => {
@@ -7676,7 +7699,7 @@ export default function App() {
 
                         <div className="grid grid-cols-3 gap-2 text-xs font-semibold font-sans">
                           <div className="space-y-1">
-                            <label className={`text-[10px] font-bold tracking-tight block text-center ${isAppDarkMode ? "text-slate-300" : "text-slate-700"}`}>Gen Beds</label>
+                            <label className={`text-[12px] font-bold tracking-tight block text-center ${isAppDarkMode ? "text-slate-300" : "text-slate-700"}`}>Gen Beds</label>
                             <input
                               type="number"
                               disabled={!adminHospSelect}
@@ -7688,7 +7711,7 @@ export default function App() {
                             />
                           </div>
                           <div className="space-y-1">
-                            <label className={`text-[10px] font-bold tracking-tight block text-center ${isAppDarkMode ? "text-slate-300" : "text-slate-700"}`}>ICU Beds</label>
+                            <label className={`text-[12px] font-bold tracking-tight block text-center ${isAppDarkMode ? "text-slate-300" : "text-slate-700"}`}>ICU Beds</label>
                             <input
                               type="number"
                               disabled={!adminHospSelect}
@@ -7700,7 +7723,7 @@ export default function App() {
                             />
                           </div>
                           <div className="space-y-1">
-                            <label className={`text-[10px] font-bold tracking-tight block text-center ${isAppDarkMode ? "text-slate-300" : "text-slate-700"}`}>Occupancy %</label>
+                            <label className={`text-[12px] font-bold tracking-tight block text-center ${isAppDarkMode ? "text-slate-300" : "text-slate-700"}`}>Occupancy %</label>
                             <input
                               type="number"
                               disabled={!adminHospSelect}
@@ -7797,13 +7820,13 @@ export default function App() {
                             <div key={al.id} className="p-4 bg-red-50 border border-red-100 rounded-2xl flex flex-col gap-3">
                               <div className="flex items-center justify-between border-b border-red-100 pb-2.5">
                                 <div className="space-y-0.5">
-                                  <span className="px-2 py-0.5 rounded bg-red-600 text-white text-[9px] font-extrabold tracking-wider">{al.type}</span>
+                                  <span className="px-2 py-0.5 rounded bg-red-600 text-white text-[12px] font-extrabold tracking-wider">{al.type}</span>
                                   <h4 className="text-xs font-black text-slate-850 mt-1 uppercase">{al.patientName} distress line</h4>
                                 </div>
-                                <span className="text-[10px] text-red-600 font-mono tracking-tight animate-pulse font-extrabold">{al.status}</span>
+                                <span className="text-[12px] text-red-600 font-mono tracking-tight animate-pulse font-extrabold">{al.status}</span>
                               </div>
 
-                              <div className="text-[10px] text-slate-500 font-bold space-y-1">
+                              <div className="text-[12px] text-slate-500 font-bold space-y-1">
                                 <p>📍 Address Location: <span className="text-slate-800 font-black">{al.address || "Live Coordinate GPS Pin"}</span></p>
                                 <p>🚑 Assigned Partner Clinic: <span className="text-blue-600 font-black">{al.hospitalName}</span></p>
                               </div>
@@ -7819,7 +7842,7 @@ export default function App() {
                                         showToast("Ambulance dispatched live inside Delhi NCR!");
                                       } catch (err: any) { showToast(err.message); }
                                     }}
-                                    className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[9px] font-extrabold rounded-lg uppercase cursor-pointer"
+                                    className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[12px] font-extrabold rounded-lg uppercase cursor-pointer"
                                   >
                                     Dispatch Vehicle
                                   </button>
@@ -7834,7 +7857,7 @@ export default function App() {
                                         showToast("Siren resolved successfully.");
                                       } catch (err: any) { showToast(err.message); }
                                     }}
-                                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[9px] font-extrabold rounded-lg uppercase cursor-pointer"
+                                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[12px] font-extrabold rounded-lg uppercase cursor-pointer"
                                   >
                                     Mark Resolved
                                   </button>
@@ -7861,14 +7884,14 @@ export default function App() {
                                <div className="min-w-0">
                                  <span className="font-mono text-xs font-black text-slate-900 mr-2 bg-slate-200 px-1.5 py-0.5 rounded">{tok.tokenNumber}</span>
                                  <span className="text-slate-800 font-bold">{tok.patientName}</span>
-                                 <p className="text-[10px] text-slate-400 mt-1 font-semibold">Assigned Clinic Clinician: {tok.doctorName} ({tok.checkpointTime})</p>
+                                 <p className="text-[12px] text-slate-400 mt-1 font-semibold">Assigned Clinic Clinician: {tok.doctorName} ({tok.checkpointTime})</p>
                                </div>
 
                                <div className="flex gap-1.5 shrink-0 animate-fade-in">
                                  {tok.status === "WAITING" && (
                                    <button
                                      onClick={() => handleUpdateTokenStatus(tok.id, "IN_CONSULTATION")}
-                                     className="px-2.5 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-[10px] font-bold rounded-lg cursor-pointer"
+                                     className="px-2.5 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-[12px] font-bold rounded-lg cursor-pointer"
                                    >
                                      Call in
                                    </button>
@@ -7876,7 +7899,7 @@ export default function App() {
                                  {tok.status === "IN_CONSULTATION" && (
                                    <button
                                      onClick={() => handleUpdateTokenStatus(tok.id, "COMPLETED")}
-                                     className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold rounded-lg cursor-pointer"
+                                     className="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[12px] font-bold rounded-lg cursor-pointer"
                                    >
                                      Complete
                                    </button>
@@ -7884,7 +7907,7 @@ export default function App() {
                                  {tok.status !== "COMPLETED" && tok.status !== "SKIPPED" && (
                                    <button
                                      onClick={() => handleUpdateTokenStatus(tok.id, "SKIPPED")}
-                                     className="px-2.5 py-1.5 bg-slate-200 text-slate-600 text-[10px] font-bold rounded-lg cursor-pointer"
+                                     className="px-2.5 py-1.5 bg-slate-200 text-slate-600 text-[12px] font-bold rounded-lg cursor-pointer"
                                    >
                                      Skip
                                    </button>
@@ -7907,8 +7930,8 @@ export default function App() {
                   <div className="absolute right-0 top-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl text-[0px]">Decorator backdrop glow segment blur</div>
                   <div className="space-y-2 z-10">
                     <div className="flex items-center gap-2">
-                      <span className="bg-indigo-500/30 text-indigo-300 font-mono text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded">IRDAI Registry Approved</span>
-                      <span className="text-[10px] text-slate-300">Region: Delhi NCR Cashless Grid</span>
+                      <span className="bg-indigo-500/30 text-indigo-300 font-mono text-[12px] font-bold uppercase tracking-widest px-2.5 py-1 rounded">IRDAI Registry Approved</span>
+                      <span className="text-[12px] text-slate-300">Region: Delhi NCR Cashless Grid</span>
                     </div>
                     <h2 className="text-xl font-bold text-white tracking-tight">Unified Health Insurance Exchange hub</h2>
                     <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
@@ -7916,9 +7939,9 @@ export default function App() {
                     </p>
                   </div>
                   <span className="p-4 bg-white/10 rounded-2xl border border-white/10 text-center shrink-0 z-10 w-full sm:w-auto">
-                    <span className="text-[9px] uppercase font-bold text-indigo-300 tracking-wider block">Insured Status</span>
+                    <span className="text-[12px] uppercase font-bold text-indigo-300 tracking-wider block">Insured Status</span>
                     <span className="text-lg font-black text-white block">Active Card</span>
-                    <span className="text-[10px] text-emerald-400 font-bold block">₹14 Lakh Coverage</span>
+                    <span className="text-[12px] text-emerald-400 font-bold block">₹14 Lakh Coverage</span>
                   </span>
                 </div>
 
@@ -7953,7 +7976,7 @@ export default function App() {
                             >
                               <div className="space-y-1">
                                 <div className="flex items-center justify-between">
-                                  <span className="text-[10px] text-slate-500 font-bold uppercase">{policy.rating} Rating</span>
+                                  <span className="text-[12px] text-slate-500 font-bold uppercase">{policy.rating} Rating</span>
                                   <input 
                                     type="checkbox" 
                                     checked={isSelected}
@@ -7962,16 +7985,16 @@ export default function App() {
                                   />
                                 </div>
                                 <h4 className="text-sm font-extrabold text-slate-900 leading-tight">{policy.name}</h4>
-                                <p className="text-[11px] text-slate-500">Cashless Network: <strong>{policy.network}</strong></p>
+                                <p className="text-[12.5px] text-slate-500">Cashless Network: <strong>{policy.network}</strong></p>
                               </div>
 
                               <div className="flex items-center justify-between border-t border-slate-100 pt-3 text-xs">
                                 <div>
-                                  <span className="text-[9px] block text-slate-400 uppercase font-bold">Sum Insured</span>
+                                  <span className="text-[12px] block text-slate-400 uppercase font-bold">Sum Insured</span>
                                   <span className="text-sm font-black text-slate-950">{policy.cover}</span>
                                 </div>
                                 <div className="text-right">
-                                  <span className="text-[9px] block text-slate-400 uppercase font-bold">Premium / mo</span>
+                                  <span className="text-[12px] block text-slate-400 uppercase font-bold">Premium / mo</span>
                                   <span className="text-sm font-black text-indigo-600">₹{policy.premium}</span>
                                 </div>
                               </div>
@@ -7997,7 +8020,7 @@ export default function App() {
                         <div className="overflow-x-auto">
                           <table className="w-full text-left text-xs font-semibold text-slate-600 border-collapse">
                             <thead>
-                              <tr className="border-b border-slate-100 text-slate-400 uppercase text-[9px] tracking-wider">
+                              <tr className="border-b border-slate-100 text-slate-400 uppercase text-[12px] tracking-wider">
                                 <th className="py-2.5 pr-4 pl-1">Feature Spec</th>
                                 {selectedPoliciesToCompare.map(id => (
                                   <th key={id} className="py-2.5 px-4 font-extrabold text-slate-900">
@@ -8074,13 +8097,13 @@ export default function App() {
                     {/* InsureTech Advisor box */}
                     <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-sm space-y-4">
                       <h4 className="text-xs font-black uppercase tracking-wider text-indigo-300">Insuretech AI Underwriting Adviser</h4>
-                      <p className="text-[11px] text-slate-300">
+                      <p className="text-[12.5px] text-slate-300">
                         Select patient demographics below and generate matching cashless advice based on clinical metrics inside Delhi NCR.
                       </p>
 
                       <div className="space-y-3.5 text-xs text-white">
                         <div className="space-y-1">
-                          <label className="text-[9px] uppercase font-bold text-slate-400">Target Age Group</label>
+                          <label className="text-[12px] uppercase font-bold text-slate-400">Target Age Group</label>
                           <select 
                             value={insuranceAgeSelect} 
                             onChange={(e) => setInsuranceAgeSelect(e.target.value)}
@@ -8093,7 +8116,7 @@ export default function App() {
                         </div>
 
                         <div className="space-y-1">
-                          <label className="text-[9px] uppercase font-bold text-slate-400">Pre-existing Illness Profile</label>
+                          <label className="text-[12px] uppercase font-bold text-slate-400">Pre-existing Illness Profile</label>
                           <select 
                             value={insuranceDiseaseSelect}
                             onChange={(e) => setInsuranceDiseaseSelect(e.target.value)}
@@ -8107,10 +8130,10 @@ export default function App() {
                         </div>
 
                         {insuranceAdviseResult ? (
-                          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3 animate-fade-in font-semibold text-[11px] leading-relaxed text-slate-300">
+                          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3 animate-fade-in font-semibold text-[12.5px] leading-relaxed text-slate-300">
                             <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                              <span className="text-indigo-400 font-extrabold uppercase text-[9px]">Recommended Plan match</span>
-                              <span className="bg-indigo-600 font-mono text-white text-[10px] px-2 py-0.5 rounded font-black">
+                              <span className="text-indigo-400 font-extrabold uppercase text-[12px]">Recommended Plan match</span>
+                              <span className="bg-indigo-600 font-mono text-white text-[12px] px-2 py-0.5 rounded font-black">
                                 {insuranceAdviseResult.matchScore}% Match
                               </span>
                             </div>
@@ -8119,7 +8142,7 @@ export default function App() {
                             <button 
                               type="button"
                               onClick={() => setInsuranceAdviseResult(null)}
-                              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-[10px] py-1.5 rounded-lg text-center cursor-pointer transition-all mt-1"
+                              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-[12px] py-1.5 rounded-lg text-center cursor-pointer transition-all mt-1"
                             >
                               Reset Adviser Screen
                             </button>
@@ -8142,35 +8165,35 @@ export default function App() {
                         <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest border-b border-slate-100 pb-2 flex items-center gap-1">
                           <Check className="h-4 w-4 text-emerald-500" /> Cashless Claims Tracker: {activeFamilyMember}
                         </h4>
-                        <p className="text-[10px] text-slate-500 mt-1">Live cashless hospitalization authorizations and claim history for regional hospitals.</p>
+                        <p className="text-[12px] text-slate-500 mt-1">Live cashless hospitalization authorizations and claim history for regional hospitals.</p>
                       </div>
 
                       {activeFamilyMember === "Prerna Ram" ? (
                         <div className="p-3 bg-emerald-50/50 border border-emerald-100 rounded-2xl flex items-center justify-between text-xs font-semibold gap-3">
                           <div>
                             <p className="font-extrabold text-[#022c22]">Acute Pulmonology Claim</p>
-                            <p className="text-[10px] text-slate-500 mt-0.5">Noida Max Multispecialty • Claim ID: 98110-C</p>
+                            <p className="text-[12px] text-slate-500 mt-0.5">Noida Max Multispecialty • Claim ID: 98110-C</p>
                           </div>
-                          <span className="text-[9px] bg-emerald-100 text-emerald-800 font-black px-2 py-1 rounded">₹48,200 Approved</span>
+                          <span className="text-[12px] bg-emerald-100 text-emerald-800 font-black px-2 py-1 rounded">₹48,200 Approved</span>
                         </div>
                       ) : activeFamilyMember === "Shanti Ram" ? (
                         <div className="p-3 bg-amber-50/50 border border-amber-100 rounded-2xl flex items-center justify-between text-xs font-semibold gap-3">
                           <div>
                             <p className="font-extrabold text-[#451a03]">Geriatric Joint Support checkup</p>
-                            <p className="text-[10px] text-slate-500 mt-0.5">Delhi Primus Super Specialty • Claim ID: 77241-K</p>
+                            <p className="text-[12px] text-slate-500 mt-0.5">Delhi Primus Super Specialty • Claim ID: 77241-K</p>
                           </div>
-                          <span className="text-[9px] bg-amber-100 text-amber-800 font-black px-2 py-1 rounded">Sanction Pending</span>
+                          <span className="text-[12px] bg-amber-100 text-amber-800 font-black px-2 py-1 rounded">Sanction Pending</span>
                         </div>
                       ) : (
                         <div className="space-y-2.5">
                           <div className="p-3 bg-emerald-50/50 border border-emerald-100 rounded-2xl flex items-center justify-between text-xs font-semibold gap-3">
                             <div>
                               <p className="font-extrabold text-[#022c22]">Digital Pharmacy Rebate</p>
-                              <p className="text-[10px] text-slate-500 mt-0.5">Apollo Cashless Pharmacy • Claim ID: 15420-R</p>
+                              <p className="text-[12px] text-slate-500 mt-0.5">Apollo Cashless Pharmacy • Claim ID: 15420-R</p>
                             </div>
-                            <span className="text-[9px] bg-emerald-100 text-emerald-800 font-black px-2 py-1 rounded">₹1,140 Refunded</span>
+                            <span className="text-[12px] bg-emerald-100 text-emerald-800 font-black px-2 py-1 rounded">₹1,140 Refunded</span>
                           </div>
-                          <p className="text-[10px] text-slate-400 text-center italic font-semibold">No active inpatient cashless claim cards for {activeFamilyMember} today.</p>
+                          <p className="text-[12px] text-slate-400 text-center italic font-semibold">No active inpatient cashless claim cards for {activeFamilyMember} today.</p>
                         </div>
                       )}
                     </div>
@@ -8189,12 +8212,12 @@ export default function App() {
                 } flex flex-col md:flex-row md:items-center justify-between gap-4`}>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className={`p-1 px-2.5 rounded font-mono text-[9px] font-bold uppercase tracking-widest ${
+                      <span className={`p-1 px-2.5 rounded font-mono text-[12px] font-bold uppercase tracking-widest ${
                         isAppDarkMode ? "bg-amber-500/20 text-amber-400" : "bg-blue-50 text-blue-600"
                       }`}>
                         Tier-1 Super-App Suite
                       </span>
-                      <span className="text-[10px] text-slate-400">• NCR Grid Connected</span>
+                      <span className="text-[12px] text-slate-400">• NCR Grid Connected</span>
                     </div>
                     <h3 className={`text-xl font-black tracking-tight ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
                       City Healer Differentiators
@@ -8276,7 +8299,7 @@ export default function App() {
                               <p className={`font-extrabold text-sm ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
                                 Resident AI Health Copilot
                               </p>
-                              <span className="text-[10px] text-emerald-500 flex items-center gap-1 font-semibold uppercase">
+                              <span className="text-[12px] text-emerald-500 flex items-center gap-1 font-semibold uppercase">
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
                                 Active clinical session
                               </span>
@@ -8284,7 +8307,7 @@ export default function App() {
                           </div>
                           
                           {/* Regional Interactive Language Switcher */}
-                          <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900 border dark:border-slate-800 p-0.5 rounded-xl text-[10px]">
+                          <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900 border dark:border-slate-800 p-0.5 rounded-xl text-[12px]">
                             <button 
                               type="button"
                               onClick={() => {
@@ -8325,7 +8348,7 @@ export default function App() {
                                 msg.sender === "user" ? "ml-auto items-end" : "mr-auto items-start"
                               }`}
                             >
-                              <span className="text-[9px] text-slate-400 font-bold mb-0.5 px-1">{msg.time}</span>
+                              <span className="text-[12px] text-slate-400 font-bold mb-0.5 px-1">{msg.time}</span>
                               <div className={`p-3.5 rounded-2xl text-xs leading-normal whitespace-pre-wrap ${
                                 msg.sender === "user"
                                   ? "bg-indigo-650 text-white rounded-br-none shadow-md"
@@ -8343,10 +8366,10 @@ export default function App() {
                         <div className={`p-3 border-t flex flex-wrap gap-1.5 ${
                           isAppDarkMode ? "border-slate-800 bg-slate-900/20" : "border-slate-150 bg-slate-50/50"
                         }`}>
-                          <span className="text-[10px] text-slate-400 uppercase font-black tracking-widest pl-1 py-1 w-full text-left">Quick Chat Queries:</span>
+                          <span className="text-[12px] text-slate-400 uppercase font-black tracking-widest pl-1 py-1 w-full text-left">Quick Chat Queries:</span>
                           <button
                             onClick={() => handleSendCopilotMessage("Tell me about my platelet safety counts")}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all hover:scale-95 ${
+                            className={`px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all hover:scale-95 ${
                               isAppDarkMode ? "bg-slate-850 hover:bg-slate-800 text-slate-300" : "bg-white hover:bg-slate-150 text-slate-700 border"
                             }`}
                           >
@@ -8354,7 +8377,7 @@ export default function App() {
                           </button>
                           <button
                             onClick={() => handleSendCopilotMessage("How do I manage my daily caloric goals?")}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all hover:scale-95 ${
+                            className={`px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all hover:scale-95 ${
                               isAppDarkMode ? "bg-slate-850 hover:bg-slate-800 text-slate-300" : "bg-white hover:bg-slate-150 text-slate-700 border"
                             }`}
                           >
@@ -8362,7 +8385,7 @@ export default function App() {
                           </button>
                           <button
                             onClick={() => handleSendCopilotMessage("Is Paracetamol safe to pair with cold syrups?")}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all hover:scale-95 ${
+                            className={`px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all hover:scale-95 ${
                               isAppDarkMode ? "bg-slate-850 hover:bg-slate-800 text-slate-300" : "bg-white hover:bg-slate-150 text-slate-700 border"
                             }`}
                           >
@@ -8433,10 +8456,10 @@ export default function App() {
                               Lab Analyzer Box (Node 1)
                             </h4>
                           </div>
-                          <p className="text-[10px] text-slate-400">Pick any recent diagnostic PDF scan and simulated artificial intelligence interprets metrics into raw human explanation.</p>
+                          <p className="text-[12px] text-slate-400">Pick any recent diagnostic PDF scan and simulated artificial intelligence interprets metrics into raw human explanation.</p>
 
                           <div className="space-y-2">
-                            <label className="text-[8px] uppercase tracking-widest text-slate-400 font-bold block text-left">Select Blood / Scan Report</label>
+                            <label className="text-[12px] uppercase tracking-widest text-slate-400 font-bold block text-left">Select Blood / Scan Report</label>
                             <select
                               value={copilotQuickAnalysisType}
                               onChange={(e) => setCopilotQuickAnalysisType(e.target.value)}
@@ -8469,10 +8492,10 @@ export default function App() {
                               AI Prescription checker
                             </h4>
                           </div>
-                          <p className="text-[10px] text-slate-400">Inter-drug warning analysis. Highlights harmful overlaps, optimal administration constraints and alcohol alerts.</p>
+                          <p className="text-[12px] text-slate-400">Inter-drug warning analysis. Highlights harmful overlaps, optimal administration constraints and alcohol alerts.</p>
 
                           <div className="space-y-2">
-                            <label className="text-[8px] uppercase tracking-widest text-slate-400 font-bold block text-left">Select Active Prescription Drug</label>
+                            <label className="text-[12px] uppercase tracking-widest text-slate-400 font-bold block text-left">Select Active Prescription Drug</label>
                             <select
                               value={copilotSelectedDrug}
                               onChange={(e) => setCopilotSelectedDrug(e.target.value)}
@@ -8506,7 +8529,7 @@ export default function App() {
                                 Post-Viral Recovery protocol
                               </h4>
                             </div>
-                            <span className="text-[10px] font-bold text-teal-500 bg-teal-500/10 px-2 py-0.5 rounded">
+                            <span className="text-[12px] font-bold text-teal-500 bg-teal-500/10 px-2 py-0.5 rounded">
                               {Math.round((Object.values(recoveryCheckedItems).filter(Boolean).length / Object.values(recoveryCheckedItems).length) * 100)}% Complete
                             </span>
                           </div>
@@ -8523,7 +8546,7 @@ export default function App() {
                                   "inhaler": false,
                                 });
                               }}
-                              className={`flex-1 py-1 px-2.5 text-[9px] font-extrabold uppercase rounded-lg transition-all ${
+                              className={`flex-1 py-1 px-2.5 text-[12px] font-extrabold uppercase rounded-lg transition-all ${
                                 activeRecoveryProtocol === "delhi-smog"
                                   ? "bg-teal-600 text-white"
                                   : "bg-slate-100 hover:bg-slate-200 text-slate-500"
@@ -8541,7 +8564,7 @@ export default function App() {
                                   "papaya": false,
                                 });
                               }}
-                              className={`flex-1 py-1 px-2.5 text-[9px] font-extrabold uppercase rounded-lg transition-all ${
+                              className={`flex-1 py-1 px-2.5 text-[12px] font-extrabold uppercase rounded-lg transition-all ${
                                 activeRecoveryProtocol === "dengue"
                                   ? "bg-teal-600 text-white"
                                   : "bg-slate-100 hover:bg-slate-200 text-slate-500"
@@ -8555,63 +8578,63 @@ export default function App() {
                           <div className="space-y-2 pt-1">
                             {activeRecoveryProtocol === "delhi-smog" ? (
                               <>
-                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[10px] font-semibold cursor-pointer select-none">
+                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[12px] font-semibold cursor-pointer select-none">
                                   <input type="checkbox" checked={!!recoveryCheckedItems.hydration} onChange={() => handleToggleRecoveryItem("hydration")} className="h-3.5 w-3.5 accent-teal-600" />
                                   <div>
                                     <p className={`${isAppDarkMode ? "text-slate-200" : "text-slate-900"}`}>Maintain strict hydration (&gt;2.5L clean water)</p>
-                                    <span className="text-[8px] text-slate-400 block font-normal">Aqueous dilution decreases smog blood toxins</span>
+                                    <span className="text-[12px] text-slate-400 block font-normal">Aqueous dilution decreases smog blood toxins</span>
                                   </div>
                                 </label>
-                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[10px] font-semibold cursor-pointer select-none">
+                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[12px] font-semibold cursor-pointer select-none">
                                   <input type="checkbox" checked={!!recoveryCheckedItems.aqi} onChange={() => handleToggleRecoveryItem("aqi")} className="h-3.5 w-3.5 accent-teal-600" />
                                   <div>
                                     <p className={`${isAppDarkMode ? "text-slate-200" : "text-slate-900"}`}>Keep AQI inside below 80 parameters</p>
-                                    <span className="text-[8px] text-slate-400 block font-normal">Requires HEPA indoor purifier air treatment</span>
+                                    <span className="text-[12px] text-slate-400 block font-normal">Requires HEPA indoor purifier air treatment</span>
                                   </div>
                                 </label>
-                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[10px] font-semibold cursor-pointer select-none">
+                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[12px] font-semibold cursor-pointer select-none">
                                   <input type="checkbox" checked={!!recoveryCheckedItems.masks} onChange={() => handleToggleRecoveryItem("masks")} className="h-3.5 w-3.5 accent-teal-600" />
                                   <div>
                                     <p className={`${isAppDarkMode ? "text-slate-200" : "text-slate-900"}`}>Use high grade N95/N99 facial respirators outside</p>
-                                    <span className="text-[8px] text-slate-400 block font-normal">Filters PM2.5 micro air soot efficiently</span>
+                                    <span className="text-[12px] text-slate-400 block font-normal">Filters PM2.5 micro air soot efficiently</span>
                                   </div>
                                 </label>
-                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[10px] font-semibold cursor-pointer select-none">
+                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[12px] font-semibold cursor-pointer select-none">
                                   <input type="checkbox" checked={!!recoveryCheckedItems.inhaler} onChange={() => handleToggleRecoveryItem("inhaler")} className="h-3.5 w-3.5 accent-teal-600" />
                                   <div>
                                     <p className={`${isAppDarkMode ? "text-slate-200" : "text-slate-900"}`}>Take prescribed auxiliary corticosteroid puff</p>
-                                    <span className="text-[8px] text-slate-400 block font-normal">Decreases tracheal micro bronchial swelling</span>
+                                    <span className="text-[12px] text-slate-400 block font-normal">Decreases tracheal micro bronchial swelling</span>
                                   </div>
                                 </label>
                               </>
                             ) : (
                               <>
-                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[10px] font-semibold cursor-pointer select-none">
+                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[12px] font-semibold cursor-pointer select-none">
                                   <input type="checkbox" checked={!!recoveryCheckedItems.hydration} onChange={() => handleToggleRecoveryItem("hydration")} className="h-3.5 w-3.5 accent-teal-600" />
                                   <div>
                                     <p className={`${isAppDarkMode ? "text-slate-200" : "text-slate-900"}`}>Hourly isotonic hydration (ORS pack + water)</p>
-                                    <span className="text-[8px] text-slate-400 block font-normal">Critical for blood volume and capillary defense stability</span>
+                                    <span className="text-[12px] text-slate-400 block font-normal">Critical for blood volume and capillary defense stability</span>
                                   </div>
                                 </label>
-                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[10px] font-semibold cursor-pointer select-none">
+                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[12px] font-semibold cursor-pointer select-none">
                                   <input type="checkbox" checked={!!recoveryCheckedItems.plates} onChange={() => handleToggleRecoveryItem("plates")} className="h-3.5 w-3.5 accent-teal-600" />
                                   <div>
                                     <p className={`${isAppDarkMode ? "text-slate-200" : "text-slate-900"}`}>Track platelet counts (CBC profile every 24hr)</p>
-                                    <span className="text-[8px] text-slate-400 block font-normal">Emergency medical counselor trigger below 80,000 count</span>
+                                    <span className="text-[12px] text-slate-400 block font-normal">Emergency medical counselor trigger below 80,000 count</span>
                                   </div>
                                 </label>
-                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[10px] font-semibold cursor-pointer select-none">
+                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[12px] font-semibold cursor-pointer select-none">
                                   <input type="checkbox" checked={!!recoveryCheckedItems.bedrest} onChange={() => handleToggleRecoveryItem("bedrest")} className="h-3.5 w-3.5 accent-teal-600" />
                                   <div>
                                     <p className={`${isAppDarkMode ? "text-slate-200" : "text-slate-900"}`}>Complete horizontal bedrest (Zero load metrics)</p>
-                                    <span className="text-[8px] text-slate-400 block font-normal">Conserves cardiac cellular energy during fever spike</span>
+                                    <span className="text-[12px] text-slate-400 block font-normal">Conserves cardiac cellular energy during fever spike</span>
                                   </div>
                                 </label>
-                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[10px] font-semibold cursor-pointer select-none">
+                                <label className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-500/5 text-[12px] font-semibold cursor-pointer select-none">
                                   <input type="checkbox" checked={!!recoveryCheckedItems.papaya} onChange={() => handleToggleRecoveryItem("papaya")} className="h-3.5 w-3.5 accent-teal-600" />
                                   <div>
                                     <p className={`${isAppDarkMode ? "text-slate-200" : "text-slate-900"}`}>Feed auxiliary organic papaya leaf extract</p>
-                                    <span className="text-[8px] text-slate-400 block font-normal">Assists megakaryoblastic platelet synthesis support</span>
+                                    <span className="text-[12px] text-slate-400 block font-normal">Assists megakaryoblastic platelet synthesis support</span>
                                   </div>
                                 </label>
                               </>
@@ -8645,7 +8668,7 @@ export default function App() {
                                 <QrCode className="h-4 w-4 text-teal-400" /> CITY HEALER UNIFIED ID
                               </h4>
                             </div>
-                            <span className="text-[8px] uppercase font-mono font-black border border-emerald-400 bg-emerald-400/20 text-emerald-300 px-1.5 py-0.5 rounded leading-none flex items-center gap-1">
+                            <span className="text-[12px] uppercase font-mono font-black border border-emerald-400 bg-emerald-400/20 text-emerald-300 px-1.5 py-0.5 rounded leading-none flex items-center gap-1">
                               <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse"></span> Verified
                             </span>
                           </div>
@@ -8662,26 +8685,26 @@ export default function App() {
                             {/* Main User Metadata layout */}
                             <div className="grid grid-cols-2 gap-3 text-xs">
                               <div>
-                                <span className="opacity-60 text-[8px] uppercase tracking-wider block">Unified Health ID</span>
+                                <span className="opacity-60 text-[12px] uppercase tracking-wider block">Unified Health ID</span>
                                 <p className="font-extrabold tracking-widest font-mono text-white text-xs">{abhaIdInput}</p>
                               </div>
                               <div>
-                                <span className="opacity-60 text-[8px] uppercase tracking-wider block">Patient Full Name</span>
+                                <span className="opacity-60 text-[12px] uppercase tracking-wider block">Patient Full Name</span>
                                 <p className="font-extrabold text-white text-xs">{abhaNameInput}</p>
                               </div>
                               <div>
-                                <span className="opacity-60 text-[8px] uppercase tracking-wider block">DOB / Age Details</span>
+                                <span className="opacity-60 text-[12px] uppercase tracking-wider block">DOB / Age Details</span>
                                 <p className="font-bold text-white text-xs">18 Jan 1995 ({abhaAgeInput} Years)</p>
                               </div>
                               <div>
-                                <span className="opacity-60 text-[8px] uppercase tracking-wider block">Emergency Blood Group</span>
+                                <span className="opacity-60 text-[12px] uppercase tracking-wider block">Emergency Blood Group</span>
                                 <p className="font-bold text-teal-300 text-xs">{abhaGroupInput}</p>
                               </div>
                             </div>
                           </div>
 
                           {/* Footer details card barcode and sync hashes */}
-                          <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[9px] font-mono text-white/50">
+                          <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[12px] font-mono text-white/50">
                             <span>REGIONAL METROPOLITAN NODE: GURGAON-MAIN</span>
                             <span>INDEX: SHA-256_V4</span>
                           </div>
@@ -8694,11 +8717,11 @@ export default function App() {
                           <h4 className={`text-xs font-black uppercase tracking-wider ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>
                             Configure Dynamic ABHA ID
                           </h4>
-                          <p className="text-[10px] text-slate-500">Edit clinical variables below and watch your decrypted medical credential matrix refresh instantly (ABHA compliance standard).</p>
+                          <p className="text-[12px] text-slate-500">Edit clinical variables below and watch your decrypted medical credential matrix refresh instantly (ABHA compliance standard).</p>
 
                           <div className="grid grid-cols-2 gap-3 pb-1">
                             <div className="space-y-1">
-                              <label className={`text-[8px] uppercase tracking-widest font-bold block ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Patient Name</label>
+                              <label className={`text-[12px] uppercase tracking-widest font-bold block ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Patient Name</label>
                               <input
                                 type="text"
                                 value={abhaNameInput}
@@ -8709,7 +8732,7 @@ export default function App() {
                               />
                             </div>
                             <div className="space-y-1">
-                              <label className={`text-[8px] uppercase tracking-widest font-bold block ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Blood Group</label>
+                              <label className={`text-[12px] uppercase tracking-widest font-bold block ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Blood Group</label>
                               <select
                                 value={abhaGroupInput}
                                 onChange={(e) => setAbhaGroupInput(e.target.value)}
@@ -8724,7 +8747,7 @@ export default function App() {
                               </select>
                             </div>
                             <div className="space-y-1">
-                              <label className={`text-[8px] uppercase tracking-widest font-bold block ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Custom Health ID Code</label>
+                              <label className={`text-[12px] uppercase tracking-widest font-bold block ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Custom Health ID Code</label>
                               <input
                                 type="text"
                                 value={abhaIdInput}
@@ -8735,7 +8758,7 @@ export default function App() {
                               />
                             </div>
                             <div className="space-y-1">
-                              <label className={`text-[8px] uppercase tracking-widest font-bold block ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Patient Age</label>
+                              <label className={`text-[12px] uppercase tracking-widest font-bold block ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Patient Age</label>
                               <input
                                 type="number"
                                 value={abhaAgeInput}
@@ -8760,7 +8783,7 @@ export default function App() {
                               <h4 className={`text-sm font-black uppercase tracking-wider ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
                                 Inter-Hospital Ledger Vault (6 active nodes)
                               </h4>
-                              <p className="text-[10px] text-slate-500 font-medium">Decentralized, unified timeline compiled across Max, Fortis, Medanta, and NCR Gurgaon Civil Nodes.</p>
+                              <p className="text-[12px] text-slate-500 font-medium">Decentralized, unified timeline compiled across Max, Fortis, Medanta, and NCR Gurgaon Civil Nodes.</p>
                             </div>
                             
                             <button
@@ -8799,21 +8822,21 @@ export default function App() {
                               >
                                 <div className="space-y-1">
                                   <div className="flex items-center gap-2">
-                                    <span className={`text-[8px] font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider ${
+                                    <span className={`text-[12px] font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider ${
                                       isAppDarkMode ? "bg-blue-950/40 text-blue-400" : "bg-blue-500/10 text-blue-600"
                                     }`}>
                                       {rec.type}
                                     </span>
-                                    <span className={`text-[10px] font-mono ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+                                    <span className={`text-[12px] font-mono ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>
                                       {rec.date}
                                     </span>
                                   </div>
                                   <p className={`text-xs font-extrabold ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>{rec.title}</p>
-                                  <p className="text-[10px] text-slate-400">Node: {rec.hospital} • Signee: {rec.doctor}</p>
+                                  <p className="text-[12px] text-slate-400">Node: {rec.hospital} • Signee: {rec.doctor}</p>
                                 </div>
 
                                 <div className="flex items-center gap-2 self-start sm:self-auto">
-                                  <span className="px-2 py-1 text-[8px] font-bold tracking-widest uppercase bg-emerald-500/10 text-emerald-400 rounded flex items-center gap-1 leading-none">
+                                  <span className="px-2 py-1 text-[12px] font-bold tracking-widest uppercase bg-emerald-500/10 text-emerald-400 rounded flex items-center gap-1 leading-none">
                                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block"></span> Crypt Locked
                                   </span>
                                 </div>
@@ -8823,7 +8846,7 @@ export default function App() {
 
                           {/* Add clinical report form drawer */}
                           <div className="border-t pt-4 border-slate-150 space-y-3">
-                            <span className="text-[9px] uppercase tracking-wider font-extrabold text-slate-400 block pl-1">Decrypter Sandbox: Upload External File</span>
+                            <span className="text-[12px] uppercase tracking-wider font-extrabold text-slate-400 block pl-1">Decrypter Sandbox: Upload External File</span>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                               <input
                                 type="text"
@@ -8879,7 +8902,7 @@ export default function App() {
 
                         <div className="max-w-xl mx-auto space-y-4 relative z-10">
                           <div className="text-center">
-                            <span className="p-1 px-3 bg-rose-500/10 text-rose-500 font-mono text-[9px] font-black uppercase tracking-widest rounded-full leading-none flex items-center gap-1 w-max mx-auto mb-2 select-none">
+                            <span className="p-1 px-3 bg-rose-500/10 text-rose-500 font-mono text-[12px] font-black uppercase tracking-widest rounded-full leading-none flex items-center gap-1 w-max mx-auto mb-2 select-none">
                               {sosStateStatus === "ACTIVE" && (
                                 <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping inline-block"></span>
                               )}
@@ -8888,7 +8911,7 @@ export default function App() {
                             <h3 className={`text-xl font-black tracking-tight ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
                               Gurgaon-Expressway Critical Rescue Center
                             </h3>
-                            <p className="text-[11px] text-slate-400">
+                            <p className="text-[12.5px] text-slate-400">
                               Triggers immediate sirens on central trauma desk, dispatches GPS medical ambulance responders within 600m and alerts predefined immediate family.
                             </p>
                           </div>
@@ -8902,7 +8925,7 @@ export default function App() {
                               >
                                 <Radio className="h-9 w-9 animate-bounce text-white" />
                                 <span className="text-sm font-extrabold text-[#fff]">ACTIVATE SOS</span>
-                                <span className="text-[8px] opacity-75 font-semibold leading-none text-[#fff]">ONE-TAP ESCALATED DISPATCH</span>
+                                <span className="text-[12px] opacity-75 font-semibold leading-none text-[#fff]">ONE-TAP ESCALATED DISPATCH</span>
                               </button>
                             )}
 
@@ -8920,12 +8943,12 @@ export default function App() {
                                 >
                                   <span className="w-3.5 h-3.5 rounded-full bg-rose-500 animate-ping"></span>
                                   <span className="font-extrabold text-[#f43f5e]">CANCEL SOS RESCUE</span>
-                                  <span className="text-[8px] text-slate-400 font-semibold uppercase block">Tap countermand</span>
+                                  <span className="text-[12px] text-slate-400 font-semibold uppercase block">Tap countermand</span>
                                 </button>
 
                                 <div className="p-4 bg-rose-500/10 border border-rose-900/60 rounded-2xl max-w-sm mx-auto space-y-1.5 animate-fade-in">
-                                  <p className="text-[10px] text-rose-450 font-bold uppercase tracking-wider block">🚨 BROADCAST CONFIRMED</p>
-                                  <p className="text-[10px] text-slate-300 font-medium leading-relaxed">
+                                  <p className="text-[12px] text-rose-450 font-bold uppercase tracking-wider block">🚨 BROADCAST CONFIRMED</p>
+                                  <p className="text-[12px] text-slate-300 font-medium leading-relaxed">
                                     Trauma Desk Gurgaon Node has accepted packet. Cellular SMS dispatch links forwarded to: Mom, Sister, Spouse. GPS beacon streaming.
                                   </p>
                                 </div>
@@ -8948,7 +8971,7 @@ export default function App() {
                                 Live Ambulance Telemetry Stream
                               </h4>
                             </div>
-                            <span className="text-[10px] font-bold text-rose-450 bg-rose-500/10 px-2.5 py-0.5 rounded">
+                            <span className="text-[12px] font-bold text-rose-450 bg-rose-500/10 px-2.5 py-0.5 rounded">
                               {sosStateStatus === "ACTIVE" ? `Dispatch ETA: ${liveAmbulanceEta} mins` : "Status: Radar Standby"}
                             </span>
                           </div>
@@ -8975,18 +8998,18 @@ export default function App() {
                             </svg>
 
                             {/* Relative floating text indicators inside Map */}
-                            <span className="absolute bottom-4 left-6 text-[8px] font-mono font-bold bg-slate-950/80 text-slate-300 p-1 px-1.5 rounded uppercase tracking-wider border border-slate-800">
+                            <span className="absolute bottom-4 left-6 text-[12px] font-mono font-bold bg-slate-950/80 text-slate-300 p-1 px-1.5 rounded uppercase tracking-wider border border-slate-800">
                               Patient SOS Origin
                             </span>
                             
-                            <span className="absolute top-4 right-8 text-[8px] font-mono font-bold bg-slate-950/80 text-slate-300 p-1 px-1.5 rounded uppercase tracking-wider border border-slate-800">
+                            <span className="absolute top-4 right-8 text-[12px] font-mono font-bold bg-slate-950/80 text-slate-300 p-1 px-1.5 rounded uppercase tracking-wider border border-slate-800">
                               Gurgaon Trauma Center Node
                             </span>
 
                             {/* Active Moving Ambulance Node marker */}
                             {sosStateStatus === "ACTIVE" ? (
                               <div
-                                className="absolute bg-rose-600 border border-white text-white p-2 rounded-xl flex items-center gap-1 font-bold text-[9px] shadow-lg shadow-rose-600/30 font-sans"
+                                className="absolute bg-rose-600 border border-white text-white p-2 rounded-xl flex items-center gap-1 font-bold text-[12px] shadow-lg shadow-rose-600/30 font-sans"
                                 style={{
                                   left: `${Math.round(40 + (320 * (ambulanceProgressPercent / 100)))}px`,
                                   top: `${Math.round(180 - (150 * (ambulanceProgressPercent / 100)))}px`,
@@ -8999,7 +9022,7 @@ export default function App() {
                             ) : (
                               <div className="text-center space-y-1.5 p-6 max-w-sm select-none">
                                 <p className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Ambulance GPS Inactive</p>
-                                <p className="text-[10px] text-slate-500 leading-relaxed">No telemetry to display. GPS mapping pipeline begins streaming automatically upon executing emergency SOS alarm.</p>
+                                <p className="text-[12px] text-slate-500 leading-relaxed">No telemetry to display. GPS mapping pipeline begins streaming automatically upon executing emergency SOS alarm.</p>
                               </div>
                             )}
                           </div>
@@ -9013,7 +9036,7 @@ export default function App() {
                             <h4 className={`text-xs font-black uppercase tracking-wider ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>
                               Real-Time ICU Bed & Ventilator Census: Delhi NCR
                             </h4>
-                            <p className="text-[10px] text-slate-500">Live clinical vacancy matrix cross-referenced directly with representing hospital central nodes.</p>
+                            <p className="text-[12px] text-slate-500">Live clinical vacancy matrix cross-referenced directly with representing hospital central nodes.</p>
                           </div>
 
                           <div className="space-y-2 overflow-y-auto max-h-[220px]">
@@ -9026,19 +9049,19 @@ export default function App() {
                               >
                                 <div>
                                   <p className={`font-extrabold ${isAppDarkMode ? "text-slate-100" : "text-slate-900"}`}>{item.name}</p>
-                                  <span className="text-[9px] text-slate-400 block font-normal">Distance: {item.distance}</span>
+                                  <span className="text-[12px] text-slate-400 block font-normal">Distance: {item.distance}</span>
                                 </div>
 
                                 <div className="flex items-center gap-4">
                                   <div className="text-right">
-                                    <span className="text-[8px] uppercase text-slate-400 block font-bold leading-none">ICU Beds</span>
+                                    <span className="text-[12px] uppercase text-slate-400 block font-bold leading-none">ICU Beds</span>
                                     <span className={`text-xs font-black ${item.icubeds > 5 ? "text-teal-400" : "text-amber-500"}`}>{item.icubeds} left</span>
                                   </div>
                                   <div className="text-right">
-                                    <span className="text-[8px] uppercase text-slate-400 block font-bold leading-none">Vents Available</span>
+                                    <span className="text-[12px] uppercase text-slate-400 block font-bold leading-none">Vents Available</span>
                                     <span className={`text-xs font-black ${item.ventAvailable > 2 ? "text-teal-400" : "text-rose-500"}`}>{item.ventAvailable}</span>
                                   </div>
-                                  <span className={`px-2 py-0.5 rounded text-[8px] uppercase tracking-widest font-black leading-none ${
+                                  <span className={`px-2 py-0.5 rounded text-[12px] uppercase tracking-widest font-black leading-none ${
                                     item.status === "Vacant"
                                       ? "bg-teal-500/10 text-teal-400"
                                       : item.status === "Stable"
@@ -9067,13 +9090,13 @@ export default function App() {
                           <h4 className={`text-xs font-black uppercase tracking-wider ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>
                             Configure Match Parameters
                           </h4>
-                          <p className="text-[10px] text-slate-500">Intelligent doctor recommender engine correlates local physical symptoms with hospital insurance cashless grids.</p>
+                          <p className="text-[12px] text-slate-500">Intelligent doctor recommender engine correlates local physical symptoms with hospital insurance cashless grids.</p>
                         </div>
 
                         <div className="space-y-3 font-semibold text-xs text-slate-800">
                           {/* Symptoms */}
                           <div className="space-y-1">
-                            <label className="text-[8px] uppercase tracking-widest text-slate-400 font-bold block text-left">Patient Primary Concern</label>
+                            <label className="text-[12px] uppercase tracking-widest text-slate-400 font-bold block text-left">Patient Primary Concern</label>
                             <select
                               value={matcherSymptomInput}
                               onChange={(e) => setMatcherSymptomInput(e.target.value)}
@@ -9089,14 +9112,14 @@ export default function App() {
 
                           {/* Budget */}
                           <div className="space-y-1">
-                            <label className="text-[8px] uppercase tracking-widest text-slate-400 font-bold block text-left">Consultation Budget Class</label>
+                            <label className="text-[12px] uppercase tracking-widest text-slate-400 font-bold block text-left">Consultation Budget Class</label>
                             <div className={`p-1 rounded-xl flex gap-1 ${isAppDarkMode ? "bg-slate-900" : "bg-slate-100"}`}>
                               {(["ECONOMY", "STANDARD", "PREMIUM"] as const).map((b) => (
                                 <button
                                   key={b}
                                   type="button"
                                   onClick={() => setMatcherBudgetTier(b)}
-                                  className={`flex-1 py-1 px-1.5 font-bold uppercase rounded-lg text-[9px] transition-all cursor-pointer ${
+                                  className={`flex-1 py-1 px-1.5 font-bold uppercase rounded-lg text-[12px] transition-all cursor-pointer ${
                                     matcherBudgetTier === b
                                       ? "bg-indigo-600 text-white"
                                       : "text-slate-500 hover:text-slate-700"
@@ -9110,7 +9133,7 @@ export default function App() {
 
                           {/* Insurance */}
                           <div className="space-y-1">
-                            <label className="text-[8px] uppercase tracking-widest text-slate-400 font-bold block text-left">Cashless Insurance Provider</label>
+                            <label className="text-[12px] uppercase tracking-widest text-slate-400 font-bold block text-left">Cashless Insurance Provider</label>
                             <select
                               value={matcherInsuranceProvider}
                               onChange={(e) => setMatcherInsuranceProvider(e.target.value)}
@@ -9126,8 +9149,8 @@ export default function App() {
 
                           {/* Distance */}
                           <div className="space-y-1">
-                            <div className="flex justify-between text-[10px] font-bold">
-                              <label className="text-[8px] uppercase tracking-widest text-slate-400 font-bold block">Max Regional Distance</label>
+                            <div className="flex justify-between text-[12px] font-bold">
+                              <label className="text-[12px] uppercase tracking-widest text-slate-400 font-bold block">Max Regional Distance</label>
                               <span className="text-indigo-400">{matcherDistanceRadius} km radius</span>
                             </div>
                             <input
@@ -9142,7 +9165,7 @@ export default function App() {
 
                           {/* Priority */}
                           <div className="space-y-1">
-                            <label className="text-[8px] uppercase tracking-widest text-slate-400 font-bold block text-left">Client Urgency Priority</label>
+                            <label className="text-[12px] uppercase tracking-widest text-slate-400 font-bold block text-left">Client Urgency Priority</label>
                             <select
                               value={matcherEmergencyPriority}
                               onChange={(e) => setMatcherEmergencyPriority(e.target.value as any)}
@@ -9185,7 +9208,7 @@ export default function App() {
                             <h4 className={`text-sm font-black uppercase tracking-wider ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
                               Matched Experts & Success Rates
                             </h4>
-                            <p className="text-[10px] text-slate-500">Cross-analyzed patient ratings, waiting indicators, and cashless approval parameters.</p>
+                            <p className="text-[12px] text-slate-500">Cross-analyzed patient ratings, waiting indicators, and cashless approval parameters.</p>
                           </div>
 
                           {matcherOutputDoctors.length > 0 ? (
@@ -9206,18 +9229,18 @@ export default function App() {
                                       </div>
                                       <div>
                                         <p className={`font-extrabold text-sm ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>{doc.name}</p>
-                                        <p className="text-[10px] text-indigo-400 font-extrabold">{doc.specialty} • {doc.experience} Yr Exp</p>
-                                        <p className="text-[9px] text-slate-400 font-medium">Node: {doc.hospitalName}</p>
+                                        <p className="text-[12px] text-indigo-400 font-extrabold">{doc.specialty} • {doc.experience} Yr Exp</p>
+                                        <p className="text-[12px] text-slate-400 font-medium">Node: {doc.hospitalName}</p>
                                       </div>
                                     </div>
 
                                     <div className="flex items-center gap-3 self-start md:self-auto">
                                       <div className="text-right">
-                                        <span className="text-[8px] font-bold text-slate-450 uppercase block">Intelli-Match</span>
+                                        <span className="text-[12px] font-bold text-slate-450 uppercase block">Intelli-Match</span>
                                         <span className="text-xs font-black text-teal-400">{calculatedMatchScore}% Core Match</span>
                                       </div>
                                       <div className="text-right">
-                                        <span className="text-[8px] font-bold text-slate-450 uppercase block">Live Wait</span>
+                                        <span className="text-[12px] font-bold text-slate-450 uppercase block">Live Wait</span>
                                         <span className="text-xs font-black text-amber-500">{doc.waitTimeMin || 10} Mins</span>
                                       </div>
                                       
@@ -9238,7 +9261,7 @@ export default function App() {
                                           } as any);
                                           showToast(`Booking initiated with ${doc.name}. Redirecting to Medical Counsel section...`);
                                         }}
-                                        className="bg-indigo-650 hover:bg-indigo-600 text-[#fff] text-[10px] font-black uppercase tracking-wider px-3 py-2 rounded-xl transition-all cursor-pointer"
+                                        className="bg-indigo-650 hover:bg-indigo-600 text-[#fff] text-[12px] font-black uppercase tracking-wider px-3 py-2 rounded-xl transition-all cursor-pointer"
                                       >
                                         Book Consultation
                                       </button>
@@ -9251,7 +9274,7 @@ export default function App() {
                             <div className="text-center p-12 py-16 space-y-2 border border-dashed rounded-2xl border-slate-200 select-none">
                               <Sparkles className="h-10 w-10 text-indigo-500/40 animate-pulse mx-auto" />
                               <p className={`font-black text-sm uppercase tracking-wide ${isAppDarkMode ? "text-white" : "text-indigo-900"}`}>Awaiting Search Submission</p>
-                              <p className="text-[10px] text-slate-500 max-w-sm mx-auto leading-relaxed">Adjust your target symptoms and click identify best doctor matches to run simulated neural search against NCR hospital nodes.</p>
+                              <p className="text-[12px] text-slate-500 max-w-sm mx-auto leading-relaxed">Adjust your target symptoms and click identify best doctor matches to run simulated neural search against NCR hospital nodes.</p>
                             </div>
                           )}
                         </div>
@@ -9301,7 +9324,7 @@ export default function App() {
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="text-lg font-black tracking-tight">Onboard New Patient</h3>
-                      <p className="text-[11px] text-slate-500">Register secondary clinical identity & update health portal profile.</p>
+                      <p className="text-[12.5px] text-slate-500">Register secondary clinical identity & update health portal profile.</p>
                     </div>
                     <button 
                       onClick={() => setIsAddPatientOpen(false)}
@@ -9313,7 +9336,7 @@ export default function App() {
 
                   <form onSubmit={handleAddNewPatient} className="space-y-4">
                     <div>
-                      <label className="text-[10px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Full Name</label>
+                      <label className="text-[12px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Full Name</label>
                       <input 
                         type="text" 
                         required
@@ -9330,7 +9353,7 @@ export default function App() {
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[10px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Relationship</label>
+                        <label className="text-[12px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Relationship</label>
                         <select 
                           value={newPatientRelation}
                           onChange={(e) => setNewPatientRelation(e.target.value)}
@@ -9351,7 +9374,7 @@ export default function App() {
                       </div>
 
                       <div>
-                        <label className="text-[10px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Gender</label>
+                        <label className="text-[12px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Gender</label>
                         <select 
                           value={newPatientGender}
                           onChange={(e) => setNewPatientGender(e.target.value)}
@@ -9370,7 +9393,7 @@ export default function App() {
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[10px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Age (Years)</label>
+                        <label className="text-[12px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Age (Years)</label>
                         <input 
                           type="number" 
                           required
@@ -9387,7 +9410,7 @@ export default function App() {
                       </div>
 
                       <div>
-                        <label className="text-[10px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Blood Group</label>
+                        <label className="text-[12px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Blood Group</label>
                         <select 
                           value={newPatientBloodGroup}
                           onChange={(e) => setNewPatientBloodGroup(e.target.value)}
@@ -9410,7 +9433,7 @@ export default function App() {
                     </div>
 
                     <div>
-                      <label className="text-[10px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Insurance Cover ID (Optional)</label>
+                      <label className="text-[12px] font-bold uppercase tracking-wider block mb-1 text-slate-500">Insurance Cover ID (Optional)</label>
                       <input 
                         type="text" 
                         value={newPatientPolicy}
@@ -9488,10 +9511,10 @@ export default function App() {
 
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className={`p-1 px-2.5 rounded font-mono text-[9px] font-bold uppercase tracking-widest ${
+                      <span className={`p-1 px-2.5 rounded font-mono text-[12px] font-bold uppercase tracking-widest ${
                         isAppDarkMode ? "bg-slate-900 text-slate-400" : "bg-slate-100 text-slate-500"
                       }`}>Settings Panel</span>
-                      <span className="text-[10px] text-slate-400">Firmware 14.8.2-A</span>
+                      <span className="text-[12px] text-slate-400">Firmware 14.8.2-A</span>
                     </div>
                     <h3 className={`text-lg font-black tracking-tight ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
                       Profile & Security preferences
@@ -9502,7 +9525,7 @@ export default function App() {
                   </div>
 
                   {/* Settings Tab Selector Bar */}
-                  <div className={`flex border-b text-[10px] font-bold gap-1 pb-1 ${
+                  <div className={`flex border-b text-[12px] font-bold gap-1 pb-1 ${
                     isAppDarkMode ? "border-slate-800" : "border-slate-100"
                   }`}>
                     {[
@@ -9545,21 +9568,21 @@ export default function App() {
                         </div>
                         <div>
                           <p className={`font-extrabold text-sm ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>{authName}</p>
-                          <p className={`text-[10px] ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>{authEmail} • {authPhone}</p>
+                          <p className={`text-[12px] ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>{authEmail} • {authPhone}</p>
                         </div>
                       </div>
-                      <span className={`text-[9px] font-extrabold px-2 py-1 rounded ${
+                      <span className={`text-[12px] font-extrabold px-2 py-1 rounded ${
                         isAppDarkMode ? "bg-slate-800 text-slate-300" : "bg-slate-200/60 text-slate-700"
                       }`}>Active Account</span>
                     </div>
 
                     <div className={`border-t pt-3 space-y-3 ${isAppDarkMode ? "border-slate-800" : "border-slate-200/60"}`}>
                       <div className="flex items-center justify-between gap-3">
-                        <span className={`text-[10px] font-medium ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Public Doctor Profile URL</span>
+                        <span className={`text-[12px] font-medium ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>Public Doctor Profile URL</span>
                         <button
                           onClick={handleShareProfile}
                           id="share-profile-btn"
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all active:scale-91 cursor-pointer ${
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-bold uppercase tracking-wider transition-all active:scale-91 cursor-pointer ${
                             isAppDarkMode 
                               ? "bg-indigo-950/60 hover:bg-indigo-900/70 text-indigo-300 hover:text-indigo-200 border border-indigo-900/60 hover:border-indigo-700/80" 
                               : "bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-100 hover:border-indigo-200"
@@ -9576,7 +9599,7 @@ export default function App() {
                           ? "bg-slate-950/40 border-slate-800" 
                           : "bg-white/60 border-slate-100"
                       }`}>
-                        <span className={`text-[10px] font-semibold pl-1 ${
+                        <span className={`text-[12px] font-semibold pl-1 ${
                           isAppDarkMode ? "text-slate-300" : "text-slate-500"
                         }`}>Share via:</span>
                         <div className="flex items-center gap-1.5">
@@ -9593,7 +9616,7 @@ export default function App() {
                             target="_blank"
                             rel="noopener noreferrer"
                             id="share-whatsapp-btn"
-                            className={`flex items-center gap-1 px-2.5 py-1.5 border rounded-lg text-[10px] font-bold transition-all active:scale-95 ${
+                            className={`flex items-center gap-1 px-2.5 py-1.5 border rounded-lg text-[12px] font-bold transition-all active:scale-95 ${
                               isAppDarkMode 
                                 ? "bg-emerald-950/50 hover:bg-emerald-900/60 text-emerald-400 hover:text-emerald-300 border-emerald-950/80 hover:border-emerald-800/80" 
                                 : "bg-emerald-50 hover:bg-emerald-100 text-emerald-700 hover:text-emerald-800 border-emerald-100 hover:border-emerald-200"
@@ -9616,7 +9639,7 @@ export default function App() {
                             target="_blank"
                             rel="noopener noreferrer"
                             id="share-linkedin-btn"
-                            className={`flex items-center gap-1 px-2.5 py-1.5 border rounded-lg text-[10px] font-bold transition-all active:scale-95 ${
+                            className={`flex items-center gap-1 px-2.5 py-1.5 border rounded-lg text-[12px] font-bold transition-all active:scale-95 ${
                               isAppDarkMode 
                                 ? "bg-blue-950/50 hover:bg-blue-900/60 text-blue-400 hover:text-blue-300 border-blue-950/80 hover:border-blue-850" 
                                 : "bg-blue-50 hover:bg-blue-100 text-blue-700 hover:text-blue-800 border-blue-100 hover:border-blue-200"
@@ -9641,7 +9664,7 @@ export default function App() {
                             target="_blank"
                             rel="noopener noreferrer"
                             id="share-twitter-btn"
-                            className={`flex items-center gap-1 px-2.5 py-1.5 border rounded-lg text-[10px] font-bold transition-all active:scale-95 ${
+                            className={`flex items-center gap-1 px-2.5 py-1.5 border rounded-lg text-[12px] font-bold transition-all active:scale-95 ${
                               isAppDarkMode 
                                 ? "bg-slate-900 hover:bg-slate-850 text-slate-300 hover:text-white border-slate-800 hover:border-slate-700" 
                                 : "bg-slate-100 hover:bg-slate-200 text-slate-800 hover:text-slate-900 border-slate-200 hover:border-slate-300"
@@ -9658,14 +9681,14 @@ export default function App() {
                   {/* List of family members inside Profiles tab */}
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Clinical Patient Profiles</h4>
+                        <h4 className="text-[12px] font-black text-slate-400 uppercase tracking-widest pl-1">Clinical Patient Profiles</h4>
                         <button
                           type="button"
                           onClick={() => {
                             setIsSettingsOpen(false);
                             setIsAddPatientOpen(true);
                           }}
-                          className="text-blue-600 dark:text-cyan-400 hover:underline text-[10px] font-extrabold flex items-center gap-1"
+                          className="text-blue-600 dark:text-cyan-400 hover:underline text-[12px] font-extrabold flex items-center gap-1"
                         >
                           <Plus className="h-3 w-3" /> Add Patient Profile
                         </button>
@@ -9682,7 +9705,7 @@ export default function App() {
                             }`}
                           >
                             <div className="flex items-center gap-2">
-                              <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-black uppercase text-[10px] shrink-0 ${
+                              <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-black uppercase text-[12px] shrink-0 ${
                                 activeFamilyMember === fm.name
                                   ? (isAppDarkMode ? "bg-blue-900/55 text-blue-300" : "bg-blue-100 text-blue-700")
                                   : (isAppDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-100 text-slate-500")
@@ -9692,17 +9715,17 @@ export default function App() {
                               <div className="min-w-0">
                                 <p className="font-extrabold flex items-center gap-1.5 text-slate-900 dark:text-white truncate">
                                   <span>{fm.name}</span>
-                                  <span className={`text-[8px] font-bold px-1.5 py-0.2 rounded shrink-0 ${
+                                  <span className={`text-[12px] font-bold px-1.5 py-0.2 rounded shrink-0 ${
                                     isAppDarkMode ? "bg-slate-800 text-slate-400" : "bg-slate-150 text-slate-500"
                                   }`}>{fm.relation}</span>
                                 </p>
-                                <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
+                                <p className="text-[12px] text-slate-500 dark:text-slate-400 truncate">
                                   {fm.gender} • {fm.age} yrs • Blood: {fm.bloodGroup} • Policy: {fm.policyNo}
                                 </p>
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-2 shrink-0 text-[10px]">
+                            <div className="flex items-center gap-2 shrink-0 text-[12px]">
                               {activeFamilyMember !== fm.name && (
                                 <button
                                   type="button"
@@ -9745,8 +9768,8 @@ export default function App() {
                     <div className="space-y-4 animate-fade-in text-xs">
                       <div className="flex items-center justify-between pl-1">
                         <div className="space-y-0.5">
-                          <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1 font-extrabold text-blue-600 dark:text-cyan-400">User Activity Ledger</h4>
-                          <p className="text-[10px] text-slate-500">Trace historical symptom diagnostics, drug orders, and doctor appointment scheduling.</p>
+                          <h4 className="text-[12px] font-black text-slate-400 uppercase tracking-widest pl-1 font-extrabold text-blue-600 dark:text-cyan-400">User Activity Ledger</h4>
+                          <p className="text-[12px] text-slate-500">Trace historical symptom diagnostics, drug orders, and doctor appointment scheduling.</p>
                         </div>
                         {activityLog.length > 0 && (
                           <button
@@ -9757,7 +9780,7 @@ export default function App() {
                                 showToast("🗑️ Activity log history cleared.");
                               }
                             }}
-                            className="text-rose-500 hover:text-rose-600 dark:text-rose-400 dark:hover:text-rose-300 text-[10px] font-bold flex items-center gap-1 cursor-pointer hover:underline"
+                            className="text-rose-500 hover:text-rose-600 dark:text-rose-400 dark:hover:text-rose-300 text-[12px] font-bold flex items-center gap-1 cursor-pointer hover:underline"
                           >
                             <Trash2 className="h-3 w-3" /> Clear History
                           </button>
@@ -9770,7 +9793,7 @@ export default function App() {
                         }`}>
                           <Clock className="h-6 w-6 text-slate-450 animate-pulse" />
                           <p className="font-extrabold text-xs">No Recent Activity Recorded</p>
-                          <p className="text-[10px] text-slate-400 dark:text-slate-500 max-w-[240px] leading-relaxed">
+                          <p className="text-[12px] text-slate-400 dark:text-slate-500 max-w-[240px] leading-relaxed">
                             Once you schedule an appointment, submit symptoms to the AI diagnostic engine, or check out some pharmacy products, your activity details will automatically build here.
                           </p>
                         </div>
@@ -9810,7 +9833,7 @@ export default function App() {
                                         {log.title}
                                       </p>
                                       {log.status && (
-                                        <span className={`text-[8.5px] font-black shrink-0 px-1.5 py-0.2 rounded ${
+                                        <span className={`text-[12px] font-black shrink-0 px-1.5 py-0.2 rounded ${
                                           log.status === "Completed" ? "bg-purple-100 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300" :
                                           log.status === "Processing" ? "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300" :
                                           "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
@@ -9819,11 +9842,11 @@ export default function App() {
                                         </span>
                                       )}
                                     </div>
-                                    <p className="text-[10px] text-slate-600 dark:text-slate-400 leading-normal">
+                                    <p className="text-[12px] text-slate-600 dark:text-slate-400 leading-normal">
                                       {log.description}
                                     </p>
                                     <div className="flex items-center gap-1.5 pt-1">
-                                      <span className="text-[8px] font-mono font-bold text-slate-400 uppercase">
+                                      <span className="text-[12px] font-mono font-bold text-slate-400 uppercase">
                                         {new Date(log.timestamp).toLocaleString([], {
                                           month: "short",
                                           day: "numeric",
@@ -9846,8 +9869,8 @@ export default function App() {
                   {settingsActiveTab === "features" && (
                     <div className="space-y-4 animate-fade-in text-xs">
                       <div className="space-y-0.5">
-                        <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest pl-1">Customize Workspace Feeds</h4>
-                        <p className="text-[10px] text-slate-500">Toggle clinical portal modules on and off in real time from your sidebar navigation.</p>
+                        <h4 className="text-[12px] font-black text-slate-400 uppercase tracking-widest pl-1">Customize Workspace Feeds</h4>
+                        <p className="text-[12px] text-slate-500">Toggle clinical portal modules on and off in real time from your sidebar navigation.</p>
                       </div>
 
                       <div className="grid gap-2 max-h-56 overflow-y-auto pr-1">
@@ -9873,7 +9896,7 @@ export default function App() {
                           >
                             <div className="space-y-0.5">
                               <p className="font-extrabold text-xs">{feature.label}</p>
-                              <p className="text-[10px] text-slate-500 leading-normal">{feature.desc}</p>
+                              <p className="text-[12px] text-slate-500 leading-normal">{feature.desc}</p>
                             </div>
 
                             <button
@@ -9901,7 +9924,7 @@ export default function App() {
 
                   {/* Setting Groups */}
                   <div className="space-y-4">
-                    <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-wider pl-1 font-extrabold">Security & UI Preferences</h4>
+                    <h4 className="text-[12px] font-black text-slate-400 uppercase tracking-wider pl-1 font-extrabold">Security & UI Preferences</h4>
 
                     {/* Localization Interface Language Selection toggle */}
                     <div className={`p-4 border rounded-2xl transition-all space-y-3 ${
@@ -9916,13 +9939,13 @@ export default function App() {
                             {getTranslation(appLanguage, "languageSettingsLabel")}
                           </span>
                         </div>
-                        <p className="text-[10px] text-slate-500 leading-relaxed max-w-[280px]">
+                        <p className="text-[12px] text-slate-500 leading-relaxed max-w-[280px]">
                           {getTranslation(appLanguage, "languageSelectDesc")}
                         </p>
                       </div>
 
                       {/* Pill Select Toggles */}
-                      <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900 border dark:border-slate-800 p-0.5 rounded-xl text-[10px] self-start w-fit">
+                      <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-900 border dark:border-slate-800 p-0.5 rounded-xl text-[12px] self-start w-fit">
                         <button 
                           type="button"
                           onClick={() => {
@@ -9966,7 +9989,7 @@ export default function App() {
                             <Sun className={`h-3.5 w-3.5 ${isAppDarkMode ? "text-amber-400 animate-pulse" : "text-blue-600"}`} />
                             <span className={`font-extrabold text-xs ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>App Display Aesthetics</span>
                           </div>
-                          <p className="text-[10px] text-slate-500 leading-relaxed max-w-[280px]">
+                          <p className="text-[12px] text-slate-500 leading-relaxed max-w-[280px]">
                             Toggle high-contrast surgical dark canvas to reduce optic fatigue during late-night clinical shifts.
                           </p>
                         </div>
@@ -10002,7 +10025,7 @@ export default function App() {
                             <Lock className={`h-3.5 w-3.5 ${isAppDarkMode ? "text-blue-400" : "text-blue-600"}`} />
                             <span className={`font-extrabold text-xs ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>Simulated Biometric Auth Gateway</span>
                           </div>
-                          <p className="text-[10px] text-slate-500 leading-relaxed max-w-[280px]">
+                          <p className="text-[12px] text-slate-500 leading-relaxed max-w-[280px]">
                             Enable immediate bypass credentials using local hardware Touch ID or facial cameras when launching secure sessions.
                           </p>
                         </div>
@@ -10029,7 +10052,7 @@ export default function App() {
                       <div className={`pt-3 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                         isAppDarkMode ? "border-slate-800" : "border-slate-100"
                       }`}>
-                        <span className="text-[10px] font-bold text-slate-500 uppercase">Preferred Biometric Method</span>
+                        <span className="text-[12px] font-bold text-slate-500 uppercase">Preferred Biometric Method</span>
                         
                         <div className={`p-1 rounded-lg flex items-center gap-1 self-start sm:self-auto ${
                           isAppDarkMode ? "bg-slate-900" : "bg-slate-100"
@@ -10039,7 +10062,7 @@ export default function App() {
                               setBiometricVerifyType("FINGERPRINT");
                               showToast("Device driver target changed to Touch ID Fingerprint");
                             }}
-                            className={`px-2.5 py-1 text-[10px] font-bold rounded-md flex items-center gap-1 transition-all ${
+                            className={`px-2.5 py-1 text-[12px] font-bold rounded-md flex items-center gap-1 transition-all ${
                               biometricVerifyType === "FINGERPRINT" 
                                 ? (isAppDarkMode ? "bg-slate-800 text-white shadow-sm" : "bg-white text-slate-900 shadow-sm") 
                                 : "text-slate-500 hover:text-slate-300"
@@ -10053,7 +10076,7 @@ export default function App() {
                               setBiometricVerifyType("FACE");
                               showToast("Device driver target changed to Camera Face ID");
                             }}
-                            className={`px-2.5 py-1 text-[10px] font-bold rounded-md flex items-center gap-1 transition-all ${
+                            className={`px-2.5 py-1 text-[12px] font-bold rounded-md flex items-center gap-1 transition-all ${
                               biometricVerifyType === "FACE" 
                                 ? (isAppDarkMode ? "bg-slate-800 text-white shadow-sm" : "bg-white text-slate-900 shadow-sm") 
                                 : "text-slate-500 hover:text-slate-300"
@@ -10066,7 +10089,7 @@ export default function App() {
                       </div>
 
                       {isBiometricEnabled && (
-                        <div className={`p-3 border rounded-xl flex items-center gap-2 text-[10px] font-semibold animate-fade-in ${
+                        <div className={`p-3 border rounded-xl flex items-center gap-2 text-[12px] font-semibold animate-fade-in ${
                           isAppDarkMode 
                             ? "bg-emerald-950/40 border-emerald-900/50 text-emerald-400" 
                             : "bg-emerald-50 border-emerald-100 text-emerald-800"
@@ -10079,17 +10102,17 @@ export default function App() {
 
                     {/* Secondary Simulated Hardware Info */}
                     <div className="grid gap-4 sm:grid-cols-2">
-                      <div className={`p-3.5 rounded-xl border text-[10px] font-semibold text-slate-500 space-y-1 ${
+                      <div className={`p-3.5 rounded-xl border text-[12px] font-semibold text-slate-500 space-y-1 ${
                         isAppDarkMode ? "bg-slate-900/40 border-slate-800/80" : "bg-slate-50 border-slate-100"
                       }`}>
-                        <span className="text-[8px] uppercase tracking-wider font-extrabold text-slate-400 block">Metropolitan Health Link</span>
+                        <span className="text-[12px] uppercase tracking-wider font-extrabold text-slate-400 block">Metropolitan Health Link</span>
                         <p className={`${isAppDarkMode ? "text-slate-300" : "text-slate-800"} truncate`}>SHA256: 8C3B9F-FF-182C</p>
                       </div>
 
-                      <div className={`p-3.5 rounded-xl border text-[10px] font-semibold text-slate-500 space-y-1 ${
+                      <div className={`p-3.5 rounded-xl border text-[12px] font-semibold text-slate-500 space-y-1 ${
                         isAppDarkMode ? "bg-slate-900/40 border-slate-800/80" : "bg-slate-50 border-slate-100"
                       }`}>
-                        <span className="text-[8px] uppercase tracking-wider font-extrabold text-slate-400 block">Local Hardware Enclave</span>
+                        <span className="text-[12px] uppercase tracking-wider font-extrabold text-slate-400 block">Local Hardware Enclave</span>
                         <p className="text-emerald-500">Simulators Ready (ONLINE)</p>
                       </div>
                     </div>
@@ -10101,7 +10124,7 @@ export default function App() {
                   <div className={`border-t pt-5 flex items-center justify-between gap-4 text-xs ${
                     isAppDarkMode ? "border-slate-800" : "border-slate-100"
                   }`}>
-                    <span className="text-[10px] text-slate-400 font-semibold">
+                    <span className="text-[12px] text-slate-400 font-semibold">
                       Last changed: Today, {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                     </span>
                     <button
@@ -10150,7 +10173,7 @@ export default function App() {
                         : "Verify Security Touch-Token"
                       }
                     </h3>
-                    <p className="text-[11px] text-slate-400 font-semibold">
+                    <p className="text-[12.5px] text-slate-400 font-semibold">
                       {biometricVerifyType === "FINGERPRINT" 
                         ? "Hold finger onto device sensor array for loop enrollment" 
                         : "Face device front camera for structural point verification"
@@ -10194,13 +10217,13 @@ export default function App() {
                       )}
                     </div>
                     {biometricVerifyStatus === "IDLE" && (
-                      <p className="text-[9px] text-slate-500 mt-2.5 uppercase tracking-wider font-extrabold animate-pulse">Click sensor area to simulate scan</p>
+                      <p className="text-[12px] text-slate-500 mt-2.5 uppercase tracking-wider font-extrabold animate-pulse">Click sensor area to simulate scan</p>
                     )}
                   </div>
 
                   {/* Real-time scan log feedback console */}
-                  <div className="p-3 bg-slate-950/80 rounded-2xl border border-slate-800 text-left font-mono text-[10px] space-y-2">
-                    <div className="flex justify-between items-center text-slate-500 text-[9px] border-b border-slate-800 pb-1.5 font-bold">
+                  <div className="p-3 bg-slate-950/80 rounded-2xl border border-slate-800 text-left font-mono text-[12px] space-y-2">
+                    <div className="flex justify-between items-center text-slate-500 text-[12px] border-b border-slate-800 pb-1.5 font-bold">
                       <span>SECURE DEVICE SENSORS</span>
                       <span className="font-bold text-cyan-400 font-mono">
                         {biometricVerifyStatus === "IDLE" && "STANDBY"}

@@ -7,9 +7,16 @@ interface AnimatedConfirmButtonProps {
     onComplete?: () => void | Promise<void>;
     initialText: React.ReactNode;
     finalText?: React.ReactNode;
+    /**
+     * Direction A: routine actions fire on the first click. The three-step walk is kept
+     * only where an action reaches the physical world and cannot be taken back — pass
+     * confirm to opt back into it.
+     */
+    confirm?: boolean;
 }
 
-const AnimatedConfirmButton = ({ onComplete, initialText, finalText = "Finish" }: AnimatedConfirmButtonProps) => {
+const AnimatedConfirmButton = ({ onComplete, initialText, finalText = "Finish", confirm = false }: AnimatedConfirmButtonProps) => {
+    const finalStep = confirm ? 3 : 1;
     const [step, setStep] = useState(1)
     const [isExpanded, setIsExpanded] = useState(true)
     // Step 3 stays clickable, so without this guard every extra click re-fires the
@@ -21,11 +28,11 @@ const AnimatedConfirmButton = ({ onComplete, initialText, finalText = "Finish" }
             e.preventDefault();
             return;
         }
-        if (step < 3) {
+        if (step < finalStep) {
             e.preventDefault();
             setStep(step + 1)
             setIsExpanded(false)
-        } else if (step === 3) {
+        } else if (step === finalStep) {
             if (onComplete) {
                 e.preventDefault();
                 setIsSubmitting(true);
@@ -53,9 +60,9 @@ const AnimatedConfirmButton = ({ onComplete, initialText, finalText = "Finish" }
     }
 
     return (
-        <div className="flex flex-col items-center justify-center gap-4 w-full">
-            <div className="flex items-center gap-6 relative">
-                {[1, 2, 3].map((dot) => (
+        <div className={cn("flex flex-col items-center justify-center w-full", confirm ? "gap-4" : "gap-0")}>
+            <div className={cn("items-center gap-6 relative", confirm ? "flex" : "hidden")}>
+                {(confirm ? [1, 2, 3] : []).map((dot) => (
                     <div
                         key={dot}
                         className={cn(
@@ -69,7 +76,7 @@ const AnimatedConfirmButton = ({ onComplete, initialText, finalText = "Finish" }
                 <motion.div
                     initial={{ width: '12px', height: "24px", x: 0 }}
                     animate={{
-                        width: step === 1 ? '24px' : step === 2 ? '60px' : '96px',
+                        width: !confirm ? '0px' : step === 1 ? '24px' : step === 2 ? '60px' : '96px',
                         x: 0
                     }}
                     className="absolute -left-[8px] top-1/2 -translate-y-1/2 bg-green-500 rounded-full z-0"
@@ -113,7 +120,7 @@ const AnimatedConfirmButton = ({ onComplete, initialText, finalText = "Finish" }
                         </motion.button>
                     )}
                     <motion.button
-                        type={step === 3 ? "submit" : "button"}
+                        type={step === finalStep ? "submit" : "button"}
                         onClick={handleContinue}
                         disabled={isSubmitting}
                         animate={{
