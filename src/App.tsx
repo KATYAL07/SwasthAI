@@ -1620,20 +1620,11 @@ export default function App() {
   // PrivateRoute Navigation Protection
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
+      // Allow unauthenticated users to explore the application instead of 
+      // forcing them back to the landing page constantly.
       const protectedPaths = [
-        "/dashboard",
-        "/symptoms",
-        "/hospitals",
-        "/doctors",
-        "/pharmacy",
         "/records",
-        "/insurance",
-        "/sos",
-        "/admin",
-        "/super-app",
-        "/smart-network",
-        "/chn",
-        "/trends"
+        "/admin"
       ];
       if (protectedPaths.includes(location.pathname)) {
         navigate("/");
@@ -4098,6 +4089,7 @@ export default function App() {
                           </>
                         } 
                         onComplete={handleCheckSymptoms}
+                        confirm
                       />
                     </div>
                   </form>
@@ -4735,7 +4727,7 @@ export default function App() {
 
                       <div className="flex justify-end gap-2 pt-2">
                         <button type="button" onClick={() => setBookingDoc(null)} className="px-4 py-2 border border-slate-200 rounded-lg">Cancel</button>
-                        <AnimatedConfirmButton initialText="Book Appointment" onComplete={handleBookAppointment} />
+                        <AnimatedConfirmButton initialText="Book Appointment" onComplete={handleBookAppointment} confirm />
                       </div>
                     </form>
                   </div>
@@ -5000,11 +4992,13 @@ export default function App() {
                                 <AnimatedConfirmButton
                                   initialText="Book a date"
                                   onComplete={() => setBookingDoc(doc)}
+                                  confirm
                                 />
                                 <AnimatedConfirmButton
                                   initialText={<>Join today&rsquo;s queue <span className="text-slate-300 font-medium text-xs"> · {doc.waitTimeMin} min</span></>}
                                   finalText="Token Confirmed"
                                   onComplete={() => handleOPDTokenRequest(doc.id)}
+                                  confirm
                                 />
                               </div>
                             </div>
@@ -5262,6 +5256,7 @@ export default function App() {
                                   <AnimatedConfirmButton 
                                     initialText="Add to cart" 
                                     onComplete={() => addToCart(med.id)} 
+                                    confirm
                                   />
                                 )}
                               </div>
@@ -5368,6 +5363,7 @@ export default function App() {
                           <AnimatedConfirmButton 
                             initialText="Place Dispatch Order" 
                             onComplete={handlePlaceOrder} 
+                            confirm
                           />
                         </div>
                       )}

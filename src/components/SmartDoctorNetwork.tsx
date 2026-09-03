@@ -2199,6 +2199,7 @@ export default function SmartDoctorNetwork() {
                       <AnimatedConfirmButton 
                         initialText="Book Appointment" 
                         onComplete={() => setBookingDoctor(doc)} 
+                        confirm
                       />
                       
                       {doc.telemedicineSupport && (
