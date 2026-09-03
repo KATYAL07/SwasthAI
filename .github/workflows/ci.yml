@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Install from package.json rather than `npm ci`. Tailwind v4 ships its
+      # compiler as a per-platform native binary, and npm's optional-dependency
+      # resolution (npm/cli#4828) fails to fetch the Linux binary when a lockfile
+      # generated on another platform is present. This matches the Dockerfile.
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Typecheck
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+        env:
+          DB_PATH: ci_test.db
+          JWT_SECRET: ci_test_secret_at_least_32_characters_long
+
+      - name: Build
+        run: npm run build
+
+      - name: Audit (production dependencies)
+        run: npm audit --omit=dev --audit-level=high
