@@ -94,7 +94,6 @@ async function register(email: string, name: string, role: string): Promise<Acto
   return { uid: login.body.user.uid, token, headers: { Authorization: `Bearer ${token}` } };
 }
 
-describe("Access-matrix regression suite", () => {
 before(async () => {
   if (existsSync(TEST_DB_PATH)) rmSync(TEST_DB_PATH, { force: true });
 
@@ -110,7 +109,10 @@ before(async () => {
       API_ONLY: "true",
       DISABLE_HMR: "true"
     },
-    shell: process.platform === "win32"
+    shell: process.platform === "win32",
+    // On POSIX the child is `npx` and the real `tsx server.ts` is a grandchild.
+    // Its own process group lets stopServer() signal the whole tree at once.
+    detached: process.platform !== "win32"
   });
   server.stdout.on("data", () => {});
   server.stderr.on("data", () => {});
@@ -146,17 +148,23 @@ before(async () => {
 });
 
 /**
- * On win32 the server is spawned through a shell, so `server` is cmd.exe and killing it
- * leaves the real `tsx server.ts` grandchild alive. That orphan kept the test port and
- * the SQLite file open, which hung the runner and made the NEXT run fail in before()
- * with EPERM on rmSync. Kill the whole process tree instead.
+ * The real `tsx server.ts` is always a grandchild — of cmd.exe on win32, of npx
+ * elsewhere — so signalling the direct child leaves it alive. That orphan kept the
+ * test port and the SQLite file open, which hung the runner and made the NEXT run
+ * fail in before() with EPERM on rmSync. Kill the whole tree on both platforms:
+ * taskkill /t on win32, and the process group (negative pid) on POSIX, which is
+ * why the child is spawned detached there.
  */
 function stopServer(): void {
   if (!server?.pid) return;
   if (process.platform === "win32") {
     spawnSync("taskkill", ["/pid", String(server.pid), "/t", "/f"], { stdio: "ignore" });
   } else {
-    server.kill();
+    try {
+      process.kill(-server.pid, "SIGKILL");
+    } catch {
+      server.kill("SIGKILL"); // group already gone
+    }
   }
 }
 
@@ -401,5 +409,3 @@ describe("AI endpoints are metered per user", () => {
     assert.equal(other.status, 200, "quota must be per-user, not global");
   });
 });
-});
-

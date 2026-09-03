@@ -1,129 +1,175 @@
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { Activity } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import swasthLogo from "../../assets/images/swasth_logo.png";
 
 interface PageTransitionProps {
   activeTab: string;
   onChangeTab: (tab: string) => void;
 }
 
-export function PageTransition({
-  activeTab,
-  onChangeTab,
-}: PageTransitionProps) {
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
+const LOADING_MESSAGES = [
+  "Initializing Metropolitan Care OS...",
+  "Syncing Patient Health Grid...",
+  "Routing Clinical Network...",
+  "Calibrating Smart Diagnostics...",
+  "Loading Care Dashboard...",
+];
 
-  // Keep track of the pending tab change
-  const [pendingTab, setPendingTab] = useState<string | null>(null);
+export function PageTransition({ activeTab, onChangeTab }: PageTransitionProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const [messageIndex, setMessageIndex] = useState(0);
+  const pendingTabRef = useRef<string | null>(null);
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  // Exposed function to initiate page transitions
-  const transitionToTab = (newTab: string) => {
-    if (newTab === activeTab) return;
-
-    const overlay = overlayRef.current;
-    const logo = logoRef.current;
-    if (!overlay || !logo) {
-      // Emergency instant failover if elements are unmounted
-      onChangeTab(newTab);
-      return;
-    }
-
-    setPendingTab(newTab);
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      onChangeTab(newTab);
-      return;
-    }
-
-    // Master Timeline
-    const tl = gsap.timeline({
-      defaults: { ease: "expo.inOut" },
-    });
-
-    // 1. Sweep In (scaleX 0 -> 1 from left edge)
-    tl.set(overlay, { transformOrigin: "left center", scaleX: 0, opacity: 1 });
-    tl.to(overlay, {
-      scaleX: 1,
-      duration: 0.55,
-    });
-
-    // 2. Show Logo and change content at cover point
-    tl.to(
-      logo,
-      {
-        opacity: 1,
-        scale: 1.1,
-        duration: 0.2,
-      },
-      "-=0.1"
-    );
-
-    tl.add(() => {
-      // Cover complete: Mutate actual page tab state now
-      onChangeTab(newTab);
-      // Double check scroll-top resetting
-      window.scrollTo({ top: 0 });
-    });
-
-    // Let the logo pulse briefly
-    tl.to(logo, {
-      scale: 1.0,
-      duration: 0.15,
-    });
-
-    // 3. Hide Logo and Sweep Out (scaleX 1 -> 0 towards right edge)
-    tl.to(logo, {
-      opacity: 0,
-      scale: 0.9,
-      duration: 0.2,
-      delay: 0.1,
-    });
-
-    tl.add(() => {
-      // Shift origin to right edge so it sweeps out rightward
-      gsap.set(overlay, { transformOrigin: "right center" });
-    });
-
-    tl.to(overlay, {
-      scaleX: 0,
-      duration: 0.55,
-    });
-
-    tl.set(overlay, { opacity: 0 }); // reset
+  const clearAllTimeouts = () => {
+    timeoutsRef.current.forEach(clearTimeout);
+    timeoutsRef.current = [];
   };
 
-  // Expose this method globally or attach to general elements
+  const addTimeout = (fn: () => void, ms: number) => {
+    const id = setTimeout(fn, ms);
+    timeoutsRef.current.push(id);
+  };
+
+  const startLoading = (newTab: string) => {
+    if (newTab === activeTab) return;
+    pendingTabRef.current = newTab;
+
+    clearAllTimeouts();
+    setMessageIndex(Math.floor(Math.random() * LOADING_MESSAGES.length));
+    setIsVisible(true);
+
+    // Swap content after smooth sequence
+    addTimeout(() => {
+      onChangeTab(pendingTabRef.current!);
+      window.scrollTo({ top: 0 });
+    }, 700);
+
+    // Fade out sequence
+    addTimeout(() => {
+      setIsVisible(false);
+    }, 1000);
+  };
+
   useEffect(() => {
-    (window as any).cityHealerTransition = transitionToTab;
+    (window as any).cityHealerTransition = startLoading;
     return () => {
       delete (window as any).cityHealerTransition;
     };
   }, [activeTab, onChangeTab]);
 
-  return (
-    <div className="pointer-events-none fixed inset-0 z-[9999]">
-      {/* Light White/Blue Sweep Overlay Panel */}
-      <div
-        ref={overlayRef}
-        className="absolute inset-0 bg-[#F8FAFC] border-r border-blue-100 opacity-0"
-        style={{ willChange: "transform, opacity", transform: "scaleX(0)" }}
-      />
+  useEffect(() => {
+    return clearAllTimeouts;
+  }, []);
 
-      {/* Glow Centerpiece Transition Logo */}
-      <div
-        ref={logoRef}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 flex flex-col items-center space-y-3 z-10"
-        style={{ willChange: "transform, opacity" }}
-      >
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-3 shadow-lg shadow-blue-500/20 animate-pulse">
-          <Activity className="h-10 w-10 text-white" />
-        </div>
-        <span className="font-heading text-lg font-black tracking-widest text-teal-900">
-          SWASTH AI
-        </span>
-      </div>
-    </div>
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          key="swasthai-bouncing-loader"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#f7f9fb] text-[#191c1e] select-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18, ease: "easeInOut" }}
+        >
+          <div className="flex flex-col items-center justify-center max-w-sm w-full px-6">
+            {/* Logo Container with exact Stitch bounce-in and perpetual float */}
+            <div className="mb-12 relative">
+              <motion.div
+                initial={{ scale: 0.3, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{
+                  duration: 0.8,
+                  ease: [0.175, 0.885, 0.32, 1.275],
+                }}
+              >
+                <motion.div
+                  animate={{ y: [0, -12, 0] }}
+                  transition={{
+                    duration: 4,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    delay: 0.8,
+                  }}
+                  className="relative flex items-center justify-center"
+                >
+                  {/* Soft emerald pulse glow */}
+                  <div
+                    className="absolute inset-0 rounded-full blur-2xl pointer-events-none"
+                    style={{ background: "rgba(16, 185, 129, 0.12)" }}
+                  />
+
+                  {/* Exact Stitch SwasthAI Logo */}
+                  <img
+                    src={swasthLogo}
+                    alt="SwasthAI Logo"
+                    className="w-48 h-auto object-contain relative z-10 drop-shadow-sm pointer-events-none"
+                  />
+                </motion.div>
+              </motion.div>
+            </div>
+
+            {/* Text & Loading Indicator */}
+            <div className="flex flex-col items-center gap-4 w-full">
+              <motion.h1
+                key={messageIndex}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center tracking-wide font-normal"
+                style={{
+                  fontFamily: "Sora, Inter, sans-serif",
+                  fontSize: "18px",
+                  lineHeight: "26px",
+                  color: "#565e74",
+                  fontWeight: 500,
+                }}
+              >
+                {LOADING_MESSAGES[messageIndex]}
+              </motion.h1>
+
+              {/* Exact Stitch Scanning/Loading Bar */}
+              <div
+                className="w-full max-w-[200px] rounded-full overflow-hidden mt-2 relative"
+                style={{
+                  height: "2.5px",
+                  background: "#e6e8ea",
+                }}
+              >
+                <motion.div
+                  className="absolute top-0 left-0 h-full rounded-full"
+                  style={{
+                    width: "35%",
+                    background: "#006c49",
+                  }}
+                  animate={{ x: ["-100%", "300%"] }}
+                  transition={{
+                    duration: 1.6,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                  }}
+                />
+              </div>
+
+              {/* System Boot Tag */}
+              <p
+                className="mt-6 uppercase tracking-widest"
+                style={{
+                  fontFamily: "JetBrains Mono, monospace",
+                  fontSize: "11px",
+                  lineHeight: "16px",
+                  letterSpacing: "0.12em",
+                  color: "#6c7a71",
+                  fontWeight: 600,
+                }}
+              >
+                System Boot
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 

@@ -8,7 +8,6 @@ const ProgressIndicator = () => {
     const [isExpanded, setIsExpanded] = useState(true)
 
     const handleContinue = () => {
-
         if (step < 3) {
             setStep(step + 1)
             setIsExpanded(false)
@@ -26,9 +25,7 @@ const ProgressIndicator = () => {
 
     return (
         <div className="flex flex-col items-center justify-center gap-8">
-
             <div className="flex items-center gap-6 relative">
-
                 {[1, 2, 3].map((dot) => (
                     <div
                         key={dot}
@@ -38,7 +35,6 @@ const ProgressIndicator = () => {
                         )}
                     />
                 ))}
-
                 {/* Green progress overlay */}
                 <motion.div
                     initial={{ width: '12px', height: "24px", x: 0 }}
@@ -65,7 +61,6 @@ const ProgressIndicator = () => {
                     animate={{
                         justifyContent: isExpanded ? 'stretch' : 'space-between'
                     }}
-
                 >
                     {!isExpanded && (
                         <motion.button
@@ -81,7 +76,7 @@ const ProgressIndicator = () => {
                                 opacity: { duration: 0.2 }
                             }}
                             onClick={handleBack}
-                            className="px-4 py-3 text-black flex items-center justify-center   bg-gray-100  font-semibold rounded-full hover:bg-gray-50 hover:border transition-colors flex-1 w-16 text-sm"
+                            className="px-4 py-3 text-black flex items-center justify-center bg-gray-100 font-semibold rounded-full hover:bg-gray-50 hover:border transition-colors flex-1 w-16 text-sm"
                         >
                             Back
                         </motion.button>
@@ -92,7 +87,7 @@ const ProgressIndicator = () => {
                             flex: isExpanded ? 1 : 'inherit',
                         }}
                         className={cn(
-                            "px-4 py-3 rounded-full text-white bg-[#006cff]   transition-colors flex-1 w-56",
+                            "px-4 py-3 rounded-full text-white bg-[#006cff] transition-colors flex-1 w-56",
                             !isExpanded && 'w-44'
                         )}
                     >

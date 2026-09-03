@@ -49,6 +49,7 @@ import { SmoothScroll } from "./animations/SmoothScroll";
 import { HandwritingText } from "./ui/handwriting-text";
 import { InteractiveHoverButton } from "./ui/interactive-hover-button";
 import { AuthModal } from "./AuthModal";
+import swasthLogo from "../assets/images/swasth_logo.png";
 
 interface LandingProps {
   onNavigate: (section: string) => void;
@@ -433,16 +434,11 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
               className="flex items-center gap-2.5 cursor-pointer select-none group"
               onClick={() => handleTransitionNavigate("overview")}
             >
-              <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-teal-900 text-white shadow-xl transition-all duration-300 group-hover:scale-105 group-hover:bg-teal-800">
-                <span className="absolute inset-0 rounded-xl bg-teal-400/25 blur-md animate-ping" />
-                <Activity className="h-5 w-5 text-emerald-400" />
-              </div>
-              <div>
-                <span className={`font-heading text-lg font-extrabold tracking-tight block ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
-                  SWASTH <span className={isAppDarkMode ? "text-teal-400" : "text-teal-700"}>AI</span>
-                </span>
-                <span className={`text-[9px] font-bold tracking-widest leading-none block -mt-1 uppercase ${isAppDarkMode ? "text-emerald-400" : "text-emerald-600"}`}>Metropolitan Care OS</span>
-              </div>
+              <img
+                src={swasthLogo}
+                alt="SwasthAI Logo"
+                className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105 select-none"
+              />
             </div>
 
             {/* Links mimicking modern premium platform directories */}
@@ -496,6 +492,15 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
                 <span onClick={() => { handleTransitionNavigate("consultation"); setIsMobileMenuOpen(false); }} className="cursor-pointer py-1.5 px-3 rounded-lg hover:bg-slate-150/30 transition-colors">Doctors</span>
                 <span onClick={() => { handleTransitionNavigate("sos"); setIsMobileMenuOpen(false); }} className="cursor-pointer py-1.5 px-3 rounded-lg hover:bg-slate-150/30 transition-colors text-rose-600 font-bold">Emergency</span>
                 
+                {!user && (
+                  <button
+                    onClick={() => { setIsAuthOpen(true); setIsMobileMenuOpen(false); }}
+                    className="w-full py-2.5 rounded-full border border-slate-300 text-slate-700 dark:text-slate-200 dark:border-slate-700 font-semibold text-xs text-center"
+                  >
+                    Sign In
+                  </button>
+                )}
+                
                 <button
                   onClick={() => { handleTransitionNavigate("overview_classic"); setIsMobileMenuOpen(false); }}
                   className="sm:hidden w-full mt-2 rounded-full bg-gradient-to-r from-teal-900 to-teal-700 py-3 text-xs font-extrabold text-white shadow-md text-center"
@@ -512,67 +517,65 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
           id="hero-redesign"
           className="relative min-h-screen flex items-center justify-center pt-32 pb-24 px-6 md:px-12 overflow-hidden"
         >
-          <div className="max-w-7xl mx-auto w-full flex flex-col items-center justify-center text-center space-y-10 relative z-10">
+          <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10 text-left">
             
-            <div className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-wide border-teal-200/50 bg-teal-50/60 text-teal-800">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600"></span>
-              </span>
-              AI Health OS
+            {/* Left Side */}
+            <div className="w-full lg:w-1/2">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-tight text-slate-900">
+                Smart healthcare infrastructure
+                <br />
+                for modern cities
+                <br />
+                <HandwritingText
+                  words={["live.", "predictive.", "measurable.", "on every phone."]}
+                  className="text-emerald-700"
+                  height="1.15em"
+                />
+              </h1>
             </div>
 
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-tight max-w-4xl mx-auto text-slate-900">
-              Smart healthcare infrastructure
-              <br />
-              for modern cities —
-              <br />
-              <HandwritingText
-                words={["live.", "predictive.", "measurable.", "on every phone."]}
-                className="text-emerald-700"
-                height="1.15em"
-              />
-            </h1>
+            {/* Right Side */}
+            <div className="w-full lg:w-1/2 flex flex-col items-start space-y-8">
+              <p className="text-base md:text-lg leading-relaxed text-slate-600">
+                City Healer unifies municipal clinical data grids, real-time bed census trackers, smart telehealth suites, and emergency dispatch systems into one intuitive digital interface.
+              </p>
 
-            <p className="text-base md:text-lg leading-relaxed max-w-2xl mx-auto text-slate-600">
-              City Healer unifies municipal clinical data grids, real-time bed census trackers, smart telehealth suites, and emergency dispatch systems into one intuitive digital interface.
-            </p>
-
-            <form
-              id="hero-interactive-search-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (heroSearchVal.trim()) {
-                  navigate(`/symptoms?q=${encodeURIComponent(heroSearchVal)}`);
-                } else {
-                  handleTransitionNavigate("symptoms");
-                }
-              }}
-              className="max-w-xl mx-auto w-full rounded-2xl border p-3 shadow-md bg-white flex items-center gap-2.5"
-            >
-              <Search className="h-5 w-5 text-slate-400 shrink-0 ml-1" />
-              <input
-                type="text"
-                aria-label="Search diagnostic codes"
-                placeholder={`Search diagnostic codes: ${searchPlaceholder}`}
-                value={heroSearchVal}
-                onChange={(e) => setHeroSearchVal(e.target.value)}
-                className="w-full bg-transparent text-sm py-1 focus:outline-none text-slate-800 placeholder-slate-500"
-              />
-              <button
-                type="submit"
-                className="flex shrink-0 items-center gap-1 rounded-xl bg-teal-800 hover:bg-teal-700 px-4 py-2.5 text-xs font-bold text-white transition-all cursor-pointer"
+              <form
+                id="hero-interactive-search-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (heroSearchVal.trim()) {
+                    navigate(`/symptoms?q=${encodeURIComponent(heroSearchVal)}`);
+                  } else {
+                    handleTransitionNavigate("symptoms");
+                  }
+                }}
+                className="max-w-xl w-full rounded-2xl border p-3 shadow-md bg-white flex items-center gap-2.5"
               >
-                Diagnose <Sparkles className="h-3 w-3 text-teal-300" />
-              </button>
-            </form>
+                <Search className="h-5 w-5 text-slate-400 shrink-0 ml-1" />
+                <input
+                  type="text"
+                  aria-label="Search diagnostic codes"
+                  placeholder={`Search diagnostic codes: ${searchPlaceholder}`}
+                  value={heroSearchVal}
+                  onChange={(e) => setHeroSearchVal(e.target.value)}
+                  className="w-full bg-transparent text-sm py-1 focus:outline-none text-slate-800 placeholder-slate-500"
+                />
+                <button
+                  type="submit"
+                  className="flex shrink-0 items-center gap-1 rounded-xl bg-teal-800 hover:bg-teal-700 px-4 py-2.5 text-xs font-bold text-white transition-all cursor-pointer"
+                >
+                  Diagnose <Sparkles className="h-3 w-3 text-teal-300" />
+                </button>
+              </form>
 
-            <div id="hero-action-buttons" className="flex flex-wrap gap-6 items-center justify-center mt-4">
-              <div onClick={() => handleTransitionNavigate("overview_classic")}>
-                <InteractiveHoverButton text="Explore Platform" className="w-48" />
-              </div>
-              <div onClick={() => handleTransitionNavigate("consultation")}>
-                <InteractiveHoverButton text="Watch Demo" className="w-48" />
+              <div id="hero-action-buttons" className="flex flex-wrap gap-6 items-center justify-start">
+                <div onClick={() => handleTransitionNavigate("overview_classic")}>
+                  <InteractiveHoverButton text="Explore Platform" className="w-48" />
+                </div>
+                <div onClick={() => handleTransitionNavigate("consultation")}>
+                  <InteractiveHoverButton text="Watch Demo" className="w-48" />
+                </div>
               </div>
             </div>
 
@@ -1465,13 +1468,15 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
             
             {/* Column 1 Logo */}
             <div className="space-y-4 lg:col-span-1">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 p-2 border border-white/10 shadow">
-                  <Activity className="h-5 w-5 text-emerald-400" />
-                </div>
-                <span className="font-heading text-md font-black tracking-tight text-white block">
-                  CITY <span className="text-teal-500">HEALER</span>
-                </span>
+              <div
+                className="flex items-center gap-2.5 cursor-pointer"
+                onClick={() => handleTransitionNavigate("overview")}
+              >
+                <img
+                  src={swasthLogo}
+                  alt="SwasthAI"
+                  className="h-10 w-auto object-contain brightness-110"
+                />
               </div>
               <p className="text-xs text-slate-500">
                 Healing cities through automated clinical networks, real-time bed censuses, and secure pre-clinical triage.
@@ -1571,7 +1576,17 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
           onSuccess={(u) => {
             setUser(u);
             showLocalToast(`Welcome back, ${u.name}!`, "success");
+            setTimeout(() => {
+              if (u.role === "ADMIN" || u.role === "HOSPITAL") {
+                onNavigate("admin");
+              } else if (u.role === "DOCTOR") {
+                onNavigate("consultation");
+              } else {
+                onNavigate("overview_classic");
+              }
+            }, 600);
           }} 
+          isAppDarkMode={isAppDarkMode}
         />
       </div>
     </SmoothScroll>
