@@ -517,67 +517,65 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
           id="hero-redesign"
           className="relative min-h-screen flex items-center justify-center pt-32 pb-24 px-6 md:px-12 overflow-hidden"
         >
-          <div className="max-w-7xl mx-auto w-full flex flex-col items-center justify-center text-center space-y-10 relative z-10">
+          <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center justify-between gap-12 relative z-10 text-left">
             
-            <div className="inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-wide border-teal-200/50 bg-teal-50/60 text-teal-800">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600"></span>
-              </span>
-              AI Health OS
+            {/* Left Side */}
+            <div className="w-full lg:w-1/2">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-tight text-slate-900">
+                Smart healthcare infrastructure
+                <br />
+                for modern cities
+                <br />
+                <HandwritingText
+                  words={["live.", "predictive.", "measurable.", "on every phone."]}
+                  className="text-emerald-700"
+                  height="1.15em"
+                />
+              </h1>
             </div>
 
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-tight max-w-4xl mx-auto text-slate-900">
-              Smart healthcare infrastructure
-              <br />
-              for modern cities —
-              <br />
-              <HandwritingText
-                words={["live.", "predictive.", "measurable.", "on every phone."]}
-                className="text-emerald-700"
-                height="1.15em"
-              />
-            </h1>
+            {/* Right Side */}
+            <div className="w-full lg:w-1/2 flex flex-col items-start space-y-8">
+              <p className="text-base md:text-lg leading-relaxed text-slate-600">
+                City Healer unifies municipal clinical data grids, real-time bed census trackers, smart telehealth suites, and emergency dispatch systems into one intuitive digital interface.
+              </p>
 
-            <p className="text-base md:text-lg leading-relaxed max-w-2xl mx-auto text-slate-600">
-              City Healer unifies municipal clinical data grids, real-time bed census trackers, smart telehealth suites, and emergency dispatch systems into one intuitive digital interface.
-            </p>
-
-            <form
-              id="hero-interactive-search-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (heroSearchVal.trim()) {
-                  navigate(`/symptoms?q=${encodeURIComponent(heroSearchVal)}`);
-                } else {
-                  handleTransitionNavigate("symptoms");
-                }
-              }}
-              className="max-w-xl mx-auto w-full rounded-2xl border p-3 shadow-md bg-white flex items-center gap-2.5"
-            >
-              <Search className="h-5 w-5 text-slate-400 shrink-0 ml-1" />
-              <input
-                type="text"
-                aria-label="Search diagnostic codes"
-                placeholder={`Search diagnostic codes: ${searchPlaceholder}`}
-                value={heroSearchVal}
-                onChange={(e) => setHeroSearchVal(e.target.value)}
-                className="w-full bg-transparent text-sm py-1 focus:outline-none text-slate-800 placeholder-slate-500"
-              />
-              <button
-                type="submit"
-                className="flex shrink-0 items-center gap-1 rounded-xl bg-teal-800 hover:bg-teal-700 px-4 py-2.5 text-xs font-bold text-white transition-all cursor-pointer"
+              <form
+                id="hero-interactive-search-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (heroSearchVal.trim()) {
+                    navigate(`/symptoms?q=${encodeURIComponent(heroSearchVal)}`);
+                  } else {
+                    handleTransitionNavigate("symptoms");
+                  }
+                }}
+                className="max-w-xl w-full rounded-2xl border p-3 shadow-md bg-white flex items-center gap-2.5"
               >
-                Diagnose <Sparkles className="h-3 w-3 text-teal-300" />
-              </button>
-            </form>
+                <Search className="h-5 w-5 text-slate-400 shrink-0 ml-1" />
+                <input
+                  type="text"
+                  aria-label="Search diagnostic codes"
+                  placeholder={`Search diagnostic codes: ${searchPlaceholder}`}
+                  value={heroSearchVal}
+                  onChange={(e) => setHeroSearchVal(e.target.value)}
+                  className="w-full bg-transparent text-sm py-1 focus:outline-none text-slate-800 placeholder-slate-500"
+                />
+                <button
+                  type="submit"
+                  className="flex shrink-0 items-center gap-1 rounded-xl bg-teal-800 hover:bg-teal-700 px-4 py-2.5 text-xs font-bold text-white transition-all cursor-pointer"
+                >
+                  Diagnose <Sparkles className="h-3 w-3 text-teal-300" />
+                </button>
+              </form>
 
-            <div id="hero-action-buttons" className="flex flex-wrap gap-6 items-center justify-center mt-4">
-              <div onClick={() => handleTransitionNavigate("overview_classic")}>
-                <InteractiveHoverButton text="Explore Platform" className="w-48" />
-              </div>
-              <div onClick={() => handleTransitionNavigate("consultation")}>
-                <InteractiveHoverButton text="Watch Demo" className="w-48" />
+              <div id="hero-action-buttons" className="flex flex-wrap gap-6 items-center justify-start">
+                <div onClick={() => handleTransitionNavigate("overview_classic")}>
+                  <InteractiveHoverButton text="Explore Platform" className="w-48" />
+                </div>
+                <div onClick={() => handleTransitionNavigate("consultation")}>
+                  <InteractiveHoverButton text="Watch Demo" className="w-48" />
+                </div>
               </div>
             </div>
 
