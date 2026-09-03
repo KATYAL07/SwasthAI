@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    # The suite spawns a real server; without a cap a hung child burns the
+    # default 6h of runner time instead of failing fast.
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Install from package.json rather than `npm ci`. Tailwind v4 ships its
+      # compiler as a per-platform native binary, and npm's optional-dependency
+      # resolution (npm/cli#4828) fails to fetch the Linux binary when a lockfile
+      # generated on another platform is present. This matches the Dockerfile.
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Typecheck
+        run: npm run lint
+
+      # No DB_PATH or JWT_SECRET here on purpose: the suite starts its own server
+      # on a throwaway database with its own secret, and reads DB_PATH from this
+      # process only to confirm it is unset before touching the real database.
+      - name: Test
+        run: npm test
+        timeout-minutes: 5
+
+      - name: Build
+        run: npm run build
+
+      - name: Audit (production dependencies)
+        run: npm audit --omit=dev --audit-level=high
