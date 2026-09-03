@@ -9,6 +9,9 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    # The suite spawns a real server; without a cap a hung child burns the
+    # default 6h of runner time instead of failing fast.
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -29,11 +32,12 @@ jobs:
       - name: Typecheck
         run: npm run lint
 
+      # No DB_PATH or JWT_SECRET here on purpose: the suite starts its own server
+      # on a throwaway database with its own secret, and reads DB_PATH from this
+      # process only to confirm it is unset before touching the real database.
       - name: Test
         run: npm test
-        env:
-          DB_PATH: ci_test.db
-          JWT_SECRET: ci_test_secret_at_least_32_characters_long
+        timeout-minutes: 5
 
       - name: Build
         run: npm run build
