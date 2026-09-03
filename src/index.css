@@ -167,3 +167,10 @@ select option {
   color: var(--text-primary) !important;
 }
 
+/* Invert colors for OpenStreetMap tiles to match dark mode */
+.dark-map-tiles .leaflet-layer,
+.dark-map-tiles .leaflet-control-zoom-in,
+.dark-map-tiles .leaflet-control-zoom-out,
+.dark-map-tiles .leaflet-control-attribution {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}

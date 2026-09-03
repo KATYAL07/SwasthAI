@@ -34,8 +34,12 @@ import {
   Zap,
   Award,
   User,
-  Dumbbell
+  Dumbbell,
+  Wifi, 
+  Map
 } from "lucide-react";
+import MapComponent, { MapMarker } from "./MapComponent";
+import { translateText } from "../utils/i18n";
 
 // Definitions of cities and local networks
 export interface CitySubNetwork {
@@ -126,7 +130,7 @@ export const CITIES_DATA: Record<string, CitySubNetwork> = {
     ],
     contacts: [
       { label: "GIMS Noida Hub", phone: "0120-2341738" },
-      { label: "Sharda ICU Control", phone: "0120-2329700" }
+      { label: "Disaster Control GZB", phone: "0120-282828" }
     ]
   },
   Ghaziabad: {
@@ -162,7 +166,7 @@ export const CITIES_DATA: Record<string, CitySubNetwork> = {
     ],
     contacts: [
       { label: "Amrita Hospital Desk", phone: "0129-2851234" },
-      { label: "Faridabad Med Command", phone: "108" }
+      { label: "Faridabad Emergency Police", phone: "100" }
     ]
   }
 };
@@ -190,7 +194,7 @@ export const getSubregionRiskData = (subName: string, baseAqi: number): { aqi: n
   };
 };
 
-export default function CityHealthNetwork() {
+export default function CityHealthNetwork({ appLanguage = "en" }: { appLanguage?: "en" | "hi" }) {
   const [selectedCity, setSelectedCity] = useState<string>("Gurugram");
   const [activeTab, setActiveTab2] = useState<"dashboard" | "heatmap" | "routing" | "feed" | "women-senior" | "nutrition">("dashboard");
   
@@ -218,8 +222,32 @@ export default function CityHealthNetwork() {
   // Custom safety module triggers and alerts
   const [bloodAlertFound, setBloodAlertFound] = useState<boolean>(false);
   const [sosStatusTriggered, setSosStatusTriggered] = useState<boolean>(false);
-  
-  // Rankings scores manipulation state
+
+  const [showAqiOverlay, setShowAqiOverlay] = useState<boolean>(true);
+  const [showDengueOverlay, setShowDengueOverlay] = useState<boolean>(false);
+  const [showFluOverlay, setShowFluOverlay] = useState<boolean>(false);
+
+  // Dynamic geocoding state
+  const [cityCoordinates, setCityCoordinates] = useState<{lat: number, lng: number}>({ lat: 28.6139, lng: 77.2090 });
+
+  useEffect(() => {
+    // Attempt dynamic geocoding for the selected city using OpenStreetMap Nominatim
+    const geocodeCity = async () => {
+      try {
+        const query = encodeURIComponent(`${selectedCity}, National Capital Region, India`);
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`);
+        const data = await response.json();
+        if (data && data.length > 0) {
+          setCityCoordinates({ lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) });
+        }
+      } catch (err) {
+        console.error("Geocoding failed:", err);
+      }
+    };
+    geocodeCity();
+  }, [selectedCity]);
+
+  // View state handlers Rankings scores manipulation state
   const [scoreWeight, setScoreWeight] = useState<number>(50); // 50 means balanced weight on AQI vs clinical capacity
 
   // AI Nutrition & Recovery Hub States
@@ -307,10 +335,7 @@ export default function CityHealthNetwork() {
     }, 1205);
   };
 
-  // Heatmap overlays state
-  const [showAqiOverlay, setShowAqiOverlay] = useState<boolean>(true);
-  const [showDengueOverlay, setShowDengueOverlay] = useState<boolean>(true);
-  const [showFluOverlay, setShowFluOverlay] = useState<boolean>(false);
+  // Heatmap overlays state (moved to higher scope)
   const [heatmapScanActive, setHeatmapScanActive] = useState<boolean>(false);
   const [selectedSubregion, setSelectedSubregion] = useState<string | null>(null);
 
@@ -532,7 +557,7 @@ export default function CityHealthNetwork() {
                 </div>
 
                 <div className="text-center space-y-2">
-                  <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest">City Health Score</h4>
+                  <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest">{translateText("City Health Score", appLanguage)}</h4>
                   
                   <div className="relative py-2 flex justify-center items-center">
                     {/* Dynamic circular ring */}
@@ -982,97 +1007,32 @@ export default function CityHealthNetwork() {
                 </div>
 
                 {/* Active subregions map layout */}
-                <div className="my-auto py-4">
+                <div className="flex-1 min-h-[300px] w-full mt-4 rounded-xl overflow-hidden shadow-lg border border-slate-800">
                   {heatmapScanActive ? (
-                    <div className="flex flex-col items-center justify-center py-16 space-y-3 z-10 relative">
+                    <div className="flex flex-col items-center justify-center h-full space-y-3 z-10 bg-slate-900">
                       <div className="w-10 h-10 rounded-full border-2 border-cyan-400/20 border-t-cyan-450 animate-spin" />
                       <p className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest animate-pulse font-bold">
                         Plotting threat telemetry matrices...
                       </p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 relative z-10">
-                      {currentCity.subregions.map((sub, idx) => {
+                    <MapComponent 
+                      center={cityCoordinates}
+                      zoom={11}
+                      markers={currentCity.subregions.map((sub, idx) => {
                         const localRisk = getSubregionRiskData(sub, currentCity.aqi);
-                        const isSelected = selectedSubregion === sub;
-                        
-                        // Decide color profiles based on active toggles
-                        const showPollutionWarning = showAqiOverlay && localRisk.aqi > 150;
-                        const showDengueWarning = showDengueOverlay && localRisk.dengue > 5.5;
-                        const showFluWarning = showFluOverlay && localRisk.flu > 60;
-
-                        return (
-                          <button
-                            key={idx}
-                            type="button"
-                            onClick={() => setSelectedSubregion(isSelected ? null : sub)}
-                            className={`p-4 rounded-2xl border text-left transition-all relative overflow-hidden group select-none min-h-[105px] flex flex-col justify-between ${
-                              isSelected
-                                ? "bg-slate-900 border-cyan-500 shadow-md ring-1 ring-cyan-500/50"
-                                : "bg-slate-900/60 hover:bg-slate-900 border-slate-800 hover:border-slate-700"
-                            }`}
-                          >
-                            {/* Blur pollution halo */}
-                            {showPollutionWarning && (
-                              <div className="absolute -right-4 -bottom-4 w-12 h-12 rounded-full bg-rose-500/20 filter blur-xl group-hover:bg-rose-500/30 transition-all pointer-events-none" />
-                            )}
-
-                            {/* Blur flu halo */}
-                            {showFluWarning && (
-                              <div className="absolute -left-4 -top-4 w-12 h-12 rounded-full bg-sky-500/20 filter blur-xl group-hover:bg-sky-500/30 transition-all pointer-events-none" />
-                            )}
-
-                            {/* Top row indicators */}
-                            <div className="flex justify-between items-start">
-                              <span className="text-[9px] font-mono text-slate-500 leading-none">
-                                SEC - {idx + 10}
-                              </span>
-
-                              {/* Action layer icons indicators */}
-                              <div className="flex items-center gap-1.5 min-h-[12px] bg-transparent">
-                                {showPollutionWarning && (
-                                  <span className="w-1.5 h-1.5 bg-rose-500 rounded-full" title="AQI Hotspot" />
-                                )}
-                                {showDengueWarning && (
-                                  <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-ping" title="Dengue Spot" />
-                                )}
-                                {showFluWarning && (
-                                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full" title="Flu outbreak zone" />
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Main Title */}
-                            <div className="my-2 bg-transparent">
-                              <p className="text-xs font-black text-slate-200 leading-snug group-hover:text-white transition-all line-clamp-1">
-                                {sub}
-                              </p>
-                            </div>
-
-                            {/* Bottom micro numerical readings */}
-                            <div className="flex items-center justify-between text-[8px] font-mono font-bold pt-1.5 border-t border-slate-850/60 text-slate-400">
-                              {showAqiOverlay ? (
-                                <span className={localRisk.aqi > 250 ? "text-rose-400" : "text-slate-400"}>
-                                  AQI: {localRisk.aqi}
-                                </span>
-                              ) : showDengueOverlay ? (
-                                <span className={localRisk.dengue > 6 ? "text-amber-400 animate-pulse" : "text-slate-400"}>
-                                  DEN: {localRisk.dengue}
-                                </span>
-                              ) : (
-                                <span className="text-slate-400">
-                                  FLU: {localRisk.flu}%
-                                </span>
-                              )}
-
-                              <span className="text-slate-600 group-hover:text-cyan-400 transition-all text-[7px] font-bold">
-                                {isSelected ? "ACTIVE" : "DETAILS"}
-                              </span>
-                            </div>
-                          </button>
-                        );
+                        // Compute a deterministic offset based on index so markers don't jump around
+                        const latOffset = (Math.sin(idx * 45) * 0.08);
+                        const lngOffset = (Math.cos(idx * 45) * 0.08);
+                        return {
+                          id: sub,
+                          title: `${sub} (AQI: ${localRisk.aqi}, Flu: ${localRisk.flu}%)`,
+                          lat: cityCoordinates.lat + latOffset,
+                          lng: cityCoordinates.lng + lngOffset
+                        };
                       })}
-                    </div>
+                      className="w-full h-full"
+                    />
                   )}
                 </div>
 

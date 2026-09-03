@@ -92,7 +92,7 @@ import {
   ReferenceLine 
 } from "recharts";
 import { api, SESSION_EXPIRED_EVENT, resetSessionExpiryNotice } from "./utils/api";
-import { getTranslation, LanguageCode, translations } from "./utils/i18n";
+import { getTranslation, LanguageCode, translations, translateText } from "./utils/i18n";
 import { useLocation, useNavigate } from "react-router-dom";
 import { 
   auth, 
@@ -203,6 +203,7 @@ import AIHealthTrends from "./components/AIHealthTrends";
 import { MedicationVisualMatcher } from "./components/MedicationVisualMatcher";
 import { AIMedicationGuide } from "./components/AIMedicationGuide";
 import CityHealthNetwork, { CITIES_DATA } from "./components/CityHealthNetwork";
+import MapComponent from "./components/MapComponent";
 import { MedicineProductImage } from "./components/MedicineProductImage";
 import LandingPage from "./components/LandingPage";
 import { AuthErrorMessage } from "./components/AuthErrorMessage";
@@ -777,29 +778,22 @@ export default function App() {
   const [superActiveSubTab, setSuperActiveSubTab] = useState<"copilot" | "health-id" | "emergency" | "recommender">("copilot");
 
   // Module B: AI Health Copilot States
-  const [appLanguage, setAppLanguage] = useState<LanguageCode>(() => {
-    const saved = safeStorage.getItem("cityhealer_lang");
-    return (saved === "hi" ? "hi" : "en") as LanguageCode;
-  });
+  const [appLanguage, setAppLanguage] = useState<LanguageCode>("en");
   const copilotGreetingText = (isHi: boolean, fullName: string) => {
     const firstName = (fullName || "").trim().split(/\s+/)[0] || "there";
     return isHi
       ? `नमस्ते, ${firstName}! मैं आपका सिटी हीलर एआई स्वास्थ्य कोपायलट हूं। मैं जटिल मेडिकल लैब रिपोर्ट की व्याख्या कर सकता हूं, विश्लेषण कर सकता हूं, और डॉक्टरों से मिला सकता हूं। आप क्या तलाशना चाहेंगे?`
       : `Namaste, ${firstName}! I am your City Healer AI Health Copilot. I can explain complex medical lab reports, analyze prescription dosages, track your recovery milestones, or match you with regional clinical specialists. What would you like to explore?`;
   };
-  const [copilotHistory, setCopilotHistory] = useState<Array<{ sender: "user" | "copilot"; text: string; time: string; attachment?: string }>>(() => {
-    const saved = safeStorage.getItem("cityhealer_lang");
-    return [
-      {
-        sender: "copilot",
-        text: copilotGreetingText(saved === "hi", authName),
-        time: "10:45 AM"
-      }
-    ];
-  });
+  const [copilotHistory, setCopilotHistory] = useState<Array<{ sender: "user" | "copilot"; text: string; time: string; attachment?: string }>>([
+    {
+      sender: "copilot",
+      text: copilotGreetingText(false, authName),
+      time: "10:45 AM"
+    }
+  ]);
 
   useEffect(() => {
-    safeStorage.setItem("cityhealer_lang", appLanguage);
     // Keep the opening greeting synced to the active language and the logged-in user's name
     setCopilotHistory(prev => {
       if (prev.length === 0) return prev;
@@ -3131,7 +3125,7 @@ export default function App() {
                   : "bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
               }`}
             >
-              🚀 Explore in Demo / Sandbox Mode
+              🚀 {translateText("Explore in Demo / Sandbox Mode", appLanguage)}
             </button>
           </div>
         </div>
@@ -3491,7 +3485,7 @@ export default function App() {
                 <React.Fragment key={tab.id}>
                   {startsGroup && (
                     <span className={`px-3 pt-4 pb-1 text-[12.5px] font-bold uppercase tracking-wider ${isAppDarkMode ? "text-slate-500" : "text-slate-400"}`}>
-                      {tab.group}
+                      {translateText(tab.group, appLanguage)}
                     </span>
                   )}
                   <button
@@ -3548,7 +3542,7 @@ export default function App() {
         <header className={`flex flex-col md:flex-row items-start md:items-center justify-between mb-6 pb-4 border-b shrink-0 gap-4 transition-colors duration-300 ${isAppDarkMode ? "border-slate-850" : "border-slate-100"}`}>
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-mono text-[12px] tracking-wider uppercase font-semibold text-slate-400 whitespace-nowrap">Hub Service Control</span>
+              <span className="font-mono text-[12px] tracking-wider uppercase font-semibold text-slate-400 whitespace-nowrap">{translateText("Hub Service Control", appLanguage)}</span>
               <button
                 type="button"
                 onClick={() => loadData()}
@@ -3566,7 +3560,7 @@ export default function App() {
             </div>
             <h1 className={`text-2xl font-black tracking-tight truncate transition-all ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
               {activeRole === "PATIENT"
-                ? `Hello, ${(authName || "there").split(" ")[0]}`
+                ? (appLanguage === "hi" ? `नमस्ते, ${(authName || "there").split(" ")[0]}` : `Hello, ${(authName || "there").split(" ")[0]}`)
                 : getTranslation(appLanguage, "metropolitanGrid")}
             </h1>
           </div>
@@ -3577,7 +3571,7 @@ export default function App() {
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
               <input
                 type="text"
-                placeholder="Search staff, doctors..."
+                placeholder={translateText("Search staff, doctors...", appLanguage)}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className={`w-full pl-9 pr-3 py-2 border rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 whitespace-nowrap text-ellipsis transition-all ${isAppDarkMode ? "bg-slate-900 border-slate-800 text-slate-100 placeholder:text-slate-500" : "bg-white border-slate-200 text-slate-900 placeholder:text-slate-400"}`}
@@ -3586,7 +3580,7 @@ export default function App() {
 
             {/* DYNAMIC INTEGRATED SIMULATION SWITCHER */}
             <div className={`rounded-xl p-1 flex items-center gap-1 w-full md:w-auto overflow-x-auto text-xs font-semibold transition-all ${isAppDarkMode ? "bg-slate-900" : "bg-slate-100"}`}>
-              <span className={`text-[12px] pl-2 pr-1 uppercase text-left shrink-0 ${isAppDarkMode ? "text-slate-450" : "text-slate-500"}`}>Role:</span>
+              <span className={`text-[12px] pl-2 pr-1 uppercase text-left shrink-0 ${isAppDarkMode ? "text-slate-450" : "text-slate-500"}`}>{translateText("Role:", appLanguage)}</span>
               {[
                 { id: "PATIENT", label: getTranslation(appLanguage, "rolePatient") },
                 { id: "DOCTOR", label: getTranslation(appLanguage, "roleDoctor") },
@@ -3624,7 +3618,7 @@ export default function App() {
             {activeRole === "PATIENT" && (
               <div className="flex items-center gap-1.5 shrink-0">
                 <div className="bg-blue-50 border border-blue-100 rounded-xl px-2 py-1.5 flex items-center gap-1 text-xs shrink-0">
-                  <span className="text-[12px] text-blue-600 font-extrabold uppercase shrink-0 pl-1">Profile:</span>
+                  <span className="text-[12px] text-blue-600 font-extrabold uppercase shrink-0 pl-1">{translateText("Profile:", appLanguage)}</span>
                   <select
                     value={activeFamilyMember}
                     onChange={(e) => {
@@ -3660,7 +3654,7 @@ export default function App() {
                   title="Add New Family Profile / Patient"
                 >
                   <Plus className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Add Patient</span>
+                  <span className="hidden sm:inline">{translateText("Add Patient", appLanguage)}</span>
                 </button>
               </div>
             )}
@@ -3675,8 +3669,46 @@ export default function App() {
               title="Profile & Security Settings"
             >
               <Settings className="h-4 w-4" />
-              <span className="hidden lg:inline">Profile Settings</span>
+              <span className="hidden lg:inline">{translateText("Profile Settings", appLanguage)}</span>
             </button>
+
+            {/* QUICK LANGUAGE TOGGLE */}
+            <div className={`flex items-center gap-0.5 p-1 rounded-xl border text-xs font-bold transition-all ${
+              isAppDarkMode ? "bg-slate-900 border-slate-800" : "bg-slate-100 border-slate-200"
+            }`}>
+              <button
+                type="button"
+                onClick={() => {
+                  if (appLanguage !== "en") {
+                    setAppLanguage("en");
+                    showToast("Interface language updated to English.");
+                  }
+                }}
+                className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                  appLanguage === "en"
+                    ? (isAppDarkMode ? "bg-slate-800 text-blue-400 shadow-sm" : "bg-white text-blue-600 shadow-sm")
+                    : (isAppDarkMode ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-900")
+                }`}
+              >
+                English
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (appLanguage !== "hi") {
+                    setAppLanguage("hi");
+                    showToast("इंटरफ़ेस की भाषा हिन्दी में बदल दी गई है।");
+                  }
+                }}
+                className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                  appLanguage === "hi"
+                    ? (isAppDarkMode ? "bg-slate-800 text-blue-400 shadow-sm" : "bg-white text-blue-600 shadow-sm")
+                    : (isAppDarkMode ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-900")
+                }`}
+              >
+                हिन्दी
+              </button>
+            </div>
 
             <button
               onClick={handleToggleDarkMode}
@@ -3700,7 +3732,7 @@ export default function App() {
               title="Logout session"
             >
               <LogOut className="h-4 w-4" />
-              <span className="hidden lg:inline">Sign Out</span>
+              <span className="hidden lg:inline">{translateText("Sign Out", appLanguage)}</span>
             </button>
           </div>
         </header>
@@ -3738,11 +3770,11 @@ export default function App() {
                     <div className="absolute right-0 top-0 w-32 h-32 bg-white/5 rounded-full shrink-0 -mr-6 -mt-6"></div>
                     <div className="flex justify-between items-start z-10">
                       <div>
-                        <h2 className="text-2xl font-extrabold mb-1 tracking-tight">Hello, {activeFamilyMember === "Self" ? authName : activeFamilyMember}</h2>
-                        <p className="opacity-90 text-xs">Your last clinical review was 14 days ago. Overall health is optimal.</p>
+                        <h2 className="text-2xl font-extrabold mb-1 tracking-tight">{appLanguage === "hi" ? "नमस्ते" : "Hello"}, {activeFamilyMember === "Self" ? authName : activeFamilyMember}</h2>
+                        <p className="opacity-90 text-xs">{translateText("Your last clinical review was 14 days ago. Overall health is optimal.", appLanguage)}</p>
                       </div>
                       <div className="bg-white/20 p-2 rounded-xl text-[12px] font-bold tracking-wider uppercase">
-                        AI Powered
+                        {translateText("AI Powered", appLanguage)}
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-2 pt-4">
@@ -3754,7 +3786,7 @@ export default function App() {
                         className="bg-amber-400 text-slate-950 hover:bg-amber-300 px-4 py-2.5 rounded-xl text-xs font-black shadow-md hover:shadow transition-all active:scale-95 cursor-pointer flex items-center gap-1 animate-pulse"
                       >
                         <Bot className="h-3.5 w-3.5" />
-                        <span>AI Health Copilot</span>
+                        <span>{translateText("AI Health Copilot", appLanguage)}</span>
                       </button>
                       <button
                         onClick={() => {
@@ -3764,7 +3796,7 @@ export default function App() {
                         className="bg-white/25 border border-white/30 text-white px-4 py-2.5 rounded-xl text-xs font-semibold hover:bg-white/35 transition-all cursor-pointer flex items-center gap-1"
                       >
                         <IdCard className="h-3.5 w-3.5" />
-                        <span>Unified Health ID</span>
+                        <span>{translateText("Unified Health ID", appLanguage)}</span>
                       </button>
                     </div>
                   </div>
@@ -3781,19 +3813,19 @@ export default function App() {
                       <span className="absolute inset-0 bg-white/20 rounded-full animate-ping"></span>
                       <Ambulance className="w-8 h-8 text-white text-center" />
                     </div>
-                    <span className="font-extrabold text-lg tracking-tight uppercase">EMERGENCY SOS</span>
-                    <span className="text-[12px] opacity-80 uppercase tracking-widest font-semibold mt-1">One-Tap Response Dispatched</span>
+                    <span className="font-extrabold text-lg tracking-tight uppercase">{translateText("EMERGENCY SOS", appLanguage)}</span>
+                    <span className="text-[12px] opacity-80 uppercase tracking-widest font-semibold mt-1">{translateText("One-Tap Response Dispatched", appLanguage)}</span>
                   </div>
 
                   {/* Card Block 3: QUEUE WAIT TOKEN (Span 1x1, White Glass) */}
                   <div className="col-span-1 sm:col-span-1 lg:col-span-1 row-span-1 bg-white border border-slate-200 rounded-3xl p-6 flex flex-col justify-between shadow-sm">
                     <div>
                       <div className="flex justify-between items-center">
-                        <h3 className="text-[12px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">Live OPD Progression</h3>
+                        <h3 className="text-[12px] font-extrabold text-slate-400 uppercase tracking-wider mb-2">{translateText("Live OPD Progression", appLanguage)}</h3>
                         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                       </div>
                       <p className="text-3xl font-black text-slate-900 tracking-tight">
-                        {myQueueToken ? myQueueToken.tokenNumber : "Token #00"}
+                        {myQueueToken ? myQueueToken.tokenNumber : translateText("Token #00", appLanguage)}
                       </p>
                     </div>
 
@@ -3802,7 +3834,7 @@ export default function App() {
                         <div className={`h-full bg-blue-500 ${myQueueToken ? 'w-2/3' : 'w-0'}`}></div>
                       </div>
                       <p className="text-[12px] font-bold text-slate-500">
-                        {myQueueToken ? `Approx. ${myQueueToken.estimatedWaitTimeMin} mins wait index` : "No active clinics waiting token queue"}
+                        {myQueueToken ? `${appLanguage === "hi" ? "अनुमानित" : "Approx."} ${myQueueToken.estimatedWaitTimeMin} ${appLanguage === "hi" ? "मिनट प्रतीक्षा" : "mins wait index"}` : translateText("No active clinics waiting token queue", appLanguage)}
                       </p>
                     </div>
 
@@ -3810,7 +3842,7 @@ export default function App() {
                       onClick={() => setActiveTab("consultation")}
                       className="w-full text-center text-blue-600 font-bold text-[12px] py-1 bg-blue-50 hover:bg-blue-100 rounded-lg transition-all"
                     >
-                      {myQueueToken ? "Review wait line" : "Get Virtual OPD token"}
+                      {myQueueToken ? translateText("Review wait line", appLanguage) : translateText("Get Virtual OPD token", appLanguage)}
                     </button>
                   </div>
 
@@ -3818,17 +3850,17 @@ export default function App() {
                   <div className="col-span-1 sm:col-span-1 lg:col-span-1 lg:row-span-2 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
                     <div className="space-y-4">
                       <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-                        <h3 className="text-xs font-black text-slate-800 uppercase tracking-wider">Hospital Occupancy</h3>
+                        <h3 className="text-xs font-black text-slate-800 uppercase tracking-wider">{translateText("Hospital Occupancy", appLanguage)}</h3>
                         <HospitalIcon className="h-4 w-4 text-blue-500" />
                       </div>
                       <div className="space-y-3 flex-1 overflow-y-auto max-h-[220px] lg:max-h-[300px]">
                         {hospitals.slice(0, 3).map((h) => (
                           <div key={h.id} className="p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                            <p className="text-[12px] font-extrabold text-slate-700 truncate">{h.name}</p>
+                            <p className="text-[12px] font-extrabold text-slate-700 truncate">{translateText(h.name, appLanguage)}</p>
                             <div className="flex items-center justify-between mt-1">
-                              <span className="text-[12px] text-slate-500">ICU: {h.icuAvailable} vacant</span>
+                              <span className="text-[12px] text-slate-500">ICU: {h.icuAvailable} {translateText("vacant", appLanguage)}</span>
                               <span className={`text-[12px] font-black ${h.availableBeds > 10 ? 'text-green-600' : 'text-amber-600'}`}>
-                                {h.availableBeds} beds left
+                                {h.availableBeds} {translateText("beds left", appLanguage)}
                               </span>
                             </div>
                             <div className="w-full bg-slate-200 h-1.5 rounded-full mt-1.5 overflow-hidden">
@@ -3850,13 +3882,13 @@ export default function App() {
                         className="w-full py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-extrabold text-xs rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer"
                       >
                         <Compass className="h-4 w-4 animate-spin-slow" />
-                        Find Nearest Hospital
+                        {translateText("Find Nearest Hospital", appLanguage)}
                       </button>
                       <button
                         onClick={() => setActiveTab("beds")}
                         className="w-full py-2 text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl hover:bg-slate-50 transition-all font-semibold text-xs text-center cursor-pointer"
                       >
-                        View Live Map Locator
+                        {translateText("View Live Map Locator", appLanguage)}
                       </button>
                     </div>
                   </div>
@@ -3867,7 +3899,7 @@ export default function App() {
                       {/* Card Title */}
                       <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                         <div className="flex items-center gap-2 bg-transparent">
-                          <h3 className="text-xs font-black text-slate-800 uppercase tracking-wider">City Health Twin (CHN)</h3>
+                          <h3 className="text-xs font-black text-slate-800 uppercase tracking-wider">{translateText("City Health Twin (CHN)", appLanguage)}</h3>
                           <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -3878,7 +3910,7 @@ export default function App() {
 
                       {/* City Selector Dropdown */}
                       <div className="space-y-1">
-                        <label className="text-[12px] font-black text-slate-400 uppercase tracking-widest pl-1">Selected NCR City</label>
+                        <label className="text-[12px] font-black text-slate-400 uppercase tracking-widest pl-1">{translateText("Selected NCR City", appLanguage)}</label>
                         <select
                           value={dashboardSelectedCity}
                           onChange={(e) => setDashboardSelectedCity(e.target.value)}
@@ -3903,8 +3935,8 @@ export default function App() {
                             {/* Score Display */}
                             <div className="p-3 bg-white rounded-2xl border border-slate-150 flex items-center justify-between shadow-xs">
                               <div>
-                                <p className="text-[12px] font-extrabold text-slate-500 uppercase tracking-wider">Health Rating</p>
-                                <p className="text-xs font-black text-slate-800 leading-none mt-1">Operating Index</p>
+                                <p className="text-[12px] font-extrabold text-slate-500 uppercase tracking-wider">{translateText("Health Rating", appLanguage)}</p>
+                                <p className="text-xs font-black text-slate-800 leading-none mt-1">{translateText("Operating Index", appLanguage)}</p>
                               </div>
                               <div className="text-center font-sans bg-transparent">
                                 <span className="text-2xl font-[900] text-slate-900 leading-none">{finalScore}</span>
@@ -3915,9 +3947,9 @@ export default function App() {
                             {/* AQI Display */}
                             <div className="p-3 bg-red-50/20 border border-red-100 rounded-2xl flex items-center justify-between">
                               <div>
-                                <p className="text-[12px] font-extrabold text-slate-500 uppercase tracking-wider">Atmosphere AQI</p>
+                                <p className="text-[12px] font-extrabold text-slate-500 uppercase tracking-wider">{translateText("Atmosphere AQI", appLanguage)}</p>
                                 <p className={`text-[12px] font-black uppercase ${cityData.aqi > 250 ? "text-rose-600" : cityData.aqi > 150 ? "text-amber-600" : "text-emerald-600"}`}>
-                                  {cityData.aqi > 250 ? "Severe Danger" : cityData.aqi > 150 ? "Poor / Warning" : "Clear Area"}
+                                  {cityData.aqi > 250 ? translateText("Severe Danger", appLanguage) : cityData.aqi > 150 ? translateText("Poor / Warning", appLanguage) : translateText("Clear Area", appLanguage)}
                                 </p>
                               </div>
                               <span className="text-base font-black text-slate-800 font-mono bg-transparent">{cityData.aqi}</span>
@@ -3927,7 +3959,7 @@ export default function App() {
                             <div className="p-2.5 bg-slate-100 rounded-xl border border-slate-200/60 flex items-center gap-2">
                               <Activity className="h-4 w-4 text-slate-500 shrink-0 animate-pulse" />
                               <div className="text-[12px] text-slate-600 leading-normal font-semibold">
-                                <span className="font-extrabold text-slate-800">Alerts: </span>
+                                <span className="font-extrabold text-slate-800">{translateText("Alerts:", appLanguage)} </span>
                                 {cityData.outbreakZones[0]?.name || "None documented today"}
                               </div>
                             </div>
@@ -3943,7 +3975,7 @@ export default function App() {
                         className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer text-center"
                       >
                         <Sparkles className="h-3.5 w-3.5 text-emerald-100 animate-pulse" />
-                        Launch City Twin HUB
+                        {translateText("Launch City Twin HUB", appLanguage)}
                       </button>
                     </div>
                   </div>
@@ -3952,7 +3984,7 @@ export default function App() {
                   <div className="col-span-1 md:col-span-2 lg:col-span-2 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col justify-between">
                     <div>
                       <div className="flex justify-between items-center mb-4 border-b border-slate-100 pb-2">
-                        <h3 className="text-sm font-black text-slate-800 tracking-tight">Active Consultations</h3>
+                        <h3 className="text-sm font-black text-slate-800 tracking-tight">{translateText("Active Consultations", appLanguage)}</h3>
                         <div className="flex items-center gap-1.5">
                           <span
                             onClick={() => {
@@ -3962,14 +3994,14 @@ export default function App() {
                             className="text-[12px] text-indigo-650 hover:text-indigo-500 font-black cursor-pointer hover:underline flex items-center gap-0.5 bg-indigo-50 px-2.5 py-1 rounded-xl transition-all"
                           >
                             <Sparkles className="h-3 w-3 animate-pulse" />
-                            <span>AI Matcher</span>
+                            <span>{translateText("AI Matcher", appLanguage)}</span>
                           </span>
                           <span className="text-slate-300 text-xs">|</span>
                           <span
                             onClick={() => setActiveTab("consultation")}
                             className="text-[12px] text-blue-600 font-bold cursor-pointer hover:underline"
                           >
-                            Book Standard
+                            {translateText("Book Standard", appLanguage)}
                           </span>
                         </div>
                       </div>
@@ -3977,7 +4009,7 @@ export default function App() {
                       <div className="space-y-3 max-h-[180px] overflow-y-auto">
                         {myAppointments.length === 0 ? (
                           <div className="text-center py-6">
-                            <p className="text-xs text-slate-400">No active scheduled consultations.</p>
+                            <p className="text-xs text-slate-400">{translateText("No active scheduled consultations.", appLanguage)}</p>
                           </div>
                         ) : (
                           myAppointments.map((appt) => (
@@ -4007,7 +4039,7 @@ export default function App() {
                                     }}
                                     className="px-2.5 py-1 bg-blue-500 hover:bg-blue-600 text-white text-[12px] font-bold rounded-lg"
                                   >
-                                    Join chat
+                                    {translateText("Join chat", appLanguage)}
                                   </button>
                                 )}
                               </div>
@@ -4020,7 +4052,7 @@ export default function App() {
                     <div className="mt-4 p-3 bg-blue-50/50 rounded-2xl border border-blue-100/50 flex items-center gap-3">
                       <Info className="h-5 w-5 text-blue-600 shrink-0" />
                       <p className="text-[12.5px] text-slate-600 leading-normal">
-                        To request medications or look up digital records, verify Doctor updates or select <strong>Doctor simulate role</strong> at the top header list!
+                        {translateText("To request medications or look up digital records, verify Doctor updates or select", appLanguage)} <strong>{translateText("Doctor simulate role", appLanguage)}</strong> {translateText("at the top header list!", appLanguage)}
                       </p>
                     </div>
                   </div>
@@ -4029,7 +4061,7 @@ export default function App() {
                   <div className="col-span-1 md:col-span-2 lg:col-span-2 bg-slate-900 rounded-3xl p-6 text-white shadow-lg flex flex-col sm:flex-row justify-between gap-6">
                     <div className="flex-1 flex flex-col justify-between">
                       <div className="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
-                        <h3 className="text-xs font-black opacity-70 uppercase tracking-widest">AI Health Status</h3>
+                        <h3 className="text-xs font-black opacity-70 uppercase tracking-widest">{translateText("AI Health Status", appLanguage)}</h3>
                         <Sparkles className="h-4 w-4 text-cyan-400" />
                       </div>
 
@@ -4042,20 +4074,20 @@ export default function App() {
                           </svg>
                           <div className="absolute inset-0 flex flex-col items-center justify-center">
                             <span className="text-2xl font-black text-white leading-none">85</span>
-                            <span className="text-[7px] text-slate-400 font-bold tracking-widest uppercase mt-0.5 leading-none">Safe Index</span>
+                            <span className="text-[7px] text-slate-400 font-bold tracking-widest uppercase mt-0.5 leading-none">{translateText("Safe Index", appLanguage)}</span>
                           </div>
                         </div>
                         <p className="text-left text-[12.5px] opacity-85 leading-relaxed">
-                          Recover rate has advanced 4% over the past fortnight. Keep consistent cardiovascular metrics.
+                          {translateText("Recover rate has advanced 4% over the past fortnight. Keep consistent cardiovascular metrics.", appLanguage)}
                         </p>
                       </div>
                     </div>
 
                     <div className="sm:w-52 flex flex-col justify-between gap-3 bg-white/10 rounded-2xl p-4 border border-white/5 shrink-0">
                       <div>
-                        <p className="text-[12px] uppercase font-bold text-cyan-300 tracking-wider mb-1">AI Prediction</p>
+                        <p className="text-[12px] uppercase font-bold text-cyan-300 tracking-wider mb-1">{translateText("AI Prediction", appLanguage)}</p>
                         <p className="text-xs opacity-90 leading-tight">
-                          Minimal regional influenza exposure based on localized sewage analytics.
+                          {translateText("Minimal regional influenza exposure based on localized sewage analytics.", appLanguage)}
                         </p>
                       </div>
                       <div className="text-[12px] text-cyan-200/50 font-mono">
@@ -4069,16 +4101,16 @@ export default function App() {
                 {/* DYNAMIC LANDING SEGMENT CARD */}
                 <div className="bg-slate-100 rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6 border border-slate-200">
                   <div className="space-y-2">
-                    <h3 className="text-lg font-black text-slate-900 leading-tight">Need custom medicines? Place express order at pharmacy grid!</h3>
+                    <h3 className="text-lg font-black text-slate-900 leading-tight">{translateText("Need custom medicines? Place express order at pharmacy grid!", appLanguage)}</h3>
                     <p className="text-xs text-slate-500 max-w-xl">
-                      Browse standard painkillers, antibiotic segments, first-aid remedies, or connect verified clinical prescription tags from your reports list immediately.
+                      {translateText("Browse standard painkillers, antibiotic segments, first-aid remedies, or connect verified clinical prescription tags from your reports list immediately.", appLanguage)}
                     </p>
                   </div>
                   <button
                     onClick={() => setActiveTab("pharmacy")}
                     className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs rounded-xl shadow shrink-0 active:scale-95 transition-all text-center cursor-pointer"
                   >
-                    Enter Medical Pharmacy
+                    {translateText("Enter Medical Pharmacy", appLanguage)}
                   </button>
                 </div>
               </div>
@@ -4412,28 +4444,28 @@ export default function App() {
               <div className="space-y-6 pb-12">
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
                   <h2 className="text-xl font-black text-slate-950 flex items-center gap-2">
-                     Metropolitan Live Bed Triage Grid
+                     {getTranslation(appLanguage, "bedTriageTitle")}
                   </h2>
                   <p className="text-xs text-slate-500 mt-1">
-                    Live operational census for hospital bed allocation. Patients can map vacancies and coordinate emergency transit.
+                    {getTranslation(appLanguage, "bedTriageSubtitle")}
                   </p>
                 </div>
 
                 <div className="grid gap-6 lg:grid-cols-3">
                   <div className="lg:col-span-2 space-y-4">
-                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Trauma Centers & Hospital Registries</h3>
+                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">{getTranslation(appLanguage, "traumaRegistriesTitle")}</h3>
                     <div className="grid gap-4 sm:grid-cols-2">
                       {hospitals.filter(h => distanceFilter >= 30 || getDistanceToUser(h) <= distanceFilter).length === 0 ? (
                         <div className="col-span-full text-center py-12 px-6 bg-white border border-slate-200 border-dashed rounded-3xl space-y-3 shadow-xs">
                           <AlertCircle className="h-8 w-8 text-amber-500 mx-auto animate-pulse" />
-                          <p className="text-sm font-extrabold text-slate-800">No hospitals found within {distanceFilter} km.</p>
-                          <p className="text-xs text-slate-500">Try dragging the distance filter slider on the map to expand your results.</p>
+                          <p className="text-sm font-extrabold text-slate-800">{appLanguage === "hi" ? `${distanceFilter} किमी के भीतर कोई अस्पताल नहीं मिला।` : `No hospitals found within ${distanceFilter} km.`}</p>
+                          <p className="text-xs text-slate-500">{translateText("Try dragging the distance filter slider on the map to expand your results.", appLanguage)}</p>
                           <button
                             type="button"
                             onClick={() => setDistanceFilter(30)}
                             className={`px-4 py-2 text-white text-xs font-black uppercase rounded-xl shadow cursor-pointer transition-all active:scale-95 ${isAppDarkMode ? "bg-slate-850 hover:bg-slate-750" : "bg-slate-900 hover:bg-slate-800"}`}
                           >
-                            Reset Search Radius
+                            {translateText("Reset Search Radius", appLanguage)}
                           </button>
                         </div>
                       ) : (
@@ -4445,27 +4477,27 @@ export default function App() {
                               <div key={h.id} className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between hover:shadow-md transition-all">
                                 <div>
                                   <div className="flex items-start justify-between gap-2.5">
-                                    <h4 className="text-sm font-extrabold text-slate-900 leading-snug truncate-2-lines h-10">{h.name}</h4>
+                                    <h4 className="text-sm font-extrabold text-slate-900 leading-snug truncate-2-lines h-10">{translateText(h.name, appLanguage)}</h4>
                                     <span className={`shrink-0 h-2 w-2 rounded-full mt-1.5 ${isSevere ? 'bg-red-500 animate-pulse' : 'bg-green-500'}`}></span>
                                   </div>
                                   <p className="text-[12.5px] text-slate-500 flex items-center gap-1">
-                                    <MapPin className="h-3 w-3 shrink-0" /> {h.address}
+                                    <MapPin className="h-3 w-3 shrink-0" /> {translateText(h.address, appLanguage)}
                                   </p>
                                   <div className="text-[12px] text-teal-700 bg-teal-50 border border-teal-100/60 px-2 py-1 rounded-xl w-fit font-black flex items-center gap-1 mt-2 shadow-2xs">
                                     <Compass className="h-3.5 w-3.5 shrink-0" />
-                                    {getDistanceToUser(h).toFixed(1)} km away
+                                    {getDistanceToUser(h).toFixed(1)} {appLanguage === "hi" ? "किमी दूर" : "km away"}
                                   </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
                                   <div className="p-2.5 bg-slate-50 rounded-xl text-center border border-slate-100 justify-between">
-                                    <span className="text-[12px] text-slate-500 font-bold block">Available Beds</span>
+                                    <span className="text-[12px] text-slate-500 font-bold block">{getTranslation(appLanguage, "availableBedsLabel")}</span>
                                     <span className={`text-lg font-black block ${isSevere ? "text-red-600" : "text-emerald-600"}`}>
                                       {h.availableBeds} <span className="text-[12px] font-medium text-slate-400">/ {h.totalBeds}</span>
                                     </span>
                                   </div>
                                   <div className="p-2.5 bg-slate-50 rounded-xl text-center border border-slate-100">
-                                    <span className="text-[12px] text-slate-500 font-bold block">ICU Reserve</span>
+                                    <span className="text-[12px] text-slate-500 font-bold block">{getTranslation(appLanguage, "icuReserveLabel")}</span>
                                     <span className={`text-lg font-black block ${h.icuAvailable === 0 ? "text-red-500" : "text-cyan-600"}`}>
                                       {h.icuAvailable} <span className="text-[12px] font-medium text-slate-400">/ {h.icuBeds}</span>
                                     </span>
@@ -4474,7 +4506,7 @@ export default function App() {
 
                                 <div className="space-y-1 pt-2">
                                   <div className="flex justify-between text-[12px] text-slate-500 uppercase font-semibold">
-                                    <span>Emergency Occupancy</span>
+                                    <span>{getTranslation(appLanguage, "emergencyOccupancyLabel")}</span>
                                     <span>{h.emergencyOccupancy}%</span>
                                   </div>
                                   <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
@@ -4484,13 +4516,13 @@ export default function App() {
 
                                 <div className="flex items-center justify-between gap-1 mt-2.5 pt-2 border-t border-slate-100 text-[12px] font-bold">
                                   <a href={`tel:${h.phone}`} className="text-slate-500 hover:text-slate-900 flex items-center gap-1 shrink-0">
-                                    <Phone className="h-3 w-3" /> Call Desk
+                                    <Phone className="h-3 w-3" /> {getTranslation(appLanguage, "callDeskBtn")}
                                   </a>
                                   <button
                                     onClick={() => handleSelectHospitalMap(h)}
                                     className="text-cyan-600 hover:underline cursor-pointer"
                                   >
-                                    Map & Track Dispatch
+                                    {getTranslation(appLanguage, "mapDispatchBtn")}
                                   </button>
                                   <button
                                     onClick={() => {
@@ -4500,19 +4532,17 @@ export default function App() {
                                     }}
                                     className="text-rose-600 hover:underline cursor-pointer"
                                   >
-                                    SOS Direct
+                                    {getTranslation(appLanguage, "sosDirectBtn")}
                                   </button>
                                 </div>
 
-                                <a 
-                                  href={getGoogleMapsDirUrl(h.name, h.address)}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="w-full mt-2.5 bg-blue-50/50 hover:bg-blue-50 text-blue-700 hover:text-blue-800 font-extrabold text-[12.5px] text-center py-2.5 rounded-xl flex items-center justify-center gap-1.5 border border-blue-100 transition-all cursor-pointer shadow-xs"
-                                >
-                                  <ExternalLink className="h-3.5 w-3.5" />
-                                  Open Google Maps Live Route
-                                </a>
+                                  <button
+                                    onClick={() => handleSelectHospitalMap(h)}
+                                    className="w-full mt-2.5 bg-blue-50/50 hover:bg-blue-50 text-blue-700 hover:text-blue-800 font-extrabold text-[12.5px] text-center py-2.5 rounded-xl flex items-center justify-center gap-1.5 border border-blue-100 transition-all cursor-pointer shadow-xs"
+                                  >
+                                    <MapPin className="h-3.5 w-3.5" />
+                                    {getTranslation(appLanguage, "View Live Map")}
+                                  </button>
                               </div>
                             );
                           })
@@ -4523,203 +4553,89 @@ export default function App() {
                   {/* Dynamic Map Visualizer side panel */}
                   <div className="space-y-6">
                     <div className="bg-white border border-blue-100 text-slate-800 rounded-[32px] p-6 shadow-sm space-y-4 relative overflow-hidden">
-                      <div className="absolute top-1.5 right-1.5 font-mono text-[12px] text-blue-600 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded uppercase font-bold">Google Maps API Linked</div>
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-3">
                         <h4 className="text-sm font-black uppercase text-blue-900 tracking-wider flex items-center gap-1.5 font-sans">
-                          <MapPin className="h-4 w-4 text-blue-500 animate-pulse" /> Delhi NCR Live Trauma Map
+                          <MapPin className="h-4 w-4 text-blue-500 animate-pulse" /> {translateText("Delhi NCR LIVE TRAUMA MAP", appLanguage)}
                         </h4>
                         
-                        <button
-                          onClick={getUserRealTimeLocation}
-                          disabled={isLocatingUser}
-                          id="btn-detect-gps"
-                          className={`px-3 py-1.5 rounded-xl text-[12px] font-black uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer select-none ${
-                            isLocatingUser 
-                              ? "bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed" 
-                              : userLocationCoords 
-                                ? "bg-emerald-50 text-emerald-600 border border-emerald-200 hover:bg-emerald-100" 
-                                : "bg-blue-50 text-blue-600 border border-blue-100 hover:bg-blue-100/60"
-                          }`}
-                        >
-                          <Navigation className={`h-3 w-3 ${isLocatingUser ? "animate-spin" : ""}`} />
-                          {isLocatingUser ? "Locating..." : userLocationCoords ? "GPS Connected" : "Detect GPS"}
-                        </button>
+                        <div className="flex flex-col items-end gap-1.5">
+                          <div className="font-mono text-[10px] text-blue-600 bg-blue-50 border border-blue-100 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">
+                            {translateText("OSM Network Linked", appLanguage)}
+                          </div>
+                          <button
+                            onClick={getUserRealTimeLocation}
+                            disabled={isLocatingUser}
+                            id="btn-detect-gps"
+                            className={`px-3 py-1.5 rounded-xl text-[12px] font-black uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer select-none ${
+                              isLocatingUser 
+                                ? "bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed" 
+                                : userLocationCoords 
+                                  ? "bg-emerald-50 text-emerald-600 border border-emerald-200 hover:bg-emerald-100" 
+                                  : "bg-blue-50 text-blue-600 border border-blue-100 hover:bg-blue-100/60"
+                            }`}
+                          >
+                            <Navigation className={`h-3 w-3 ${isLocatingUser ? "animate-spin" : ""}`} />
+                            {isLocatingUser ? translateText("Locating...", appLanguage) : userLocationCoords ? translateText("GPS Connected", appLanguage) : translateText("Detect GPS", appLanguage)}
+                          </button>
+                        </div>
                       </div>
                       
                       {/* Stylized Delhi NCR Vector Grid */}
                       <div className="relative w-full aspect-square bg-sky-50/50 border border-blue-100 rounded-2xl overflow-hidden shadow-inner flex flex-col justify-between">
-                        
-                        {/* Floating View Control */}
-                        {isMapCenteredOnUser && (
-                          <div className="absolute top-3 left-3 z-45">
-                            <button
-                              type="button"
-                              onClick={() => setIsMapCenteredOnUser(false)}
-                              className="bg-white/95 backdrop-blur border border-slate-250 hover:bg-slate-50 text-blue-600 hover:text-blue-800 font-extrabold text-[12px] uppercase tracking-wider px-3.5 py-2.5 rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5 cursor-pointer"
-                            >
-                              <RotateCcw className="h-3.5 w-3.5 animate-spin-slow" />
-                              Reset Normal View
-                            </button>
-                          </div>
-                        )}
-
-                        {/* Floating Radius HUD / Distance Filter Slider */}
-                        <div className="absolute top-3 right-3 z-45 bg-white/95 backdrop-blur border border-blue-100/80 p-3 rounded-2xl shadow-md w-44 space-y-2 select-none">
-                          <div className="flex justify-between items-center text-[12px] font-black tracking-wider text-slate-600 uppercase">
-                            <span className="flex items-center gap-1">
-                              <Compass className="h-3 w-3 text-blue-500 rotate-45" /> Radius
-                            </span>
-                            <span className="text-blue-600 font-bold bg-blue-50 px-1.5 py-0.5 rounded-md border border-blue-100">
-                              {distanceFilter >= 30 ? "All" : `${distanceFilter} km`}
-                            </span>
-                          </div>
-                          
-                          <input
-                            type="range"
-                            min="3"
-                            max="30"
-                            step="1"
-                            value={distanceFilter}
-                            onChange={(e) => setDistanceFilter(Number(e.target.value))}
-                            className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400 focus:outline-none"
-                            style={{
-                              background: `linear-gradient(to right, #22d3ee 0%, #22d3ee ${(distanceFilter - 3) / 27 * 100}%, #1e293b ${(distanceFilter - 3) / 27 * 100}%, #1e293b 100%)`
-                            }}
-                          />
-                          
-                          <div className="flex justify-between text-[12px] font-black text-slate-500">
-                            <span>3 km</span>
-                            <span>15 km</span>
-                            <span>Unlimited</span>
-                          </div>
-                        </div>
-
-                        {/* Camera Focus Zoom Wrapper */}
-                        <div 
-                          className="absolute inset-0 transition-all duration-500 ease-out"
-                          style={{
-                            transform: isMapCenteredOnUser 
-                              ? "scale(1.28) translateY(12px)" 
-                              : "scale(1) translateY(0px)",
-                            transformOrigin: "150px 90px"
-                          }}
-                        >
-                          {/* Static road lines */}
-                          <svg className="absolute inset-0 w-full h-full text-slate-800" strokeWidth="1" stroke="currentColor">
-                            <line x1="10" y1="160" x2="310" y2="160" strokeDasharray="3,3" />
-                            <line x1="160" y1="10" x2="160" y2="310" strokeDasharray="3,3" />
-                            <path d="M 45,280 Q 150,120 275,95" fill="none" stroke="#1e293b" strokeWidth="2" strokeDasharray="5,5" />
-                          </svg>
-
-                          {/* Interactive dynamic path highlighting to chosen hospital */}
-                          {mapSelectedHospital && (
-                            <svg className="absolute inset-0 w-full h-full text-[0px]" fill="none">
-                              <path 
-                                d={`M 150,90 Q 140,110 ${hospitalCoords[mapSelectedHospital.id]?.x || 151},${hospitalCoords[mapSelectedHospital.id]?.y || 153}`}
-                                stroke="#06b6d4" 
-                                strokeWidth="3.5" 
-                                strokeLinecap="round"
-                              />
-                              
-                              {/* Glowing animated pulse travel indicator */}
-                              <path 
-                                d={`M 150,90 Q 140,110 ${hospitalCoords[mapSelectedHospital.id]?.x || 151},${hospitalCoords[mapSelectedHospital.id]?.y || 153}`}
-                                stroke="#22c55e" 
-                                strokeWidth="3.5" 
-                                strokeLinecap="round"
-                                strokeDasharray="10 30"
-                                strokeDashoffset={-ambulanceMarkerProgress * 1.5}
-                              />
-                            </svg>
-                          )}
-
-                          {/* Visual Location Nodes */}
-                          <div className="absolute inset-0 text-[12px]">
-                            {/* User Location Node (Real-time GPS device position marker) */}
-                            <div 
-                              style={{ left: "150px", top: "90px" }} 
-                              className="absolute -translate-x-1/2 -translate-y-1/2 text-center group z-20"
-                            >
-                              <span className="flex h-3.5 w-3.5 relative">
-                                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${userLocationCoords ? "bg-emerald-500" : "bg-cyan-500"} opacity-75`}></span>
-                                <span className={`relative inline-flex rounded-full h-3.5 w-3.5 ${userLocationCoords ? "bg-emerald-600" : "bg-cyan-600"} border border-white`}></span>
-                              </span>
-                              <div className={`bg-slate-900 border ${userLocationCoords ? "border-emerald-500/30 text-emerald-300" : "border-slate-800 text-slate-300"} p-1.5 rounded text-[12px] whitespace-nowrap absolute top-4 left-1/2 -translate-x-1/2 opacity-95 font-bold shadow-md`}>
-                                📍 {userLocationCoords ? `Live GPS: ${userLocationCoords.lat.toFixed(4)}°, ${userLocationCoords.lng.toFixed(4)}°` : "GPS Position Awaiting Grant..."}
-                              </div>
-                            </div>
-
-                            {/* Hospital Markers from current database */}
-                            {hospitals
-                              .filter((h) => distanceFilter >= 30 || getDistanceToUser(h) <= distanceFilter)
-                              .map((h) => {
-                                const coords = hospitalCoords[h.id] || { x: 150, y: 150 };
-                                const isSelected = mapSelectedHospital?.id === h.id;
-                                return (
-                                  <button 
-                                    key={h.id}
-                                    onClick={() => handleSelectHospitalMap(h)}
-                                    style={{ left: `${coords.x}px`, top: `${coords.y}px` }}
-                                    className="absolute -translate-x-1/2 -translate-y-1/2 group z-30 focus:outline-none cursor-pointer"
-                                  >
-                                    <span className={`flex h-4 w-4 rounded-full border border-white transition-all duration-300 ${
-                                      isSelected ? "bg-cyan-500 scale-125 shadow shadow-cyan-300" : h.availableBeds > 0 ? "bg-rose-500 hover:scale-110" : "bg-slate-600 hover:scale-110 opacity-60"
-                                    }`} />
-                                    <div className="hidden group-hover:block bg-slate-900 border border-slate-700 p-1 rounded text-[12px] whitespace-nowrap absolute -top-8 left-1/2 -translate-x-1/2 text-white font-bold z-[100]">
-                                      {h.name.split(" ")[0]} ({h.availableBeds} beds)
-                                    </div>
-                                  </button>
-                                );
-                              })}
-
-                            {/* Ambulance dispatch icon representation */}
-                            {mapSelectedHospital && isAmbulanceTracking && (
-                              <div 
-                                style={{ 
-                                  left: `${150 + (hospitalCoords[mapSelectedHospital.id]?.x - 150) * (ambulanceMarkerProgress/100)}px`, 
-                                  top: `${90 + (hospitalCoords[mapSelectedHospital.id]?.y - 90) * (ambulanceMarkerProgress/100)}px` 
-                                }} 
-                                className="absolute -translate-x-1/2 -translate-y-1/2 bg-yellow-500 text-slate-950 p-1 rounded-full z-40 shadow-lg border border-white scale-110 animate-bounce"
-                              >
-                                <Ambulance className="h-3.5 w-3.5" />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Mini coordinates tagger overlay */}
-                        <div className="bg-[#f1f5f9] border-t border-slate-100 p-2.5 text-[12px] font-mono flex justify-between z-10 text-slate-700">
-                          <div>
-                            <span className="text-slate-400">Target Node: </span>
-                            <span className="text-blue-600 font-bold">{mapSelectedHospital ? mapSelectedHospital.name.split(" ")[0] : "None Selected"}</span>
-                          </div>
-                          <div>
-                            <span className="text-slate-400">Lat: </span>
-                            <span className="text-slate-850 font-bold">{mapSelectedHospital ? mapSelectedHospital.lat.toFixed(4) : "28.6139"}</span>
-                          </div>
-                        </div>
+                        <MapComponent
+                          center={mapSelectedHospital ? { lat: mapSelectedHospital.lat, lng: mapSelectedHospital.lng } : userLocationCoords || { lat: 28.6139, lng: 77.2090 }}
+                          zoom={mapSelectedHospital ? 14 : 11}
+                          markers={
+                            mapSelectedHospital 
+                            ? [
+                                { id: mapSelectedHospital.id, lat: mapSelectedHospital.lat, lng: mapSelectedHospital.lng, title: mapSelectedHospital.name },
+                                { id: 'user', lat: userLocationCoords?.lat || 28.6139, lng: userLocationCoords?.lng || 77.2090, title: 'Your Location' }
+                              ]
+                            : [
+                                ...hospitals
+                                  .filter((h) => distanceFilter >= 30 || getDistanceToUser(h) <= distanceFilter)
+                                  .map(h => ({
+                                    id: h.id,
+                                    lat: h.lat,
+                                    lng: h.lng,
+                                    title: h.name
+                                  })),
+                                ...(userLocationCoords ? [{
+                                  id: 'user',
+                                  lat: userLocationCoords.lat,
+                                  lng: userLocationCoords.lng,
+                                  title: 'Your Location'
+                                }] : [])
+                              ]
+                          }
+                          route={mapSelectedHospital ? [
+                            { lat: userLocationCoords?.lat || 28.6139, lng: userLocationCoords?.lng || 77.2090 },
+                            { lat: mapSelectedHospital.lat, lng: mapSelectedHospital.lng }
+                          ] : undefined}
+                          className="w-full h-full"
+                        />
                       </div>
 
-                      {/* Direction coordinates details steps rendering on tap */}
+                      {/* Selected hospital telemetry mini-card */}
                       {mapSelectedHospital ? (
-                        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3 font-semibold text-xs leading-normal text-slate-700">
-                          <div className="flex justify-between border-b border-slate-200 pb-2">
+                        <div className="space-y-4 pt-1">
+                          <div className="flex justify-between items-center bg-slate-50 border border-slate-200/80 p-3 rounded-2xl">
                             <div>
-                              <span className="text-[12px] text-slate-400 uppercase tracking-wider block">Est. Distance</span>
-                              <span className="text-base font-black text-slate-900">{mapDistance}</span>
+                              <span className="text-[12px] text-slate-400 uppercase tracking-wider block">{translateText("Est. Distance", appLanguage)}</span>
+                              <span className="text-base font-black text-slate-900">{translateText(mapDistance, appLanguage)}</span>
                             </div>
                             <div className="text-right">
-                              <span className="text-[12px] text-slate-400 uppercase tracking-wider block">Est. Transit Duration</span>
-                              <span className="text-base font-black text-blue-600">{mapDuration}</span>
+                              <span className="text-[12px] text-slate-400 uppercase tracking-wider block">{translateText("Est. Transit Duration", appLanguage)}</span>
+                              <span className="text-base font-black text-blue-600">{translateText(mapDuration, appLanguage)}</span>
                             </div>
                           </div>
 
                           <div className="space-y-1 text-[12px]">
-                            <span className="text-slate-400 uppercase tracking-wider text-[12px] block font-semibold">Live Driving Escort (Delhi CP Gate)</span>
+                            <span className="text-slate-400 uppercase tracking-wider text-[12px] block font-semibold">{translateText("Live Driving Escort (Delhi CP Gate)", appLanguage)}</span>
                             <div className="max-h-[100px] overflow-y-auto space-y-1 font-mono text-slate-600">
                               {mapDirectionsSteps.map((stp, idx) => (
                                 <p key={idx} className="truncate">
-                                  <span className="text-blue-500 font-bold">{idx + 1}.</span> {stp}
+                                  <span className="text-blue-500 font-bold">{idx + 1}.</span> {translateText(stp, appLanguage)}
                                 </p>
                               ))}
                             </div>
@@ -4744,15 +4660,13 @@ export default function App() {
                               </button>
                             )}
 
-                            <a
-                              href={getGoogleMapsDirUrl(mapSelectedHospital?.name || "", mapSelectedHospital?.address || "")}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <button
+                              onClick={() => handleSelectHospitalMap(mapSelectedHospital)}
                               className="w-full bg-blue-50 hover:bg-blue-100/85 text-blue-700 font-bold text-xs py-3 rounded-xl shadow-md cursor-pointer transition-all flex items-center justify-center gap-2 text-center active:scale-[0.98] border border-blue-200"
                             >
-                              <ExternalLink className="h-4 w-4 text-blue-500 animate-pulse" />
-                              Redirect to Google Maps Route
-                            </a>
+                              <MapPin className="h-4 w-4 text-blue-500 animate-pulse" />
+                              View Route on Live Map
+                            </button>
                           </div>
                         </div>
                       ) : (
@@ -4783,8 +4697,8 @@ export default function App() {
                   <div className="bg-white border border-blue-200 rounded-3xl p-6 shadow-md max-w-xl mx-auto space-y-4 border-t-4 border-t-blue-500">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="font-extrabold text-base text-slate-900">Request consultation slot</h3>
-                        <p className="text-xs text-slate-500">Scheduling slot with {bookingDoc.name}</p>
+                        <h3 className="font-extrabold text-base text-slate-900">{translateText("Request consultation slot", appLanguage)}</h3>
+                        <p className="text-xs text-slate-500">{translateText("Scheduling slot with", appLanguage)} {bookingDoc.name}</p>
                       </div>
                       <button onClick={() => setBookingDoc(null)} className="text-slate-400 hover:text-slate-900 p-1">
                         <X className="h-5 w-5" />
@@ -4794,32 +4708,32 @@ export default function App() {
                     <form onSubmit={handleBookAppointment} className="grid gap-4 text-xs font-medium">
                       <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-1.5">
-                          <label className="text-slate-600">Choose date</label>
+                          <label className="text-slate-600">{translateText("Choose date", appLanguage)}</label>
                           <input type="date" value={apptDate} onChange={(e) => setApptDate(e.target.value)} className="w-full border border-slate-200 p-2.5 rounded-lg" required />
                         </div>
                         <div className="space-y-1.5">
-                          <label className="text-slate-600">Choose preferred time</label>
+                          <label className="text-slate-600">{translateText("Choose preferred time", appLanguage)}</label>
                           <input type="text" placeholder="10:30 AM" value={apptTime} onChange={(e) => setApptTime(e.target.value)} className="w-full border border-slate-200 p-2.5 rounded-lg" required />
                         </div>
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="text-slate-600">Select Session Type</label>
+                        <label className="text-slate-600">{translateText("Select Session Type", appLanguage)}</label>
                         <select
                           value={apptType}
                           onChange={(e: any) => setApptType(e.target.value)}
                           className="w-full border border-slate-200 p-2.5 rounded-lg text-xs"
                         >
-                          <option value="VIRTUAL">Virtual Chat Room & Prescriptions</option>
-                          <option value="IN_PERSON">In-Person Clinical Attendance</option>
+                          <option value="VIRTUAL">{translateText("Virtual Chat Room & Prescriptions", appLanguage)}</option>
+                          <option value="IN_PERSON">{translateText("In-Person Clinical Attendance", appLanguage)}</option>
                         </select>
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="text-slate-600">Current active symptoms or reason for visit</label>
+                        <label className="text-slate-600">{translateText("Current active symptoms or reason for visit", appLanguage)}</label>
                         <textarea
                           rows={3}
-                          placeholder="Fever symptoms, joint pain review..."
+                          placeholder={translateText("Fever symptoms, joint pain review...", appLanguage)}
                           value={apptSymptoms}
                           onChange={(e) => setApptSymptoms(e.target.value)}
                           className="w-full border border-slate-200 p-2.5 rounded-lg text-xs"
@@ -4828,8 +4742,8 @@ export default function App() {
                       </div>
 
                       <div className="flex justify-end gap-2 pt-2">
-                        <button type="button" onClick={() => setBookingDoc(null)} className="px-4 py-2 border border-slate-200 rounded-lg">Cancel</button>
-                        <AnimatedConfirmButton initialText="Book Appointment" onComplete={handleBookAppointment} />
+                        <button type="button" onClick={() => setBookingDoc(null)} className="px-4 py-2 border border-slate-200 rounded-lg">{translateText("Cancel", appLanguage)}</button>
+                        <AnimatedConfirmButton initialText={translateText("Book Appointment", appLanguage)} onComplete={handleBookAppointment} />
                       </div>
                     </form>
                   </div>
@@ -5052,7 +4966,7 @@ export default function App() {
                   <div className="space-y-6">
                     <div className="grid gap-6 md:grid-cols-3">
                       <div className="md:col-span-2 space-y-4">
-                        <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Available metropolitan doctors & clinics</h3>
+                        <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">{translateText("Available metropolitan doctors & clinics", appLanguage)}</h3>
                         <div className="grid gap-4 sm:grid-cols-2">
                           {filteredDoctors.map((doc) => (
                             <div key={doc.id} className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-4 flex flex-col justify-between">
@@ -5066,23 +4980,23 @@ export default function App() {
                                 )}
                                 <div className="space-y-1 min-w-0">
                                   <div className="flex items-center gap-1">
-                                    <h4 className="text-sm font-extrabold text-slate-900 truncate pr-0.5">{doc.name}</h4>
+                                    <h4 className="text-sm font-extrabold text-slate-900 truncate pr-0.5">{translateText(doc.name, appLanguage)}</h4>
                                     <span className={`w-2 h-2 rounded-full shrink-0 ${doc.online ? 'bg-emerald-500' : 'bg-slate-300'}`}></span>
                                   </div>
-                                  <p className="text-[12.5px] text-blue-600 font-bold truncate leading-none">{doc.specialty}</p>
-                                  <p className="text-[12px] text-slate-400 truncate">{doc.hospitalName}</p>
+                                  <p className="text-[12.5px] text-blue-600 font-bold truncate leading-none">{translateText(doc.specialty, appLanguage)}</p>
+                                  <p className="text-[12px] text-slate-400 truncate">{translateText(doc.hospitalName, appLanguage)}</p>
                                 </div>
                               </div>
 
                               <div className="grid grid-cols-2 gap-2 text-center text-xs font-bold pt-2.5 border-t border-slate-100">
                                 <div className="p-2 bg-slate-50 border border-slate-100 rounded-xl leading-none">
-                                  <span className="text-[12px] text-slate-400 block font-bold mb-1">Queue Size</span>
-                                  <span className="text-slate-800 text-sm font-black">{doc.queueCount} patients</span>
+                                  <span className="text-[12px] text-slate-400 block font-bold mb-1">{translateText("Queue Size", appLanguage)}</span>
+                                  <span className="text-slate-800 text-sm font-black">{doc.queueCount} {translateText("patients", appLanguage)}</span>
                                 </div>
                                 <div className="p-2 bg-slate-50 border border-slate-100 rounded-xl leading-none">
-                                  <span className="text-[12px] text-slate-400 block font-bold mb-1">Clinic Wait</span>
+                                  <span className="text-[12px] text-slate-400 block font-bold mb-1">{translateText("Clinic Wait", appLanguage)}</span>
                                   <span className={doc.waitTimeMin > 25 ? 'text-amber-600 text-sm font-black' : 'text-slate-800 text-sm font-black'}>
-                                    {doc.waitTimeMin} mins
+                                    {doc.waitTimeMin} {appLanguage === "hi" ? "मिनट" : "mins"}
                                   </span>
                                 </div>
                               </div>
@@ -5092,7 +5006,7 @@ export default function App() {
                                   option and states the wait it is asking for. */}
                               <div className="flex flex-col gap-2 pt-1.5">
                                 <AnimatedConfirmButton
-                                  initialText="Book a date"
+                                  initialText={appLanguage === "hi" ? "तारीख बुक करें" : "Book a date"}
                                   onComplete={() => setBookingDoc(doc)}
                                 />
                                 <button
@@ -5100,8 +5014,8 @@ export default function App() {
                                   onClick={() => handleOPDTokenRequest(doc.id)}
                                   className="px-4 py-2.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 text-[13px] font-semibold transition-all cursor-pointer w-full"
                                 >
-                                  Join today&rsquo;s queue
-                                  <span className="text-slate-400 font-medium"> · {doc.waitTimeMin} min</span>
+                                  {appLanguage === "hi" ? "आज की कतार में शामिल हों" : "Join today\u2019s queue"}
+                                  <span className="text-slate-400 font-medium"> · {doc.waitTimeMin} {appLanguage === "hi" ? "मिनट" : "min"}</span>
                                 </button>
                               </div>
                             </div>
@@ -5112,13 +5026,13 @@ export default function App() {
                       {/* OPD Token tracker sidebar stats */}
                       <div className="space-y-6">
                         <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-sm space-y-4">
-                          <h4 className="text-xs font-black uppercase text-cyan-300 tracking-wider">Dynamic Token Dispenser</h4>
+                          <h4 className="text-xs font-black uppercase text-cyan-300 tracking-wider">{translateText("Dynamic Token Dispenser", appLanguage)}</h4>
                           <p className="text-xs text-slate-300 leading-relaxed font-semibold">
-                            Generate live tokens for digital consult pathways straight to clinical OPD queues. Avoid sitting in physical hospital queue delays.
+                            {translateText("Generate live tokens for digital consult pathways straight to clinical OPD queues. Avoid sitting in physical hospital queue delays.", appLanguage)}
                           </p>
 
                           <div className="p-3.5 bg-white/10 rounded-2xl border border-white/5 space-y-2">
-                            <span className="text-[12px] font-black uppercase text-cyan-400 tracking-wider block">Active Queue Session Info</span>
+                            <span className="text-[12px] font-black uppercase text-cyan-400 tracking-wider block">{translateText("Active Queue Session Info", appLanguage)}</span>
                             {myQueueToken ? (
                               <div className="space-y-1.5 text-xs font-semibold">
                                 <p className="text-cyan-100 text-sm">Issued Token: {myQueueToken.tokenNumber}</p>
@@ -5132,7 +5046,7 @@ export default function App() {
 
                         {/* Direct Active scheduled sessions index board */}
                         <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow space-y-3">
-                          <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest pl-1">Scheduled Consultations</h4>
+                          <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest pl-1">{translateText("Scheduled Consultations", appLanguage)}</h4>
                           {myAppointments.filter((a) => a.status === "ACCEPTED" || a.status === "PENDING").map((appt) => (
                             <div key={appt.id} className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between text-xs font-semibold">
                               <div>
@@ -5163,7 +5077,7 @@ export default function App() {
               <div className="space-y-6 pb-12">
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
                   <div>
-                    <h2 className="text-xl font-black text-slate-950">Express Pharmacy Marketplace</h2>
+                    <h2 className="text-xl font-black text-slate-950">{translateText("Express Pharmacy Marketplace", appLanguage)}</h2>
                     <p className="text-xs text-slate-500 mt-1">Grid integrated drug dispatch. Search standard pharmaceuticals and checkout immediately.</p>
                   </div>
                   {/* Cart count trigger display */}
@@ -5375,7 +5289,7 @@ export default function App() {
                       <h4 className="text-sm font-black text-slate-900 uppercase tracking-widest pl-1">Shopping Basket</h4>
                       
                       {Object.keys(cart).length === 0 ? (
-                        <p className="text-xs text-slate-400 text-center py-6">Your shopping cart is empty.</p>
+                        <p className="text-xs text-slate-400 text-center py-6">{translateText("Your shopping cart is empty.", appLanguage)}</p>
                       ) : (
                         <div className="space-y-3 font-semibold text-xs text-slate-700">
                           {Object.entries(cart).map(([medId, qty]) => {
@@ -5474,7 +5388,7 @@ export default function App() {
                     <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-4">
                       <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest pl-1">Recent order dispatches</h4>
                       {orders.length === 0 ? (
-                        <p className="text-xs text-slate-400 font-medium">No active pharmacy orders.</p>
+                        <p className="text-xs text-slate-400 font-medium">{translateText("No active pharmacy orders.", appLanguage)}</p>
                       ) : (
                         orders.map((o) => (
                           <div key={o.id} className={`p-3.5 border text-[12.5px] font-semibold space-y-2.5 rounded-2xl transition-all ${isAppDarkMode ? "bg-slate-900 border-slate-800 text-slate-300" : "bg-slate-50 border-slate-100"}`}>
@@ -5674,7 +5588,7 @@ export default function App() {
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
                     <div>
                       <h3 className="text-base font-black text-slate-900 flex items-center gap-1.5">
-                        <Activity className="h-5 w-5 text-blue-600 shrink-0" /> Interactive Clinical Vitals History & Trends
+                        <Activity className="h-5 w-5 text-blue-600 shrink-0" /> {translateText("Interactive Clinical Vitals History & Trends", appLanguage)}
                       </h3>
                       <p className="text-xs text-slate-500">Historical blood pressure, body chemistry glucose, or pulse rate values over time with real-time logging.</p>
                     </div>
@@ -6161,7 +6075,7 @@ export default function App() {
                     <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest pb-2 border-b border-slate-100">Report Distress Information</h3>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div className="space-y-1.5 text-xs font-semibold">
-                        <label className="text-slate-600">Patient Emergency phone line</label>
+                        <label className="text-slate-600">{translateText("Patient Emergency phone line", appLanguage)}</label>
                         <input
                           type="text"
                           value={emergencyPhone}
@@ -6187,7 +6101,7 @@ export default function App() {
                     </div>
 
                     <div className="space-y-1.5 text-xs font-semibold">
-                      <label className="text-slate-600">Distress Location Address Coordinates</label>
+                      <label className="text-slate-600">{translateText("Distress Location Address Coordinates", appLanguage)}</label>
                       <input
                         type="text"
                         value={emergencyAddress}
@@ -6257,7 +6171,7 @@ export default function App() {
                     ) : (
                       <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-4 font-semibold text-xs text-slate-700 leading-normal">
                         <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest border-b border-slate-100 pb-2">SOS Protocol status</h4>
-                        <p className="text-slate-500">No active sirens dispatches connected currently in your region.</p>
+                        <p className="text-slate-500">{translateText("No active sirens dispatches connected currently in your region.", appLanguage)}</p>
                         <div className="p-3 bg-red-50 text-red-800 rounded-xl text-[12.5px]">
                           <strong>Note:</strong> Dispatcher monitors physical coordinates directly. Tap red panic button to simulate ambulance router.
                         </div>
@@ -6270,7 +6184,7 @@ export default function App() {
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
                   <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Regional Distress log lines</h3>
                   {alerts.length === 0 ? (
-                    <p className="text-xs text-slate-400">No telemetry log alerts available.</p>
+                    <p className="text-xs text-slate-400">{translateText("No telemetry log alerts available.", appLanguage)}</p>
                   ) : (
                     <div className="space-y-3">
                       {alerts.map((al) => (
@@ -7433,7 +7347,7 @@ export default function App() {
                     <h3 className="text-sm font-black text-slate-800 uppercase tracking-widest pb-2 border-b border-slate-100 font-sans">Report Distress Information</h3>
                     <div className="grid gap-4 sm:grid-cols-2 font-sans">
                       <div className="space-y-1.5 text-xs font-semibold">
-                        <label className="text-slate-600">Patient Emergency phone line</label>
+                        <label className="text-slate-600">{translateText("Patient Emergency phone line", appLanguage)}</label>
                         <input
                           type="text"
                           value={emergencyPhone}
@@ -7443,7 +7357,7 @@ export default function App() {
                         />
                       </div>
                       <div className="space-y-1.5 text-xs font-semibold">
-                        <label className="text-slate-600 font-sans">Associated Danger condition trigger</label>
+                        <label className="text-slate-600 font-sans">{translateText("Associated Danger condition trigger", appLanguage)}</label>
                         <select
                           value={emergencyType}
                           onChange={(e: any) => setEmergencyType(e.target.value)}
@@ -7459,7 +7373,7 @@ export default function App() {
                     </div>
 
                     <div className="space-y-1.5 text-xs font-semibold font-sans">
-                      <label className="text-slate-600">Distress Location Address Coordinates</label>
+                      <label className="text-slate-600">{translateText("Distress Location Address Coordinates", appLanguage)}</label>
                       <input
                         type="text"
                         value={emergencyAddress}
@@ -7527,7 +7441,7 @@ export default function App() {
                     ) : (
                       <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-4 font-semibold text-xs text-slate-700 leading-normal">
                         <h4 className="text-xs font-black text-slate-800 uppercase tracking-widest border-b border-slate-100 pb-2 font-sans">SOS Protocol status</h4>
-                        <p className="text-slate-500">No active sirens dispatches connected currently in your region.</p>
+                        <p className="text-slate-500">{translateText("No active sirens dispatches connected currently in your region.", appLanguage)}</p>
                         <div className="p-3 bg-red-50 text-red-800 rounded-xl text-[12.5px]">
                           <strong>Note:</strong> Dispatcher monitors physical coordinates directly. Tap red panic button to simulate ambulance router.
                         </div>
@@ -7540,7 +7454,7 @@ export default function App() {
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4 font-sans">
                   <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1 font-sans">Regional Distress log lines</h3>
                   {alerts.length === 0 ? (
-                    <p className="text-xs text-slate-400 font-semibold font-sans">No telemetry log alerts available.</p>
+                    <p className="text-xs text-slate-400 font-semibold font-sans">{translateText("No telemetry log alerts available.", appLanguage)}</p>
                   ) : (
                     <div className="space-y-3 font-sans">
                       {alerts.map((al) => (
@@ -7995,7 +7909,7 @@ export default function App() {
                       <span className="bg-indigo-500/30 text-indigo-300 font-mono text-[12px] font-bold uppercase tracking-widest px-2.5 py-1 rounded">IRDAI Registry Approved</span>
                       <span className="text-[12px] text-slate-300">Region: Delhi NCR Cashless Grid</span>
                     </div>
-                    <h2 className="text-xl font-bold text-white tracking-tight">Unified Health Insurance Exchange hub</h2>
+                    <h2 className="text-xl font-bold text-white tracking-tight">{translateText("Unified Health Insurance Exchange hub", appLanguage)}</h2>
                     <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
                       Compare customized cashless health insurance plans side-by-side. Get instant AI policy validation matching your family members' disease profiles.
                     </p>
@@ -8282,7 +8196,7 @@ export default function App() {
                       <span className="text-[12px] text-slate-400">• NCR Grid Connected</span>
                     </div>
                     <h3 className={`text-xl font-black tracking-tight ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
-                      City Healer Differentiators
+                      {translateText("City Healer Differentiators", appLanguage)}
                     </h3>
                     <p className={`text-xs ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>
                       Simulated proprietary high-fidelity clinical operating engine. Select feature modules below.
@@ -8359,7 +8273,7 @@ export default function App() {
                             </div>
                             <div>
                               <p className={`font-extrabold text-sm ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
-                                Resident AI Health Copilot
+                                {translateText("Resident AI Health Copilot", appLanguage)}
                               </p>
                               <span className="text-[12px] text-emerald-500 flex items-center gap-1 font-semibold uppercase">
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />

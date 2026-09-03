@@ -94,6 +94,7 @@ async function register(email: string, name: string, role: string): Promise<Acto
   return { uid: login.body.user.uid, token, headers: { Authorization: `Bearer ${token}` } };
 }
 
+describe("Access-matrix regression suite", () => {
 before(async () => {
   if (existsSync(TEST_DB_PATH)) rmSync(TEST_DB_PATH, { force: true });
 
@@ -400,3 +401,5 @@ describe("AI endpoints are metered per user", () => {
     assert.equal(other.status, 200, "quota must be per-user, not global");
   });
 });
+});
+

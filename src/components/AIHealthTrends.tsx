@@ -16,6 +16,7 @@ import {
   AlertCircle,
   FileText
 } from "lucide-react";
+import { translateText } from "../utils/i18n";
 import { 
   ResponsiveContainer, 
   AreaChart, 
@@ -30,12 +31,13 @@ import {
 interface AIHealthTrendsProps {
   activityLog: any[];
   isAppDarkMode?: boolean;
+  appLanguage?: "en" | "hi";
 }
 
 type Timeframe = "weeks" | "months" | "days";
 type Scenario = "baseline" | "flu-spike" | "allergy-season" | "compliance-challenge";
 
-export default function AIHealthTrends({ activityLog, isAppDarkMode = false }: AIHealthTrendsProps) {
+export default function AIHealthTrends({ activityLog, isAppDarkMode = false, appLanguage = "en" }: AIHealthTrendsProps) {
   const [selectedTimeframe, setSelectedTimeframe] = useState<Timeframe>("weeks");
   const [selectedScenario, setSelectedScenario] = useState<Scenario>("baseline");
   const [showPrivacyNotice, setShowPrivacyNotice] = useState<boolean>(false);
