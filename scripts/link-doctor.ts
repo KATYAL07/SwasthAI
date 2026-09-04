@@ -9,7 +9,7 @@
  * Record access for doctors is scoped through this link, so an unlinked DOCTOR account
  * is linked to no patients and sees none.
  */
-import { dbGet, dbAll, dbRun, sqliteDb } from "../database";
+import { dbGet, dbAll, dbRun, pool } from "../database";
 
 function parseArgs(argv: string[]): Record<string, string | boolean> {
   const out: Record<string, string | boolean> = {};
@@ -103,4 +103,4 @@ main()
     console.error("[link-doctor] failed:", err.message);
     process.exitCode = 1;
   })
-  .finally(() => sqliteDb.close());
+  .finally(() => pool.end());

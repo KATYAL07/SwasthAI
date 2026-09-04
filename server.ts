@@ -7,7 +7,6 @@ import { fileURLToPath } from "url";
 import { GoogleGenAI, Type } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 import dns from "dns";
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { dbRun, dbGet, dbAll, initializeDatabase } from "./database";
@@ -42,30 +41,33 @@ if (DEMO_MODE) {
 }
 
 /**
- * Resolve the JWT signing secret.
+ * Resolve the secret used to verify Supabase session tokens.
  *
- * There is deliberately no hardcoded fallback. This repository is public, so any
- * literal committed here would let anyone mint a validly-signed token for any uid
- * and role, defeating every downstream guard. When no secret is configured outside
- * production we generate a random one per process instead: sessions do not survive
- * a restart, but nothing forgeable is ever written to source.
+ * This server no longer issues tokens — Supabase Auth does — so the secret must
+ * be *the project's own*, copied from Supabase → Project Settings → API → JWT
+ * Settings. It is a verification key here, not a signing key.
+ *
+ * The previous version generated a random ephemeral secret when none was set, so
+ * that local development still worked. That behaviour is actively wrong now: a
+ * random secret cannot verify a Supabase-issued token, so every request would
+ * fail 401 and look like a broken login rather than missing configuration. There
+ * is no fallback; a missing secret stops the server in every environment.
  */
 function resolveJwtSecret(): string {
-  const fromEnv = process.env.JWT_SECRET;
-  if (fromEnv) {
-    if (fromEnv.length < 32) {
-      console.error("[FATAL] JWT_SECRET must be at least 32 characters. Refusing to start.");
-      process.exit(1);
-    }
-    return fromEnv;
-  }
-  if (IS_PROD) {
-    console.error("[FATAL] JWT_SECRET environment variable must be set in production. Refusing to start.");
+  const fromEnv = process.env.SUPABASE_JWT_SECRET || process.env.JWT_SECRET;
+  if (!fromEnv) {
+    console.error(
+      "[FATAL] SUPABASE_JWT_SECRET is not set. Copy it from Supabase → Project " +
+      "Settings → API → JWT Settings → JWT Secret into .env.local. Without it no " +
+      "session token can be verified and every request would fail 401."
+    );
     process.exit(1);
   }
-  const ephemeral = crypto.randomBytes(32).toString("hex");
-  console.warn("[Security] JWT_SECRET not set — generated a random ephemeral secret for this process only. Existing sessions are invalidated on restart. Set JWT_SECRET for stable local sessions.");
-  return ephemeral;
+  if (fromEnv.length < 32) {
+    console.error("[FATAL] SUPABASE_JWT_SECRET must be at least 32 characters. Refusing to start.");
+    process.exit(1);
+  }
+  return fromEnv;
 }
 const JWT_SECRET = resolveJwtSecret();
 
@@ -81,24 +83,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Lightweight fixed-window rate limiter for credential endpoints (per IP)
-const authRateWindow = new Map<string, { count: number; windowStart: number }>();
-const AUTH_RATE_LIMIT = 20;
-const AUTH_RATE_WINDOW_MS = 10 * 60 * 1000;
-app.use("/api/auth", (req, res, next) => {
-  const ip = req.ip || req.socket.remoteAddress || "unknown";
-  const now = Date.now();
-  const entry = authRateWindow.get(ip);
-  if (!entry || now - entry.windowStart > AUTH_RATE_WINDOW_MS) {
-    authRateWindow.set(ip, { count: 1, windowStart: now });
-    return next();
-  }
-  entry.count += 1;
-  if (entry.count > AUTH_RATE_LIMIT) {
-    return res.status(429).json({ error: "Too many authentication attempts. Please try again later." });
-  }
-  next();
-});
+// Credential rate limiting now lives in Supabase Auth, which throttles sign-in,
+// sign-up and password-reset per project. The local per-IP limiter that used to
+// guard /api/auth was removed with those routes.
 
 /**
  * Surface DOCTOR accounts that have not been linked to a `doctors` row. Record access
@@ -132,20 +119,6 @@ initializeDatabase()
 // ----------------------------------------------------------------
 // Authentication & Authorization
 // ----------------------------------------------------------------
-
-/**
- * Credential policy. The length floor is the cheap half; the denylist is the half
- * that matters, since an eight-character minimum happily accepts "password123".
- * This is a starter list, not a breach corpus — swap in a real one (k-anonymity
- * against Have I Been Pwned, or a local wordlist) before this holds live accounts.
- */
-const MIN_PASSWORD_LENGTH = 10;
-const COMMON_PASSWORDS = new Set([
-  "password", "password1", "password12", "password123", "password1234",
-  "123456789", "1234567890", "12345678910", "qwertyuiop", "qwerty123",
-  "letmein123", "welcome123", "admin12345", "administrator", "iloveyou123",
-  "healthcare", "hospital123", "cityhealer", "swasthai123", "changeme123"
-]);
 
 export type Role = "PATIENT" | "DOCTOR" | "HOSPITAL" | "ADMIN";
 interface AuthUser {
@@ -193,10 +166,16 @@ const authenticateUser = async (req: express.Request, res: express.Response, nex
   }
 
   try {
+    // Supabase signs session tokens with the project's JWT secret. The subject
+    // claim is the auth user's uuid, which is also the primary key of `users`.
+    // Nothing here trusts a role from the token: Supabase puts no application
+    // role in it, and a client-writable claim would be an escalation primitive.
     const decoded = jwt.verify(token, JWT_SECRET) as any;
-    if (!decoded?.uid || !decoded?.role) {
+    const subject = decoded?.sub;
+    if (!subject) {
       return res.status(401).json({ error: "Malformed session token." });
     }
+    decoded.uid = subject;
 
     // The token's role is a stale snapshot from issue time. Re-read the account so a
     // deleted user is rejected immediately and a role change takes effect at once,
@@ -501,107 +480,31 @@ async function recommendHospitals(specialistType: string, urgencyLevel: string, 
 }
 
 // ----------------------------------------------------------------
-// Authentication Routes (Dedicated Backend replacement for Firebase Auth)
+// Authentication
 // ----------------------------------------------------------------
+//
+// There are no /api/auth/register or /api/auth/login routes any more: Supabase
+// Auth owns credentials, email verification, password reset and session refresh,
+// and the browser talks to it directly. This server only *verifies* the
+// resulting token, in authenticateUser above.
+//
+// Two consequences worth stating, because both were guards this file used to
+// enforce and no longer can:
+//
+//   Passwords never reach this process. bcrypt hashing, the length floor and the
+//   common-password denylist all moved to Supabase Auth, which additionally
+//   screens candidates against a breach corpus. Configure the policy under
+//   Authentication -> Providers -> Email.
+//
+//   A new account cannot choose its own role. The profile row is created by the
+//   on_auth_user_created trigger in supabase/schema.sql, which hardcodes
+//   PATIENT and ignores client-supplied metadata. Promotion to DOCTOR, HOSPITAL
+//   or ADMIN happens only through PUT /api/users/:uid, which requires an
+//   existing ADMIN -- so the old "privileged roles are refused at public
+//   registration" rule is now structural rather than a check that can be
+//   forgotten.
 
-// Register a new user profile
-app.post("/api/auth/register", async (req, res) => {
-  const { email, password, name, phone, role } = req.body;
-  if (!email || !password || !name) {
-    return res.status(400).json({ error: "Email, password, and name are required." });
-  }
-  if (typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return res.status(400).json({ error: "A valid email address is required." });
-  }
-  if (typeof password !== "string" || password.length < MIN_PASSWORD_LENGTH) {
-    return res.status(400).json({ error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters long.` });
-  }
-  if (COMMON_PASSWORDS.has(password.toLowerCase())) {
-    return res.status(400).json({ error: "That password is too common. Choose something less predictable." });
-  }
-  const ALLOWED_ROLES = ["PATIENT", "DOCTOR", "HOSPITAL", "ADMIN"];
-  if (role && !ALLOWED_ROLES.includes(role)) {
-    return res.status(400).json({ error: "Invalid role." });
-  }
-  // Privileged roles cannot be self-assigned at public registration in production
-  if (IS_PROD && (role === "ADMIN" || role === "HOSPITAL")) {
-    return res.status(403).json({ error: "Privileged roles must be provisioned by an administrator." });
-  }
 
-  try {
-    const existing = await dbGet("SELECT * FROM users WHERE email = ?", [email.toLowerCase().trim()]);
-    if (existing) {
-      return res.status(400).json({ error: "Email already registered." });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash(password, salt);
-    const uid = "user-" + Date.now() + "-" + Math.floor(Math.random() * 1000);
-    const userRole = role || "PATIENT";
-    
-    const tempPolicy = `CH-POL-${Math.floor(10000 + Math.random() * 90000)}`;
-    const now = new Date().toISOString();
-
-    await dbRun(`
-      INSERT INTO users (uid, name, email, passwordHash, phone, role, age, gender, bloodGroup, policyNo, createdAt, updatedAt)
-      VALUES (?, ?, ?, ?, ?, ?, 34, 'Male', 'O+', ?, ?, ?)
-    `, [uid, name, email.toLowerCase().trim(), passwordHash, phone || "", userRole, tempPolicy, now, now]);
-
-    console.log(`[Auth Register] Registered new user ${uid} with role ${userRole}`);
-    res.json({ success: true, user: { uid, name, email, role: userRole } });
-  } catch (err: any) {
-    console.error("[Auth Register Error]", err);
-    res.status(500).json({ error: "Registration failed", message: err.message });
-  }
-});
-
-// Login and fetch JWT session token
-app.post("/api/auth/login", async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: "Email and password are required." });
-  }
-
-  try {
-    const user = await dbGet("SELECT * FROM users WHERE email = ?", [email.toLowerCase().trim()]);
-    if (!user) {
-      return res.status(400).json({ error: "Invalid email or password." });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.passwordHash);
-    if (!isMatch) {
-      return res.status(400).json({ error: "Invalid email or password." });
-    }
-
-    const token = jwt.sign(
-      { uid: user.uid, email: user.email, role: user.role },
-      JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
-    console.log(`[Auth Login] Login successful for uid: ${user.uid}`);
-    res.json({
-      success: true,
-      token,
-      user: {
-        uid: user.uid,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-        age: user.age,
-        gender: user.gender,
-        bloodGroup: user.bloodGroup,
-        policyNo: user.policyNo
-      }
-    });
-  } catch (err: any) {
-    console.error("[Auth Login Error]", err);
-    res.status(500).json({ error: "Login failed", message: err.message });
-  }
-});
-
-// Get User profile
 app.get("/api/users/:uid", async (req, res) => {
   const { uid } = req.params;
   const caller = getAuthUser(req)!;
