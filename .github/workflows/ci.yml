@@ -32,12 +32,29 @@ jobs:
       - name: Typecheck
         run: npm run lint
 
-      # No DB_PATH or JWT_SECRET here on purpose: the suite starts its own server
-      # on a throwaway database with its own secret, and reads DB_PATH from this
-      # process only to confirm it is unset before touching the real database.
+      # The access-matrix suite needs a Supabase project of its own: it creates
+      # and deletes real accounts with service_role privileges. Add these five as
+      # repository secrets (Settings → Secrets and variables → Actions) pointing
+      # at a project kept for testing, never the one holding real data.
+      #
+      # Until they exist the step is skipped rather than failed, so the typecheck
+      # and build still gate every push. Skipping is visible in the run summary;
+      # a red build that everyone learns to ignore is worse than an honest gap.
       - name: Test
+        if: ${{ secrets.TEST_DATABASE_URL != '' }}
         run: npm test
-        timeout-minutes: 5
+        timeout-minutes: 8
+        env:
+          TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+          TEST_SUPABASE_URL: ${{ secrets.TEST_SUPABASE_URL }}
+          TEST_SUPABASE_ANON_KEY: ${{ secrets.TEST_SUPABASE_ANON_KEY }}
+          TEST_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.TEST_SUPABASE_SERVICE_ROLE_KEY }}
+          TEST_SUPABASE_JWT_SECRET: ${{ secrets.TEST_SUPABASE_JWT_SECRET }}
+
+      - name: Test (skipped — no Supabase test project configured)
+        if: ${{ secrets.TEST_DATABASE_URL == '' }}
+        run: |
+          echo "::warning title=Access-matrix tests skipped::Set the TEST_SUPABASE_* repository secrets to run the 66 authorization tests."
 
       - name: Build
         run: npm run build
