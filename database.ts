@@ -40,11 +40,32 @@ if (!connectionString) {
   process.exit(1);
 }
 
+/**
+ * SSL is required by Supabase and refused outright by a stock local Postgres,
+ * which fails the connection with "the server does not support SSL". Decide by
+ * host rather than hardcoding: a loopback address is a developer's own server,
+ * anything else is remote and must be encrypted.
+ *
+ * PGSSLMODE=disable / =require overrides the guess for hosts this cannot judge,
+ * such as a database reached over a private network by hostname.
+ */
+function wantsSsl(url: string): boolean {
+  const mode = process.env.PGSSLMODE;
+  if (mode === "disable") return false;
+  if (mode === "require" || mode === "prefer") return true;
+  try {
+    const host = new URL(url).hostname;
+    return !(host === "localhost" || host === "127.0.0.1" || host === "::1");
+  } catch {
+    return true; // unparseable: assume remote, which is the safe direction
+  }
+}
+
 export const pool = new pg.Pool({
   connectionString,
   // Supabase terminates TLS with a certificate this client has no local root
   // for; the connection is still encrypted.
-  ssl: { rejectUnauthorized: false },
+  ssl: wantsSsl(connectionString) ? { rejectUnauthorized: false } : false,
   max: Number(process.env.PG_POOL_MAX) || 10,
   idleTimeoutMillis: 30_000,
   connectionTimeoutMillis: 10_000

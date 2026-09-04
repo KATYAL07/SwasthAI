@@ -111,10 +111,16 @@ async function warnAboutUnlinkedDoctors() {
 // Initialize Database on Startup
 initializeDatabase()
   .then(async () => {
-    console.log("[SQLite] Database schema initialized and seeded successfully.");
+    console.log("[Postgres] Database schema initialized and seeded successfully.");
     await warnAboutUnlinkedDoctors();
   })
-  .catch((err) => console.error("[SQLite Error] Database initialization failed:", err));
+  .catch((err) => {
+    // Nothing works without a database, and the previous behaviour was to log
+    // this and keep serving — every request then failed on its own query with a
+    // less obvious error. Fail at boot instead.
+    console.error("[FATAL] Database initialization failed:", err.message);
+    process.exit(1);
+  });
 
 // ----------------------------------------------------------------
 // Authentication & Authorization
