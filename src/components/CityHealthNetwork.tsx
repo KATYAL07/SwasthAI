@@ -411,23 +411,22 @@ export default function CityHealthNetwork() {
     <div className="space-y-6">
       
       {/* City operating system header banner */}
-      <div className="bg-slate-900 border border-slate-950 text-white rounded-3xl p-6 relative overflow-hidden shadow-xl">
-        <div className="absolute inset-0 bg-radial-at-t from-slate-800 to-slate-950 opacity-90 pointer-events-none" />
+      <div className="bg-[#10857F] border border-[#10857F] text-white rounded-3xl p-6 relative overflow-hidden shadow-xl">
         {/* Abstract vector dots representing connected medical nodes */}
-        <div className="absolute right-10 top-0 bottom-0 w-1/3 opacity-15 flex flex-wrap gap-3 p-4 pointer-events-none content-center">
+        <div className="absolute right-10 top-0 bottom-0 w-1/3 opacity-20 flex flex-wrap gap-3 p-4 pointer-events-none content-center">
           {Array.from({ length: 24 }).map((_, i) => (
-            <div key={i} className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" style={{ animationDelay: `${i * 150}ms` }} />
+            <div key={i} className="w-2.5 h-2.5 rounded-full bg-white/40 animate-pulse" style={{ animationDelay: `${i * 150}ms` }} />
           ))}
         </div>
 
         <div className="relative space-y-4 max-w-2xl">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-400/20 text-[10px] font-black uppercase tracking-wider">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-white border border-white/30 text-[10px] font-black uppercase tracking-wider">
             <Sparkles className="h-3 w-3" /> Delhi NCR Regional Health Twin (CHN)
           </span>
-          <h2 className="text-xl sm:text-2xl font-[900] tracking-tight leading-none uppercase">
+          <h2 className="text-xl sm:text-2xl font-[900] tracking-tight leading-none uppercase text-white">
             Metropolitan Healthcare Operating System
           </h2>
-          <p className="text-xs text-slate-350 leading-relaxed font-semibold">
+          <p className="text-xs text-emerald-50/90 leading-relaxed font-semibold">
             Real-time visual dashboard mapping primary and secondary clinical metrics, dynamic queue loadings, pollution health hazards, and AI emergency routing across Delhi, Gurugram, Noida, Greater Noida, Ghaziabad, and Faridabad.
           </p>
 
@@ -438,8 +437,8 @@ export default function CityHealthNetwork() {
                 onClick={() => setSelectedCity(city)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
                   selectedCity === city 
-                    ? "bg-white text-slate-950 shadow-md font-extrabold scale-105" 
-                    : "bg-slate-800/80 hover:bg-slate-700/80 text-slate-300"
+                    ? "bg-white text-[#10857F] shadow-md font-extrabold scale-105" 
+                    : "bg-white/15 hover:bg-white/25 text-white"
                 }`}
               >
                 {city}

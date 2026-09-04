@@ -3922,40 +3922,40 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Card Block 6: AI METROPOLITAN HEALTH SCORE CHART (Span 2x1, Slate-950 Dark theme) */}
-                  <div className="col-span-1 md:col-span-2 lg:col-span-2 bg-slate-900 rounded-3xl p-6 text-white shadow-lg flex flex-col sm:flex-row justify-between gap-6">
+                  {/* Card Block 6: AI METROPOLITAN HEALTH SCORE CHART (Green & White theme) */}
+                  <div className="col-span-1 md:col-span-2 lg:col-span-2 bg-emerald-800 rounded-3xl p-6 text-white shadow-md flex flex-col sm:flex-row justify-between gap-6 border border-emerald-700">
                     <div className="flex-1 flex flex-col justify-between">
-                      <div className="flex items-center justify-between pb-2 border-b border-slate-800 mb-2">
-                        <h3 className="text-xs font-black opacity-70 uppercase tracking-widest">AI Health Status</h3>
-                        <Sparkles className="h-4 w-4 text-cyan-400" />
+                      <div className="flex items-center justify-between pb-2 border-b border-emerald-700/80 mb-2">
+                        <h3 className="text-xs font-black text-emerald-100 uppercase tracking-widest">AI Health Status</h3>
+                        <Sparkles className="h-4 w-4 text-emerald-300" />
                       </div>
 
                       <div className="flex flex-col sm:flex-row items-center gap-4 py-1">
                         {/* Score circle SVG chart */}
                         <div className="relative w-24 h-24 shrink-0 mx-auto sm:mx-0">
                           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                            <circle className="text-slate-800 opacity-20" strokeWidth="3" stroke="currentColor" fill="transparent" r="16" cx="18" cy="18" />
-                            <circle className="text-cyan-400" strokeWidth="3" strokeDasharray="85, 100" strokeLinecap="round" stroke="currentColor" fill="transparent" r="16" cx="18" cy="18" />
+                            <circle className="text-emerald-900 opacity-40" strokeWidth="3" stroke="currentColor" fill="transparent" r="16" cx="18" cy="18" />
+                            <circle className="text-emerald-300" strokeWidth="3" strokeDasharray="85, 100" strokeLinecap="round" stroke="currentColor" fill="transparent" r="16" cx="18" cy="18" />
                           </svg>
                           <div className="absolute inset-0 flex flex-col items-center justify-center">
                             <span className="text-2xl font-black text-white leading-none">85</span>
-                            <span className="text-[7px] text-slate-400 font-bold tracking-widest uppercase mt-0.5 leading-none">Safe Index</span>
+                            <span className="text-[7px] text-emerald-200 font-bold tracking-widest uppercase mt-0.5 leading-none">Safe Index</span>
                           </div>
                         </div>
-                        <p className="text-left text-[12.5px] opacity-85 leading-relaxed">
+                        <p className="text-left text-[12.5px] text-emerald-50 leading-relaxed">
                           Recover rate has advanced 4% over the past fortnight. Keep consistent cardiovascular metrics.
                         </p>
                       </div>
                     </div>
 
-                    <div className="sm:w-52 flex flex-col justify-between gap-3 bg-white/10 rounded-2xl p-4 border border-white/5 shrink-0">
+                    <div className="sm:w-52 flex flex-col justify-between gap-3 bg-emerald-900/60 rounded-2xl p-4 border border-emerald-700/60 shrink-0">
                       <div>
-                        <p className="text-[12px] uppercase font-bold text-cyan-300 tracking-wider mb-1">AI Prediction</p>
-                        <p className="text-xs opacity-90 leading-tight">
+                        <p className="text-[12px] uppercase font-bold text-emerald-200 tracking-wider mb-1">AI Prediction</p>
+                        <p className="text-xs text-emerald-100 leading-tight">
                           Minimal regional influenza exposure based on localized sewage analytics.
                         </p>
                       </div>
-                      <div className="text-[12px] text-cyan-200/50 font-mono">
+                      <div className="text-[12px] text-emerald-300/80 font-mono">
                         Model: Gemini 3.5 Med-Spec
                       </div>
                     </div>
@@ -4009,7 +4009,7 @@ export default function App() {
                             className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-black uppercase tracking-wider transition-all shadow-xs shrink-0 cursor-pointer ${
                               isListening 
                                 ? "bg-red-500 text-white animate-pulse" 
-                                : "bg-blue-50 text-blue-600 hover:bg-blue-100 dark:bg-blue-950 dark:text-cyan-400"
+                                : "bg-[#10857F]/10 text-[#10857F] hover:bg-[#10857F]/20 border border-[#10857F]/30"
                             }`}
                           >
                             {isListening ? (
@@ -4019,7 +4019,7 @@ export default function App() {
                               </>
                             ) : (
                               <>
-                                <Mic className="h-3 w-3" />
+                                <Mic className="h-3 w-3 text-[#10857F]" />
                                 Speak Hands-Free
                               </>
                             )}
@@ -4038,7 +4038,7 @@ export default function App() {
                           }
                           value={aiSymptoms}
                           onChange={(e) => setAiSymptoms(e.target.value)}
-                          className={`w-full border rounded-2xl p-4 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all ${
+                          className={`w-full border rounded-2xl p-4 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#10857F] transition-all ${
                             isListening ? "border-red-400 ring-2 ring-red-100 bg-red-50/5 text-slate-900" : "border-slate-200 text-slate-900"
                           }`}
                           required
@@ -4055,12 +4055,12 @@ export default function App() {
                       </div>
                       
                       {/* Voice action helpers strip */}
-                      <div className="bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-3 rounded-2xl text-[12.5px] flex flex-wrap justify-between items-center gap-2">
-                        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
-                          <Mic className="h-3.5 w-3.5 text-purple-500 shrink-0" />
+                      <div className="bg-[#10857F]/10 dark:bg-[#10857F]/20 border border-[#10857F]/30 p-3 rounded-2xl text-[12.5px] flex flex-wrap justify-between items-center gap-2">
+                        <div className="flex items-center gap-1.5 text-[#10857F]">
+                          <Mic className="h-3.5 w-3.5 text-[#10857F] shrink-0" />
                           <span>Voice Commands: say <strong>"clear"</strong> to reset, say <strong>"submit"</strong> or <strong>"diagnose"</strong> to analyze.</span>
                         </div>
-                        <div className="text-[12px] bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 font-mono font-bold px-2 py-0.5 rounded-md">
+                        <div className="text-[12px] bg-[#10857F] text-white font-mono font-bold px-2.5 py-0.5 rounded-md shadow-xs">
                           Lang: {appLanguage === "hi" ? "Hindi (hi-IN)" : "English (en-US)"}
                         </div>
                       </div>
@@ -4074,7 +4074,7 @@ export default function App() {
                         placeholder="e.g. Type 2 Diabetes history, hypertension medication, asthma, pacemaker..."
                         value={aiHistory}
                         onChange={(e) => setAiHistory(e.target.value)}
-                        className="w-full border border-slate-100 rounded-2xl p-4 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="w-full border border-slate-100 rounded-2xl p-4 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-[#10857F]"
                       />
                     </div>
 
@@ -4095,9 +4095,9 @@ export default function App() {
                   </form>
 
                   {/* Sidebar Guidelines panel */}
-                  <div className="bg-slate-900 text-white rounded-3xl p-6 shadow space-y-5 flex flex-col justify-between">
+                  <div className="bg-[#10857F] text-white rounded-3xl p-6 shadow-lg space-y-5 flex flex-col justify-between">
                     <div className="space-y-4">
-                      <h4 className="text-xs font-black uppercase text-cyan-300 tracking-wider">Diagnostic Triage Tiers</h4>
+                      <h4 className="text-xs font-black uppercase text-white/90 tracking-wider">Diagnostic Triage Tiers</h4>
                       <div className="space-y-3">
                         <div className="flex items-center gap-2">
                           <span className="w-2.5 h-2.5 rounded-full bg-rose-600 shrink-0"></span>
@@ -4191,7 +4191,7 @@ export default function App() {
                         <div className="space-y-3">
                           <div>
                             <span className="text-[12px] font-black uppercase text-slate-400 block pb-1">recommended consultant</span>
-                            <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-extrabold rounded-lg">
+                            <span className="px-3 py-1 bg-[#10857F]/15 text-[#10857F] text-xs font-extrabold rounded-lg">
                               {aiReport.specialistType}
                             </span>
                           </div>
@@ -4251,9 +4251,9 @@ export default function App() {
                         
                         <div className="grid gap-4 sm:grid-cols-3">
                           {aiReport.recommendedHospitals.map((hosp: any) => (
-                            <div key={hosp.id} className="relative bg-slate-50 border border-slate-200/60 hover:border-indigo-200 hover:bg-slate-50/50 rounded-2xl p-4 flex flex-col justify-between transition-all shadow-xs">
+                            <div key={hosp.id} className="relative bg-slate-50 border border-slate-200/60 hover:border-[#10857F]/40 hover:bg-slate-50/50 rounded-2xl p-4 flex flex-col justify-between transition-all shadow-xs">
                               {/* Match Score Badge */}
-                              <div className="absolute top-3 right-3 text-[12px] font-black px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 flex items-center gap-0.5">
+                              <div className="absolute top-3 right-3 text-[12px] font-black px-1.5 py-0.5 rounded-full bg-[#10857F]/10 text-[#10857F] flex items-center gap-0.5">
                                 Match: {hosp.recommendationScore}%
                               </div>
                               
@@ -4265,7 +4265,7 @@ export default function App() {
                                 <div className="grid grid-cols-2 gap-1.5 pt-1 text-[12px] font-bold text-slate-600">
                                   <div className="bg-white border border-slate-100 rounded-xl p-2 flex flex-col shadow-2xs">
                                     <span className="text-[12px] text-slate-400 font-extrabold uppercase">ICU VACANCY</span>
-                                    <span className="text-indigo-600 font-extrabold">{hosp.icuAvailable} Vacable</span>
+                                    <span className="text-[#10857F] font-extrabold">{hosp.icuAvailable} Vacable</span>
                                   </div>
                                   <div className="bg-white border border-slate-100 rounded-xl p-2 flex flex-col shadow-2xs">
                                     <span className="text-[12px] text-slate-400 font-extrabold uppercase">GENERAL BEDS</span>
@@ -4273,7 +4273,7 @@ export default function App() {
                                   </div>
                                 </div>
                                 
-                                <p className="text-[12px] font-bold text-indigo-700 bg-indigo-50/85 p-2 rounded-xl">
+                                <p className="text-[12px] font-bold text-[#10857F] bg-[#10857F]/10 p-2 rounded-xl">
                                   ⚡ {hosp.matchReason}
                                 </p>
                               </div>
@@ -4289,7 +4289,7 @@ export default function App() {
                                     setActiveTab("beds");
                                     setMapSelectedHospital(hosp);
                                   }}
-                                  className="px-3 py-1.5 bg-slate-900 hover:bg-indigo-600 text-white font-extrabold text-[12px] uppercase rounded-xl transition-all active:scale-95 cursor-pointer"
+                                  className="px-3 py-1.5 bg-[#10857F] hover:bg-[#0e6f6a] text-white font-extrabold text-[12px] uppercase rounded-xl transition-all active:scale-95 cursor-pointer"
                                 >
                                   Trace Bed Census
                                 </button>
@@ -5008,21 +5008,21 @@ export default function App() {
 
                       {/* OPD Token tracker sidebar stats */}
                       <div className="space-y-6">
-                        <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-sm space-y-4">
-                          <h4 className="text-xs font-black uppercase text-cyan-300 tracking-wider">Dynamic Token Dispenser</h4>
-                          <p className="text-xs text-slate-300 leading-relaxed font-semibold">
+                        <div className="bg-emerald-800 text-white rounded-3xl p-6 shadow-sm space-y-4 border border-emerald-700">
+                          <h4 className="text-xs font-black uppercase text-emerald-200 tracking-wider">Dynamic Token Dispenser</h4>
+                          <p className="text-xs text-emerald-100 leading-relaxed font-semibold">
                             Generate live tokens for digital consult pathways straight to clinical OPD queues. Avoid sitting in physical hospital queue delays.
                           </p>
 
-                          <div className="p-3.5 bg-white/10 rounded-2xl border border-white/5 space-y-2">
-                            <span className="text-[12px] font-black uppercase text-cyan-400 tracking-wider block">Active Queue Session Info</span>
+                          <div className="p-3.5 bg-emerald-900/60 rounded-2xl border border-emerald-700/60 space-y-2">
+                            <span className="text-[12px] font-black uppercase text-emerald-300 tracking-wider block">Active Queue Session Info</span>
                             {myQueueToken ? (
                               <div className="space-y-1.5 text-xs font-semibold">
-                                <p className="text-cyan-100 text-sm">Issued Token: {myQueueToken.tokenNumber}</p>
-                                <p className="text-slate-300">Wait status index: {myQueueToken.estimatedWaitTimeMin} min</p>
+                                <p className="text-emerald-100 text-sm">Issued Token: {myQueueToken.tokenNumber}</p>
+                                <p className="text-emerald-200">Wait status index: {myQueueToken.estimatedWaitTimeMin} min</p>
                               </div>
                             ) : (
-                              <p className="text-[12.5px] text-slate-400 font-medium">To test OPD waiting matrices, allocate a token or select "Doctor role" to simulate calling patient into consultation room.</p>
+                              <p className="text-[12.5px] text-emerald-200/90 font-medium">To test OPD waiting matrices, allocate a token or select "Doctor role" to simulate calling patient into consultation room.</p>
                             )}
                           </div>
                         </div>
@@ -5442,24 +5442,23 @@ export default function App() {
               <div className="space-y-6 pb-12 animate-fade-in text-slate-800">
                 
                 {/* Top Welcome Title Grid */}
-                <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div className="absolute right-0 top-0 w-32 h-32 bg-cyan-400/10 rounded-full blur-2xl"></div>
+                <div className="bg-[#10857F] text-white rounded-3xl p-6 shadow-md relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
                   <div className="space-y-2 z-10">
                     <div className="flex items-center gap-2">
-                      <span className="bg-cyan-500/20 text-cyan-300 font-mono text-[12px] font-bold uppercase tracking-widest px-2.5 py-1 rounded">Vault ID Approved</span>
-                      <span className="text-[12px] text-slate-400 font-medium">Policy: CH-POL-98101-A</span>
+                      <span className="bg-white/20 text-white font-mono text-[12px] font-bold uppercase tracking-widest px-2.5 py-1 rounded">Vault ID Approved</span>
+                      <span className="text-[12px] text-white/80 font-medium">Policy: CH-POL-98101-A</span>
                     </div>
                     <h2 className="text-xl font-black text-white tracking-tight">Clinical Health Ledger: {activeFamilyMember} ({familyMembers.find(f => f.name === activeFamilyMember)?.relation || "Self"})</h2>
-                    <p className="text-xs text-slate-300 max-w-xl leading-relaxed">
+                    <p className="text-xs text-white/90 max-w-xl leading-relaxed">
                       Access verified prescriptions, set medication timers, log aerosol indicators, and review diagnostic scans directly linked from hospitals.
                     </p>
                   </div>
-                  <div className="bg-white/10 border border-white/10 rounded-2xl p-4 shrink-0 text-center z-10 w-full sm:w-auto">
-                    <span className="text-[12px] uppercase font-bold text-cyan-300 tracking-wider block">Family Blood Type</span>
+                  <div className="bg-white/10 border border-white/20 rounded-2xl p-4 shrink-0 text-center z-10 w-full sm:w-auto">
+                    <span className="text-[12px] uppercase font-bold text-white/90 tracking-wider block">Family Blood Type</span>
                     <span className="text-2xl font-black text-white block">
                       {familyMembers.find(f => f.name === activeFamilyMember)?.bloodGroup || "O+"}
                     </span>
-                    <span className="text-[12px] text-slate-300">Age: {familyMembers.find(f => f.name === activeFamilyMember)?.age || 34} yr</span>
+                    <span className="text-[12px] text-white/80">Age: {familyMembers.find(f => f.name === activeFamilyMember)?.age || 34} yr</span>
                   </div>
                 </div>
 
@@ -6032,9 +6031,9 @@ export default function App() {
                       </button>
                     </form>
 
-                    <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-sm space-y-3 text-xs leading-relaxed">
-                      <h4 className="text-[12px] font-black uppercase text-cyan-300 tracking-wider">Metropolitan health credentials compliance</h4>
-                      <p className="opacity-80">
+                    <div className="bg-[#10857F] text-white rounded-3xl p-6 shadow-sm space-y-3 text-xs leading-relaxed">
+                      <h4 className="text-[12px] font-black uppercase text-white tracking-wider">Metropolitan health credentials compliance</h4>
+                      <p className="opacity-90">
                         City Healer implements symmetric cryptographic encryption protocols for decentralized health document safety, protecting patient profiles from data breaches.
                       </p>
                     </div>
@@ -8056,54 +8055,54 @@ export default function App() {
                   {/* Right side Info-panel: InsureTech AI Adviser & Active Claims History */}
                   <div className="space-y-6">
                     {/* InsureTech Advisor box */}
-                    <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-sm space-y-4">
-                      <h4 className="text-xs font-black uppercase tracking-wider text-indigo-300">Insuretech AI Underwriting Adviser</h4>
-                      <p className="text-[12.5px] text-slate-300">
+                    <div className="bg-[#10857F] text-white rounded-3xl p-6 shadow-sm space-y-4">
+                      <h4 className="text-xs font-black uppercase tracking-wider text-white">Insuretech AI Underwriting Adviser</h4>
+                      <p className="text-[12.5px] text-white/90">
                         Select patient demographics below and generate matching cashless advice based on clinical metrics inside Delhi NCR.
                       </p>
 
                       <div className="space-y-3.5 text-xs text-white">
                         <div className="space-y-1">
-                          <label className="text-[12px] uppercase font-bold text-slate-400">Target Age Group</label>
+                          <label className="text-[12px] uppercase font-bold text-white/80">Target Age Group</label>
                           <select 
                             value={insuranceAgeSelect} 
                             onChange={(e) => setInsuranceAgeSelect(e.target.value)}
-                            className="w-full bg-slate-950 border border-slate-800 text-white p-2.5 text-xs rounded-xl cursor-pointer"
+                            className="w-full bg-white/10 border border-white/20 text-white p-2.5 text-xs rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/40"
                           >
-                            <option value="ADULT">Adult Individual (18 - 45 yr)</option>
-                            <option value="FAMILY">Family Float combo (Self + Kids)</option>
-                            <option value="SENIOR">Senior Citizens (45 - 80 yr)</option>
+                            <option value="ADULT" className="bg-[#10857F] text-white">Adult Individual (18 - 45 yr)</option>
+                            <option value="FAMILY" className="bg-[#10857F] text-white">Family Float combo (Self + Kids)</option>
+                            <option value="SENIOR" className="bg-[#10857F] text-white">Senior Citizens (45 - 80 yr)</option>
                           </select>
                         </div>
 
                         <div className="space-y-1">
-                          <label className="text-[12px] uppercase font-bold text-slate-400">Pre-existing Illness Profile</label>
+                          <label className="text-[12px] uppercase font-bold text-white/80">Pre-existing Illness Profile</label>
                           <select 
                             value={insuranceDiseaseSelect}
                             onChange={(e) => setInsuranceDiseaseSelect(e.target.value)}
-                            className="w-full bg-slate-950 border border-slate-800 text-white p-2.5 text-xs rounded-xl cursor-pointer"
+                            className="w-full bg-white/10 border border-white/20 text-white p-2.5 text-xs rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/40"
                           >
-                            <option value="NONE">No existing illness (Super Saver)</option>
-                            <option value="DIABETES">Diabetes & Hypertension (Low Copay req)</option>
-                            <option value="ASTHMA">Asthma / Pulmonary sensitivities (Smog tier)</option>
-                            <option value="CARDIAC">Cardiac monitor logs (ICU backup limit)</option>
+                            <option value="NONE" className="bg-[#10857F] text-white">No existing illness (Super Saver)</option>
+                            <option value="DIABETES" className="bg-[#10857F] text-white">Diabetes & Hypertension (Low Copay req)</option>
+                            <option value="ASTHMA" className="bg-[#10857F] text-white">Asthma / Pulmonary sensitivities (Smog tier)</option>
+                            <option value="CARDIAC" className="bg-[#10857F] text-white">Cardiac monitor logs (ICU backup limit)</option>
                           </select>
                         </div>
 
                         {insuranceAdviseResult ? (
-                          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-4 space-y-3 animate-fade-in font-semibold text-[12.5px] leading-relaxed text-slate-300">
-                            <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                              <span className="text-indigo-400 font-extrabold uppercase text-[12px]">Recommended Plan match</span>
-                              <span className="bg-indigo-600 font-mono text-white text-[12px] px-2 py-0.5 rounded font-black">
+                          <div className="bg-white/10 border border-white/20 rounded-2xl p-4 space-y-3 animate-fade-in font-semibold text-[12.5px] leading-relaxed text-white">
+                            <div className="flex justify-between items-center border-b border-white/20 pb-2">
+                              <span className="text-white font-extrabold uppercase text-[12px]">Recommended Plan match</span>
+                              <span className="bg-white text-[#10857F] font-mono text-[12px] px-2 py-0.5 rounded font-black">
                                 {insuranceAdviseResult.matchScore}% Match
                               </span>
                             </div>
                             <p className="font-bold text-white text-xs">{insuranceAdviseResult.recommendedPlan}</p>
-                            <p className="italic">{insuranceAdviseResult.note}</p>
+                            <p className="italic text-white/90">{insuranceAdviseResult.note}</p>
                             <button 
                               type="button"
                               onClick={() => setInsuranceAdviseResult(null)}
-                              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black text-[12px] py-1.5 rounded-lg text-center cursor-pointer transition-all mt-1"
+                              className="w-full bg-white text-[#10857F] hover:bg-white/90 font-black text-[12px] py-1.5 rounded-lg text-center cursor-pointer transition-all mt-1 shadow-sm"
                             >
                               Reset Adviser Screen
                             </button>
@@ -8112,7 +8111,7 @@ export default function App() {
                           <button
                             type="button"
                             onClick={handleGenerateInsuranceAdvise}
-                            className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-black text-xs py-3 rounded-xl shadow cursor-pointer transition-all mt-2"
+                            className="w-full bg-white text-[#10857F] hover:bg-white/90 font-black text-xs py-3 rounded-xl shadow cursor-pointer transition-all mt-2"
                           >
                             Generate Cashless Recommendation
                           </button>
