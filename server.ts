@@ -19,9 +19,25 @@ const app = express();
 const IS_PROD = process.env.NODE_ENV === "production";
 const PORT = Number(process.env.PORT) || 3000;
 
+/**
+ * Railway, Vercel and any Docker ingress terminate TLS and forward the request, so
+ * the socket peer is the platform edge rather than the caller. Without this,
+ * req.ip resolves to that edge for everyone and the credential rate limiter below
+ * degrades into a single global bucket — which stops throttling an attacker
+ * individually and instead lets one actor spend the budget for every user.
+ */
+app.set("trust proxy", 1);
+
 // Anonymous access is opt-in only. Defaults to false; must be set explicitly.
 const DEMO_MODE = process.env.DEMO_MODE === "true";
 if (DEMO_MODE) {
+  // A warning is not enough for a switch that turns authentication off: one stray
+  // variable on the wrong service would serve every anonymous caller a session.
+  // Fail the same way a missing JWT_SECRET does, rather than starting unsafely.
+  if (IS_PROD) {
+    console.error("[FATAL] DEMO_MODE=true binds unauthenticated callers to a shared identity. Refusing to start in production.");
+    process.exit(1);
+  }
   console.warn("[Security] DEMO_MODE=true — anonymous callers are served a synthetic sandbox identity. Never enable this for a real deployment.");
 }
 
@@ -117,6 +133,20 @@ initializeDatabase()
 // Authentication & Authorization
 // ----------------------------------------------------------------
 
+/**
+ * Credential policy. The length floor is the cheap half; the denylist is the half
+ * that matters, since an eight-character minimum happily accepts "password123".
+ * This is a starter list, not a breach corpus — swap in a real one (k-anonymity
+ * against Have I Been Pwned, or a local wordlist) before this holds live accounts.
+ */
+const MIN_PASSWORD_LENGTH = 10;
+const COMMON_PASSWORDS = new Set([
+  "password", "password1", "password12", "password123", "password1234",
+  "123456789", "1234567890", "12345678910", "qwertyuiop", "qwerty123",
+  "letmein123", "welcome123", "admin12345", "administrator", "iloveyou123",
+  "healthcare", "hospital123", "cityhealer", "swasthai123", "changeme123"
+]);
+
 export type Role = "PATIENT" | "DOCTOR" | "HOSPITAL" | "ADMIN";
 interface AuthUser {
   uid: string;
@@ -192,6 +222,30 @@ const authenticateUser = async (req: express.Request, res: express.Response, nex
 app.use(authenticateUser);
 
 const getAuthUser = (req: express.Request): AuthUser | null => (req as any).user || null;
+
+/**
+ * The account shape that may leave the server.
+ *
+ * Deliberately an allowlist, not a `delete row.passwordHash`: a column added to
+ * `users` later is excluded until someone adds it here on purpose. Every handler
+ * that answers with an account row goes through this, so the read and write paths
+ * cannot drift apart — the write path previously returned its raw `SELECT *` row
+ * and shipped the bcrypt hash to the client.
+ */
+const publicUser = (row: any) => row && {
+  uid: row.uid,
+  name: row.name,
+  email: row.email,
+  phone: row.phone,
+  role: row.role,
+  age: row.age,
+  gender: row.gender,
+  bloodGroup: row.bloodGroup,
+  policyNo: row.policyNo,
+  doctorId: row.doctorId,
+  createdAt: row.createdAt,
+  updatedAt: row.updatedAt
+};
 
 /** Restrict a route to the listed roles. Assumes authenticateUser has already run. */
 const requireRole = (...roles: Role[]) =>
@@ -459,8 +513,11 @@ app.post("/api/auth/register", async (req, res) => {
   if (typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: "A valid email address is required." });
   }
-  if (typeof password !== "string" || password.length < 8) {
-    return res.status(400).json({ error: "Password must be at least 8 characters long." });
+  if (typeof password !== "string" || password.length < MIN_PASSWORD_LENGTH) {
+    return res.status(400).json({ error: `Password must be at least ${MIN_PASSWORD_LENGTH} characters long.` });
+  }
+  if (COMMON_PASSWORDS.has(password.toLowerCase())) {
+    return res.status(400).json({ error: "That password is too common. Choose something less predictable." });
   }
   const ALLOWED_ROLES = ["PATIENT", "DOCTOR", "HOSPITAL", "ADMIN"];
   if (role && !ALLOWED_ROLES.includes(role)) {
@@ -559,19 +616,7 @@ app.get("/api/users/:uid", async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    res.json({
-      uid: user.uid,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
-      age: user.age,
-      gender: user.gender,
-      bloodGroup: user.bloodGroup,
-      policyNo: user.policyNo,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt
-    });
+    res.json(publicUser(user));
   } catch (err: any) {
     res.status(500).json({ error: "Failed to fetch user profile", message: err.message });
   }
@@ -621,7 +666,7 @@ app.put("/api/users/:uid", async (req, res) => {
     await dbRun(`UPDATE users SET ${updates.join(", ")} WHERE uid = ?`, params);
 
     const updatedUser = await dbGet("SELECT * FROM users WHERE uid = ?", [uid]);
-    res.json({ success: true, user: updatedUser });
+    res.json({ success: true, user: publicUser(updatedUser) });
   } catch (err: any) {
     console.error("[Profile Update Error]", err);
     res.status(500).json({ error: "Failed to update profile", message: err.message });
