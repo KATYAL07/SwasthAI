@@ -8,7 +8,6 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 import dns from "dns";
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
 import { dbRun, dbGet, dbAll, initializeDatabase } from "./database";
 
 // Fix node localhost resolution issues

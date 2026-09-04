@@ -1,8 +1,10 @@
 # SwasthAI
 
 Healthcare platform for the Delhi NCR region — patient records, doctor booking,
-OPD queues, pharmacy orders and emergency dispatch, with an Express + SQLite
-backend and a React front end served by Vite.
+OPD queues, pharmacy orders and emergency dispatch, with an Express
+backend and a React front end served by Vite. Authentication and the database
+are Supabase: Supabase Auth owns credentials and sessions, and the API talks to
+Supabase Postgres.
 
 ## Setup
 
@@ -12,53 +14,66 @@ backend and a React front end served by Vite.
 npm install
 ```
 
-**2. Create `.env.local`**
+**2. Create a Supabase project and apply the schema**
 
-The file is gitignored, so each developer keeps their own. It is loaded on
-startup by `env.ts`, ahead of every other import.
+At [supabase.com](https://supabase.com), then in the dashboard under
+**SQL Editor -> New query**, run the contents of `supabase/schema.sql`. It
+creates the ten tables, the trigger that provisions a profile for every new
+account, and row-level-security policies.
 
-```bash
-JWT_SECRET=<paste the generated value>
-GEMINI_API_KEY=<optional — see below>
-```
+**3. Create `.env.local`**
 
-**`JWT_SECRET` — set this, or your logins will not survive a restart.**
-It signs and verifies session tokens. When it is missing, the server generates a
-random secret for that process only and every existing session is invalidated
-the next time you restart — you are silently signed out. It must be at least 32
-characters; the server refuses to start below that, and refuses to start at all
-in production if it is unset.
-
-Generate one:
+Gitignored, so each developer keeps their own. Loaded by `env.ts` ahead of every
+other import.
 
 ```bash
-node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
+SUPABASE_JWT_SECRET=   # Settings -> API -> JWT Settings -> JWT Secret
+DATABASE_URL=          # Settings -> Database -> Connection string -> URI
+VITE_SUPABASE_URL=     # Settings -> API
+VITE_SUPABASE_ANON_KEY=# Settings -> API
+GEMINI_API_KEY=        # optional, see below
 ```
 
-Treat it as a credential: anyone holding it can mint a token for any role,
-including ADMIN. Never commit it — `.gitignore` covers `.env*`, with an
-exception only for `.env.example`.
+**`SUPABASE_JWT_SECRET` is a verification key, not one you invent.** This server
+no longer issues tokens — Supabase does — so it must be the project's own
+secret. There is no fallback: without it every request fails 401, and the server
+refuses to start rather than pretend otherwise.
+
+**Never put the `service_role` key in a `VITE_` variable.** Anything prefixed
+`VITE_` is compiled into the browser bundle. The anon key is designed for that;
+`service_role` bypasses row-level security entirely.
 
 **`GEMINI_API_KEY` — optional.** Used server-side only, never sent to the
 browser. Without it the AI endpoints (symptom triage, report analysis,
-medication guide, diet plans) return their canned fallback responses rather
-than failing.
+medication guide, diet plans) return canned fallback responses rather than
+failing.
 
-`.env.example` documents every supported variable, including `DB_PATH`,
-`DEMO_MODE`, `PORT` and `API_ONLY`.
+`.env.example` documents every supported variable.
 
-**3. Run the app**
+**4. Run the app**
 
 ```bash
 npm run dev
 ```
 
-Serves on http://localhost:3000. The SQLite database is created and seeded on
-first boot (52 hospitals, 80 doctors, 31 medicines).
+Serves on http://localhost:3000. Hospitals, doctors and medicines (52 / 80 / 31)
+are seeded on first boot if those tables are empty.
 
-You should see `injected env (1) from .env.local` in the startup log. If you
-instead see `[Security] JWT_SECRET not set`, the variable has not been picked
-up and sessions will not persist.
+## Running locally without a Supabase project
+
+The API and its authorization rules can be exercised against any Postgres, with
+no Docker and no cloud project. Apply `supabase/local-test-shim.sql` first — it
+supplies the `auth` schema that `schema.sql` depends on and a hosted project
+would provide — then `schema.sql`, then:
+
+```bash
+npm run smoke
+```
+
+This starts the real server and checks the driver round trip, the provisioning
+trigger, token verification, the profile routes and cross-patient isolation.
+It does not cover Supabase Auth itself — sign-up, password policy, email
+confirmation and refresh are Supabase's own code and need a real project.
 
 ## Tests
 
@@ -66,10 +81,28 @@ up and sessions will not persist.
 npm test
 ```
 
-Runs the access-matrix suite: for every guarded route it asserts anonymous →
-401, wrong role → 403, correct role → 200, plus cross-patient isolation, doctor
-relationship scoping and AI rate limiting. It starts its own server on port 3799
-against a throwaway database and never touches `city_healer.db`.
+The access-matrix suite: for every guarded route it asserts anonymous -> 401,
+wrong role -> 403, correct role -> 200, plus cross-patient isolation, doctor
+relationship scoping and AI rate limiting.
+
+It needs **its own Supabase project** — it creates and deletes real accounts
+through the Auth admin API, and there is no throwaway database file to delete
+any more. It refuses to start unless every `TEST_` variable is set, and
+`TEST_DATABASE_URL` deliberately does not fall back to `DATABASE_URL`:
+
+```bash
+TEST_DATABASE_URL= TEST_SUPABASE_URL= TEST_SUPABASE_ANON_KEY= TEST_SUPABASE_SERVICE_ROLE_KEY= TEST_SUPABASE_JWT_SECRET= npm test
+```
+
+## Migrating an existing SQLite database
+
+```bash
+npm run migrate:supabase -- --db city_healer.db          # dry run
+npm run migrate:supabase -- --db city_healer.db --commit
+```
+
+Dry run is the default. Passwords do not migrate: Supabase Auth owns
+credentials, so migrated accounts are reachable only through a password reset.
 
 ## Doctor accounts
 
@@ -93,3 +126,5 @@ npm run link-doctor -- --uid <user-uid> --doctorId doc-1
 | `npm run lint` | `tsc --noEmit` |
 | `npm run clean` | Remove `dist/` and the built server |
 | `npm run link-doctor` | Link a DOCTOR account to a doctor record |
+| `npm run smoke` | Local end-to-end check against any Postgres |
+| `npm run migrate:supabase` | Migrate a SQLite database into Supabase |

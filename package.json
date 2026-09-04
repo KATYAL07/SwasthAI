@@ -27,7 +27,6 @@
     "@supabase/supabase-js": "^2.115.0",
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",
-    "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
     "express": "^4.21.2",
@@ -50,7 +49,6 @@
     "zustand": "^5.0.14"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.14.0",
