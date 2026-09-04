@@ -26,22 +26,62 @@ import { createClient, type AuthError, type User } from "@supabase/supabase-js";
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  // Loud and early: without these the app renders but nobody can sign in, which
-  // otherwise looks like a broken login rather than missing configuration.
+export const isAuthConfigured = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
+
+if (!isAuthConfigured) {
   console.error(
-    "[Auth] VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY are not set. Copy them " +
-    "from Supabase → Project Settings → API into .env.local and restart Vite."
+    "[Auth] VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY are not set. Sign-in is " +
+    "disabled; the public pages still work. Copy both from Supabase → Project " +
+    "Settings → API into .env.local and restart Vite."
   );
 }
 
-export const supabase = createClient(SUPABASE_URL ?? "", SUPABASE_ANON_KEY ?? "", {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true // completes the OAuth redirect handshake
-  }
-});
+/**
+ * A stand-in used only when the project is not configured.
+ *
+ * createClient() throws "supabaseUrl is required" on an empty string, and this
+ * module is imported at the top of App.tsx — so constructing it unconditionally
+ * took down the whole React tree and rendered a blank page, turning a missing
+ * environment variable into what looks like a broken build. Hospitals, doctors
+ * and the medicine catalogue are public routes that need no session at all, so
+ * the app is expected to render and browse fine while signed out.
+ *
+ * Every call resolves the way a signed-out client would, and the ones that
+ * cannot be faked return a stated error rather than a confusing null.
+ */
+function unconfiguredClient() {
+  const notConfigured = {
+    message: "Authentication is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.",
+    status: 503,
+    code: "signup_disabled"
+  } as any;
+
+  return {
+    auth: {
+      getSession: async () => ({ data: { session: null }, error: null }),
+      getUser: async () => ({ data: { user: null }, error: null }),
+      onAuthStateChange: () => ({
+        data: { subscription: { unsubscribe() { /* nothing to detach */ } } }
+      }),
+      signInWithPassword: async () => ({ data: { user: null, session: null }, error: notConfigured }),
+      signUp: async () => ({ data: { user: null, session: null }, error: notConfigured }),
+      signInWithOAuth: async () => ({ data: null, error: notConfigured }),
+      signOut: async () => ({ error: null }),
+      resend: async () => ({ data: null, error: notConfigured }),
+      resetPasswordForEmail: async () => ({ data: null, error: notConfigured })
+    }
+  } as any;
+}
+
+export const supabase = isAuthConfigured
+  ? createClient(SUPABASE_URL!, SUPABASE_ANON_KEY!, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true // completes the OAuth redirect handshake
+      }
+    })
+  : unconfiguredClient();
 
 /** The user shape the app already renders against. */
 export interface MockUser {
