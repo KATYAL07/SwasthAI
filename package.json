@@ -11,7 +11,8 @@
     "lint": "tsc --noEmit",
     "test": "tsx --test tests/access-matrix.test.ts",
     "link-doctor": "tsx scripts/link-doctor.ts",
-    "migrate:supabase": "tsx scripts/migrate-sqlite-to-supabase.ts"
+    "migrate:supabase": "tsx scripts/migrate-sqlite-to-supabase.ts",
+    "smoke": "tsx scripts/local-smoke.ts"
   },
   "optionalDependencies": {
     "@tailwindcss/oxide-linux-x64-gnu": "^4.1.14",
