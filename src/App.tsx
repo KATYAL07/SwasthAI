@@ -1470,6 +1470,9 @@ export default function App() {
    * requests they will always be denied. The server remains the enforcement point.
    */
   const canReadEmergencyStream = (): boolean => {
+    // Same rule the server applies: only the hospital and admin workspaces may
+    // read the alert stream. In the sandbox that workspace is the switcher.
+    if (SKIP_AUTH) return activeRole === "HOSPITAL" || activeRole === "ADMIN";
     try {
       const raw = localStorage.getItem("city_healer_user");
       const role = raw ? JSON.parse(raw).role : null;
