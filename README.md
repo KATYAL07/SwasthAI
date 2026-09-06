@@ -59,6 +59,19 @@ npm run dev
 Serves on http://localhost:3000. Hospitals, doctors and medicines (52 / 80 / 31)
 are seeded on first boot if those tables are empty.
 
+## Demo sandbox (no sign-in)
+
+Set `DEMO_MODE="true"` in `.env.local` and start the dev server. With no Supabase
+credentials configured the UI skips sign-in and the API serves every request as a
+synthetic sandbox identity (`demo-sandbox-user`) that matches no real patient.
+
+The **Role** switcher in the dashboard header drives that identity: the client
+sends the selected workspace as an `X-Demo-Role` header and the server applies
+the same role checks it would for a real account. As a `DOCTOR` the sandbox acts
+as the seeded clinician `DEMO_DOCTOR_ID` (default `doc-1`), so the consultation
+queue, appointments and prescribing console are populated. The header is ignored
+outside `DEMO_MODE` and for any request carrying a real session token.
+
 ## Running locally without a Supabase project
 
 The API and its authorization rules can be exercised against any Postgres, with

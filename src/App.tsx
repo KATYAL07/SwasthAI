@@ -91,7 +91,7 @@ import {
   Line, 
   ReferenceLine 
 } from "recharts";
-import { api, SESSION_EXPIRED_EVENT, resetSessionExpiryNotice } from "./utils/api";
+import { api, SESSION_EXPIRED_EVENT, resetSessionExpiryNotice, setDemoRole } from "./utils/api";
 import { getTranslation, LanguageCode, translations, translateText } from "./utils/i18n";
 import MapComponent from "./components/MapComponent";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -114,7 +114,8 @@ import {
   getDoc, 
   setDoc, 
   serverTimestamp, 
-  getDocFromServer
+  getDocFromServer,
+  isAuthConfigured
 } from "./firebase";
 
 enum OperationType {
@@ -308,7 +309,13 @@ export default function App() {
   };
 
   // Active Simulated Login Role: PATIENT, DOCTOR, HOSPITAL, ADMIN
-  const [activeRole, setActiveRole] = useState<"PATIENT" | "DOCTOR" | "HOSPITAL" | "ADMIN">("PATIENT");
+  const [activeRole, setActiveRole] = useState<"PATIENT" | "DOCTOR" | "HOSPITAL" | "ADMIN">(() => {
+    // The simulated workspace survives a reload (Vite reconnects with a full
+    // reload after the API restarts), so a demo does not silently drop back to
+    // the patient view mid-walkthrough.
+    const saved = safeStorage.getItem("cityhealer_demo_role");
+    return saved === "DOCTOR" || saved === "HOSPITAL" || saved === "ADMIN" ? saved : "PATIENT";
+  });
   const [activeVerificationPill, setActiveVerificationPill] = useState<MedicineProduct | null>(null);
   const [userVerifColor, setUserVerifColor] = useState<string>("");
   const [userVerifShape, setUserVerifShape] = useState<string>("");
@@ -319,7 +326,10 @@ export default function App() {
   // ╔══════════════════════════════════════════════════════════════════╗
   // ║  AUTH BYPASS — set to `false` to re-enable the login screen.   ║
   // ╚══════════════════════════════════════════════════════════════════╝
-  const SKIP_AUTH = true;
+  // Bypass sign-in only while Supabase is not configured (local demo / sandbox).
+  // With real credentials in place the Supabase session and server-side role
+  // checks are authoritative, which is what the security spec promises.
+  const SKIP_AUTH = !isAuthConfigured;
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(SKIP_AUTH);
   const [authLoading, setAuthLoading] = useState<boolean>(!SKIP_AUTH);
@@ -818,6 +828,20 @@ export default function App() {
       );
     });
   }, [appLanguage, authName]);
+
+  // Keep the API's sandbox identity and the persisted workspace in step with the
+  // role switcher. Runs before the data-loading effect below on mount, so the
+  // first fetch already carries the restored role; afterwards a switch refetches
+  // so the doctor and hospital consoles show their own scoped data.
+  const roleSyncedOnceRef = useRef(false);
+  useEffect(() => {
+    setDemoRole(SKIP_AUTH ? activeRole : null);
+    safeStorage.setItem("cityhealer_demo_role", activeRole);
+    if (roleSyncedOnceRef.current) {
+      loadData();
+    }
+    roleSyncedOnceRef.current = true;
+  }, [activeRole]);
   const [copilotInputText, setCopilotInputText] = useState<string>("");
   const [copilotQuickAnalysisType, setCopilotQuickAnalysisType] = useState<string>("CBC");
   const [copilotSelectedDrug, setCopilotSelectedDrug] = useState<string>("Metformin");
@@ -1645,11 +1669,11 @@ export default function App() {
     // Validate connection on startup per mandatory constraint
     const testConnection = async () => {
       try {
-        await getDocFromServer(doc(db, "test", "connection"));
+        // A liveness probe, not a profile read: the previous check fetched
+        // /api/users/connection, which every non-admin session answers with 403.
+        await fetch("/api/health");
       } catch (error) {
-        if (error instanceof Error && error.message.includes("the client is offline")) {
-          console.error("Please check your Firebase configuration.");
-        }
+        console.error("[API] Health check failed — is the server running?", error);
       }
     };
     testConnection();
@@ -1788,7 +1812,9 @@ export default function App() {
 
     // Minor poll loop to keep live hospital metrics synced
     const interval = setInterval(async () => {
-      if (auth.currentUser) {
+      // Live refresh runs for a real session and for the demo sandbox alike;
+      // gating on auth.currentUser alone left the demo frozen at boot state.
+      if (auth.currentUser || SKIP_AUTH) {
         try {
           const [hData, alData, qData] = await Promise.all([
             api.getHospitals(),
@@ -2989,6 +3015,9 @@ export default function App() {
   // silently emptied both widgets for every real account. Scope to the signed-in uid,
   // which also keeps these correct when a DOCTOR/HOSPITAL session loads every row.
   const accountRole = ((): string => {
+    // In the sandbox the workspace switcher is the account: the server binds the
+    // demo identity to the same role via X-Demo-Role, so the two stay in step.
+    if (SKIP_AUTH) return activeRole;
     try {
       const raw = localStorage.getItem("city_healer_user");
       return raw ? JSON.parse(raw).role || "PATIENT" : "PATIENT";
@@ -2996,7 +3025,9 @@ export default function App() {
       return "PATIENT";
     }
   })();
-  const myPatientId = auth.currentUser?.uid ?? "";
+  // The demo sandbox has no Supabase session; the server scopes its rows to the
+  // synthetic uid below, so the patient widgets must look for the same id.
+  const myPatientId = auth.currentUser?.uid ?? (SKIP_AUTH ? "demo-sandbox-user" : "");
   // A DOCTOR session's /api/appointments and /api/queue are already scoped server-side to
   // the doctor record this account is linked to, and those rows carry OTHER people's
   // patientIds. Filtering them by the viewer's own uid emptied the clinician's consult

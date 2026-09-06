@@ -138,8 +138,28 @@ interface AuthUser {
 const DEMO_USER: AuthUser = {
   uid: "demo-sandbox-user",
   email: "demo@cityhealer.invalid",
-  role: "PATIENT",
+  role: "DOCTOR",
   isDemo: true
+};
+
+// The seeded clinician the sandbox identity acts as when it is a DOCTOR, so the
+// doctor workspace has a queue and appointments to work with. Seed data books
+// its appointments and OPD tokens against doc-1.
+const DEMO_DOCTOR_ID = process.env.DEMO_DOCTOR_ID || "doc-1";
+
+const VALID_ROLES: Role[] = ["PATIENT", "DOCTOR", "HOSPITAL", "ADMIN"];
+
+/**
+ * The sandbox identity for this request. The role switcher in the UI sends the
+ * workspace it is simulating as `X-Demo-Role`, so the server-side role checks
+ * follow it and a demo walkthrough of the doctor or hospital console actually
+ * works end to end. Only reachable when DEMO_MODE=true; a real session never
+ * gets here, so the header cannot escalate a signed-in caller.
+ */
+const demoIdentity = (req: express.Request): AuthUser => {
+  const requested = String(req.headers["x-demo-role"] || "").toUpperCase() as Role;
+  const role = VALID_ROLES.includes(requested) ? requested : DEMO_USER.role;
+  return { ...DEMO_USER, role };
 };
 
 // Routes that carry no patient data and are reachable without a session.
@@ -164,7 +184,7 @@ const authenticateUser = async (req: express.Request, res: express.Response, nex
 
   if (!token) {
     if (DEMO_MODE) {
-      (req as any).user = DEMO_USER;
+      (req as any).user = demoIdentity(req);
       return next();
     }
     return res.status(401).json({ error: "Authentication required." });
@@ -196,7 +216,7 @@ const authenticateUser = async (req: express.Request, res: express.Response, nex
     // No guest fallback. An unverifiable token is rejected in every environment;
     // DEMO_MODE downgrades to the synthetic sandbox identity, never to real data.
     if (DEMO_MODE) {
-      (req as any).user = DEMO_USER;
+      (req as any).user = demoIdentity(req);
       return next();
     }
     return res.status(401).json({ error: "Invalid or expired session token." });
@@ -291,6 +311,7 @@ const aiRateLimit = (req: express.Request, res: express.Response, next: express.
  * is not linked, which callers must treat as "linked to no patients" (fail closed).
  */
 async function resolveDoctorId(uid: string): Promise<string | null> {
+  if (DEMO_MODE && uid === DEMO_USER.uid) return DEMO_DOCTOR_ID;
   const row = await dbGet("SELECT doctorId FROM users WHERE uid = ?", [uid]);
   return row?.doctorId || null;
 }

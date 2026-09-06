@@ -14,6 +14,15 @@ export class SessionExpiredError extends Error {
 
 export const SESSION_EXPIRED_EVENT = "cityhealer:session-expired";
 
+// The workspace the UI is simulating. Sent as X-Demo-Role on requests that carry
+// no session so the server's DEMO_MODE identity follows the role switcher; the
+// server ignores it outside DEMO_MODE and for any request with a real token.
+let demoRole: string | null = null;
+
+export function setDemoRole(role: string | null): void {
+  demoRole = role;
+}
+
 // Fires once per dead session. Without the latch, the parallel calls on the dashboard
 // would each announce the same expiry and stack up identical sign-out prompts.
 let sessionExpiryAnnounced = false;
@@ -604,6 +613,8 @@ export async function apiFetch<T>(url: string, options?: RequestInit, retries = 
       const authHeaders: Record<string, string> = {};
       if (token) {
         authHeaders["Authorization"] = `Bearer ${token}`;
+      } else if (demoRole) {
+        authHeaders["X-Demo-Role"] = demoRole;
       }
 
       const response = await fetch(url, {
