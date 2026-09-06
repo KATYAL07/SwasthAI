@@ -156,6 +156,16 @@ export interface EmergencyAlert {
   hospitalName?: string;
 }
 
+/** One entry in the client-side activity feed shown on the health-trends tab. */
+export interface ActivityLog {
+  id: string;
+  type: string;
+  title: string;
+  description: string;
+  timestamp: string;
+  status?: string;
+}
+
 export interface ChatMessage {
   id: string;
   sender: "PATIENT" | "DOCTOR";

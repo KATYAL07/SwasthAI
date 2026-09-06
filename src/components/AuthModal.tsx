@@ -5,7 +5,8 @@ import {
   signInWithPopup, 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
-  GoogleAuthProvider 
+  GoogleAuthProvider,
+  isAuthConfigured
 } from "../firebase";
 import { AuthErrorMessage } from "./AuthErrorMessage";
 import swasthLogo from "../assets/images/swasth_logo.png";
@@ -387,6 +388,11 @@ export function AuthModal({
                 {loading ? "Authenticating Session..." : "Continue with Google Secure Auth"}
               </button>
 
+              {/* The sandbox login forges a token this server rejects, so it is only
+                  offered while Supabase is not configured (where the app already
+                  bypasses sign-in). */}
+              {!isAuthConfigured && (
+                <>
               <div className="relative flex py-1 items-center">
                 <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
                 <span className="flex-shrink mx-4 text-[11px] text-slate-400 dark:text-slate-500 font-bold tracking-wider uppercase">Or</span>
@@ -404,6 +410,8 @@ export function AuthModal({
               >
                 🚀 Explore in Demo / Sandbox Mode
               </button>
+                </>
+              )}
             </div>
           ) : (
             <div className="space-y-3 pt-2">
@@ -423,6 +431,7 @@ export function AuthModal({
                 )}
               </button>
 
+              {!isAuthConfigured && (
               <button
                 type="button"
                 onClick={handleOfflineBypass}
@@ -434,6 +443,7 @@ export function AuthModal({
               >
                 🚀 Quick Demo Sandbox Login
               </button>
+              )}
             </div>
           )}
         </div>

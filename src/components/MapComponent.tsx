@@ -27,6 +27,9 @@ interface MapComponentProps {
   markers?: MapMarker[];
   route?: { lat: number; lng: number }[];
   className?: string;
+  onMarkerClick?: (id: string) => void;
+  /** Accepted for call-site parity; tile labels come from OpenStreetMap and are not translated. */
+  appLanguage?: string;
 }
 
 // Component to handle dynamic map bounds
@@ -47,7 +50,7 @@ function BoundsHandler({ markers, route, center, zoom }: { markers?: MapMarker[]
   return null;
 }
 
-export default function MapComponent({ center = defaultCenter, zoom = 11, markers = [], route, className = "" }: MapComponentProps) {
+export default function MapComponent({ center = defaultCenter, zoom = 11, markers = [], route, className = "", onMarkerClick }: MapComponentProps) {
   return (
     <div className={`relative w-full h-full ${className}`} style={{ zIndex: 0 }}>
       <MapContainer 
@@ -65,7 +68,11 @@ export default function MapComponent({ center = defaultCenter, zoom = 11, marker
         <BoundsHandler markers={markers} route={route} center={center} zoom={zoom} />
 
         {markers.map((marker) => (
-          <Marker key={marker.id} position={[marker.lat, marker.lng]}>
+          <Marker
+            key={marker.id}
+            position={[marker.lat, marker.lng]}
+            eventHandlers={onMarkerClick ? { click: () => onMarkerClick(String(marker.id)) } : undefined}
+          >
             {marker.title && (
               <Tooltip direction="top" offset={[0, -20]} opacity={1}>
                 <span className="font-bold text-slate-800">{marker.title}</span>

@@ -110,7 +110,7 @@ async function warnAboutUnlinkedDoctors() {
 // Initialize Database on Startup
 initializeDatabase()
   .then(async () => {
-    console.log("[Postgres] Database schema initialized and seeded successfully.");
+    console.log("[Database] Schema initialized and seeded successfully.");
     await warnAboutUnlinkedDoctors();
   })
   .catch((err) => {

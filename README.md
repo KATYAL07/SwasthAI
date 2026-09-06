@@ -2,9 +2,16 @@
 
 Healthcare platform for the Delhi NCR region — patient records, doctor booking,
 OPD queues, pharmacy orders and emergency dispatch, with an Express
-backend and a React front end served by Vite. Authentication and the database
-are Supabase: Supabase Auth owns credentials and sessions, and the API talks to
-Supabase Postgres.
+backend and a React front end served by Vite. Supabase Auth owns credentials
+and sessions; the API verifies its tokens with the project's JWT secret.
+
+**Where the data lives.** On this branch the API stores everything in a local
+SQLite file (`city_healer.db`, or the path in `DB_PATH`), created and seeded
+on first boot. The Supabase Postgres data layer, which keeps the same
+`dbRun`/`dbGet`/`dbAll` signatures, is on the `restore/supabase-migration`
+branch; `supabase/schema.sql`, `npm run migrate:supabase`, the smoke script and
+the access-matrix test suite all target that Postgres setup, and `DATABASE_URL`
+is read only by those tools — the server itself never opens it.
 
 ## Setup
 
@@ -28,7 +35,8 @@ other import.
 
 ```bash
 SUPABASE_JWT_SECRET=   # Settings -> API -> JWT Settings -> JWT Secret
-DATABASE_URL=          # Settings -> Database -> Connection string -> URI
+DATABASE_URL=          # only for migrate:supabase, local-smoke and the tests
+DB_PATH=               # optional; SQLite file the API opens (default city_healer.db)
 VITE_SUPABASE_URL=     # Settings -> API
 VITE_SUPABASE_ANON_KEY=# Settings -> API
 GEMINI_API_KEY=        # optional, see below
