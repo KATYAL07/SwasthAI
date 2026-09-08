@@ -1,5 +1,5 @@
 /**
- * City Healer Baseline Interfaces
+ * SwasthAI Baseline Interfaces
  */
 
 export type Role = "PATIENT" | "DOCTOR" | "HOSPITAL" | "ADMIN";

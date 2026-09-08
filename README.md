@@ -5,13 +5,19 @@ OPD queues, pharmacy orders and emergency dispatch, with an Express
 backend and a React front end served by Vite. Supabase Auth owns credentials
 and sessions; the API verifies its tokens with the project's JWT secret.
 
-**Where the data lives.** On this branch the API stores everything in a local
-SQLite file (`city_healer.db`, or the path in `DB_PATH`), created and seeded
-on first boot. The Supabase Postgres data layer, which keeps the same
-`dbRun`/`dbGet`/`dbAll` signatures, is on the `restore/supabase-migration`
-branch; `supabase/schema.sql`, `npm run migrate:supabase`, the smoke script and
-the access-matrix test suite all target that Postgres setup, and `DATABASE_URL`
-is read only by those tools — the server itself never opens it.
+**Where the data lives.** Supabase is the only backend: Supabase Auth owns
+every account and session, and Supabase Postgres holds every row, including
+each account's role. The API verifies session tokens with the project's JWT
+secret, re-reads the role from the `users` table on every request, and refuses
+to start without `DATABASE_URL`. There is no local database, no demo identity
+and no sign-in bypass.
+
+**Profiles and roles.** A new account's clinical profile (`users` row) is
+created by the `on_auth_user_created` trigger in `supabase/schema.sql`, always
+as `PATIENT`. If a verified session ever arrives without a row — a project
+where the trigger was not applied — the server provisions one itself, also as
+`PATIENT`. Roles are changed only by an administrator (`PUT /api/users/:uid`)
+or, for clinicians, by `npm run link-doctor`.
 
 ## Setup
 
@@ -35,8 +41,7 @@ other import.
 
 ```bash
 SUPABASE_JWT_SECRET=   # Settings -> API -> JWT Settings -> JWT Secret
-DATABASE_URL=          # only for migrate:supabase, local-smoke and the tests
-DB_PATH=               # optional; SQLite file the API opens (default city_healer.db)
+DATABASE_URL=          # Settings -> Database -> Connection string -> URI
 VITE_SUPABASE_URL=     # Settings -> API
 VITE_SUPABASE_ANON_KEY=# Settings -> API
 GEMINI_API_KEY=        # optional, see below
@@ -66,19 +71,6 @@ npm run dev
 
 Serves on http://localhost:3000. Hospitals, doctors and medicines (52 / 80 / 31)
 are seeded on first boot if those tables are empty.
-
-## Demo sandbox (no sign-in)
-
-Set `DEMO_MODE="true"` in `.env.local` and start the dev server. With no Supabase
-credentials configured the UI skips sign-in and the API serves every request as a
-synthetic sandbox identity (`demo-sandbox-user`) that matches no real patient.
-
-The **Role** switcher in the dashboard header drives that identity: the client
-sends the selected workspace as an `X-Demo-Role` header and the server applies
-the same role checks it would for a real account. As a `DOCTOR` the sandbox acts
-as the seeded clinician `DEMO_DOCTOR_ID` (default `doc-1`), so the consultation
-queue, appointments and prescribing console are populated. The header is ignored
-outside `DEMO_MODE` and for any request carrying a real session token.
 
 ## Running locally without a Supabase project
 
@@ -118,8 +110,8 @@ TEST_DATABASE_URL= TEST_SUPABASE_URL= TEST_SUPABASE_ANON_KEY= TEST_SUPABASE_SERV
 ## Migrating an existing SQLite database
 
 ```bash
-npm run migrate:supabase -- --db city_healer.db          # dry run
-npm run migrate:supabase -- --db city_healer.db --commit
+npm run migrate:supabase -- --db swasthai.db          # dry run
+npm run migrate:supabase -- --db swasthai.db --commit
 ```
 
 Dry run is the default. Passwords do not migrate: Supabase Auth owns

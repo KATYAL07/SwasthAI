@@ -5,8 +5,7 @@ import {
   signInWithPopup, 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
-  GoogleAuthProvider,
-  isAuthConfigured
+  GoogleAuthProvider
 } from "../firebase";
 import { AuthErrorMessage } from "./AuthErrorMessage";
 import swasthLogo from "../assets/images/swasth_logo.png";
@@ -64,8 +63,8 @@ export function AuthModal({
       });
 
       const authenticatedUser = {
-        email: result.user.email || email || "google-user@cityhealer.com",
-        name: result.user.displayName || name || "City Healer User",
+        email: result.user.email || email || "google-user@swasthai.com",
+        name: result.user.displayName || name || "SwasthAI User",
         role: authRole,
         uid: result.user.uid
       };
@@ -83,42 +82,6 @@ export function AuthModal({
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleOfflineBypass = () => {
-    const defaultEmail = email.trim() || `${(name.trim() || "user").toLowerCase().replace(/[^a-z0-9]/g, "") || "sandbox"}@cityhealer.com`;
-    const defaultName = name.trim() || (authRole === "DOCTOR" ? "Dr. Rajesh Sharma" : authRole === "HOSPITAL" ? "Apollo Admin" : authRole === "ADMIN" ? "Registry Officer" : "Ananya Verma");
-    
-    const mockUser = {
-      uid: "user-demo-" + Date.now(),
-      name: defaultName,
-      email: defaultEmail,
-      phone: "+91 98101 22334",
-      role: authRole,
-      age: 32,
-      gender: "Female"
-    };
-
-    localStorage.setItem("city_healer_jwt", "mock-jwt-token-simulated");
-    localStorage.setItem("city_healer_user", JSON.stringify(mockUser));
-    
-    auth.currentUser = {
-      uid: mockUser.uid,
-      email: mockUser.email,
-      displayName: mockUser.name,
-      phoneNumber: mockUser.phone,
-      emailVerified: true,
-      isAnonymous: false,
-      tenantId: null,
-      providerData: [],
-      getIdToken: async () => "mock-jwt-token-simulated"
-    };
-    auth.notify();
-
-    if (onSuccess) {
-      onSuccess(mockUser);
-    }
-    onClose();
   };
 
   const handlePasswordAuth = async (e: React.FormEvent) => {
@@ -142,7 +105,7 @@ export function AuthModal({
         const result = await createUserWithEmailAndPassword(auth, emailToUse, password);
         const signedUser = {
           email: result.user.email || emailToUse,
-          name: name.trim() || result.user.displayName || "City Healer User",
+          name: name.trim() || result.user.displayName || "SwasthAI User",
           role: authRole,
           uid: result.user.uid
         };
@@ -366,7 +329,6 @@ export function AuthModal({
           <AuthErrorMessage
             error={error}
             onClear={() => setError(null)}
-            onBypass={handleOfflineBypass}
             isDarkMode={isAppDarkMode}
           />
 
@@ -388,30 +350,6 @@ export function AuthModal({
                 {loading ? "Authenticating Session..." : "Continue with Google Secure Auth"}
               </button>
 
-              {/* The sandbox login forges a token this server rejects, so it is only
-                  offered while Supabase is not configured (where the app already
-                  bypasses sign-in). */}
-              {!isAuthConfigured && (
-                <>
-              <div className="relative flex py-1 items-center">
-                <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
-                <span className="flex-shrink mx-4 text-[11px] text-slate-400 dark:text-slate-500 font-bold tracking-wider uppercase">Or</span>
-                <div className="flex-grow border-t border-slate-200 dark:border-slate-800"></div>
-              </div>
-
-              <button
-                type="button"
-                onClick={handleOfflineBypass}
-                className={`w-full font-bold text-xs py-3.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-[0.98] ${
-                  isAppDarkMode 
-                    ? "bg-slate-950 border border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white" 
-                    : "bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
-                }`}
-              >
-                🚀 Explore in Demo / Sandbox Mode
-              </button>
-                </>
-              )}
             </div>
           ) : (
             <div className="space-y-3 pt-2">
@@ -431,19 +369,6 @@ export function AuthModal({
                 )}
               </button>
 
-              {!isAuthConfigured && (
-              <button
-                type="button"
-                onClick={handleOfflineBypass}
-                className={`w-full font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all ${
-                  isAppDarkMode 
-                    ? "bg-slate-950 border border-slate-800 text-slate-300 hover:bg-slate-800" 
-                    : "bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200"
-                }`}
-              >
-                🚀 Quick Demo Sandbox Login
-              </button>
-              )}
             </div>
           )}
         </div>

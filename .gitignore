@@ -10,7 +10,6 @@ coverage/
 *.db-journal
 *.sqlite
 *.sqlite3
-city_healer.db
 
 # Credential material — never commit
 *.pem

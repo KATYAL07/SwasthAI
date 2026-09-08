@@ -43,7 +43,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           Something went wrong
         </h1>
         <p className="text-sm text-slate-400 max-w-md mb-6">
-          City Healer hit an unexpected error while rendering this view. Your
+          SwasthAI hit an unexpected error while rendering this view. Your
           data is safe — reloading will take you back to the home screen.
         </p>
         {this.state.error && (
@@ -56,7 +56,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           className="flex items-center gap-2 rounded-full bg-gradient-to-r from-teal-900 to-teal-700 px-6 py-3 text-xs font-extrabold text-white shadow-xl transition-all hover:shadow-teal-900/20 active:scale-95 cursor-pointer"
         >
           <RefreshCw className="h-4 w-4" />
-          Reload City Healer
+          Reload SwasthAI
         </button>
       </div>
     );

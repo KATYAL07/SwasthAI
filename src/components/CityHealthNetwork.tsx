@@ -1595,7 +1595,7 @@ export default function CityHealthNetwork({ appLanguage = "en" }: { appLanguage?
                   <CheckCircle2 className="h-4.5 w-4.5 shrink-0 text-emerald-600" />
                   <div>
                     <span className="font-black block">GPS Siren Dispatch Coordinated</span>
-                    City Healer network notified. Local Sector Trauma desk & nearest female dispatcher vehicle alerted.
+                    SwasthAI network notified. Local Sector Trauma desk & nearest female dispatcher vehicle alerted.
                   </div>
                 </div>
               )}
@@ -2487,7 +2487,7 @@ export default function CityHealthNetwork({ appLanguage = "en" }: { appLanguage?
                         checklistTips = [
                           "Prescribe calculated high-protein meal plans (Builder module recommended).",
                           "Coordinate home companion assistants to monitor routine vitals check.",
-                          "Log sleep metrics on City Healer biometric logs strictly.",
+                          "Log sleep metrics on SwasthAI biometric logs strictly.",
                           "Consult medical doctors before introducing heavy vitamin supplements."
                         ];
                       }

@@ -1241,7 +1241,7 @@ export default function SmartDoctorNetwork() {
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(22);
       doc.setTextColor(13, 148, 136); // Teal-600
-      doc.text("CITY HEALER TELEMEDICINE", 20, 25);
+      doc.text("SWASTHAI TELEMEDICINE", 20, 25);
 
       doc.setFont("Helvetica", "normal");
       doc.setFontSize(10);
@@ -1335,7 +1335,7 @@ export default function SmartDoctorNetwork() {
       doc.setFontSize(8);
       doc.setTextColor(148, 163, 184);
       doc.text("This document is a computer-generated digital prescription and contains high-parity cryptographic verified keys under MCI Guidelines 2020.", 20, 266);
-      doc.text("Valid only when distributed through City Healer authorized telecommunications network channels.", 20, 271);
+      doc.text("Valid only when distributed through SwasthAI authorized telecommunications network channels.", 20, 271);
 
       doc.save(`${telemedPrescription.id}_prescription.pdf`);
     } catch (err) {

@@ -91,7 +91,7 @@ import {
   Line, 
   ReferenceLine 
 } from "recharts";
-import { api, SESSION_EXPIRED_EVENT, resetSessionExpiryNotice, setDemoRole } from "./utils/api";
+import { api, SESSION_EXPIRED_EVENT, resetSessionExpiryNotice } from "./utils/api";
 import { getTranslation, LanguageCode, translations, translateText } from "./utils/i18n";
 import MapComponent from "./components/MapComponent";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -243,9 +243,9 @@ const getFriendlyAuthErrorMessage = (code: string): string => {
     case "auth/popup-closed-by-user":
       return "Google sign-in was cancelled by the user.";
     case "auth/operation-not-allowed":
-      return "Email & Password sign-in is not enabled in your Firebase console. Go to Authentication > Sign-in method to enable it, or choose 'Bypass in Demo Mode' below to explore.";
+      return "Email & password sign-in is not enabled for this Supabase project. Enable it under Authentication > Providers.";
     case "auth/unauthorized-domain":
-      return "This domain is not authorized in your Firebase Project's OAuth settings. To resolve, go to Firebase Console > Authentication > Settings > Authorized domains and add this app's URL, or choose 'Bypass in Demo Mode' below to proceed.";
+      return "This domain is not in the Supabase project's allowed redirect URLs. Add it under Authentication > URL Configuration.";
     default:
       return "An unknown authentication error occurred. Please try again.";
   }
@@ -257,7 +257,7 @@ const DATA_LOAD_TIMEOUT_MS = 12000;
 
 // Carries the "your session expired" explanation across the sign-out, which unmounts the
 // shell the toast renders in, and across a reload.
-const SESSION_EXPIRY_NOTICE = "cityhealer:session-expiry-notice";
+const SESSION_EXPIRY_NOTICE = "swasthai:session-expiry-notice";
 
 export default function App() {
   const location = useLocation();
@@ -308,13 +308,8 @@ export default function App() {
   };
 
   // Active Simulated Login Role: PATIENT, DOCTOR, HOSPITAL, ADMIN
-  const [activeRole, setActiveRole] = useState<"PATIENT" | "DOCTOR" | "HOSPITAL" | "ADMIN">(() => {
-    // The simulated workspace survives a reload (Vite reconnects with a full
-    // reload after the API restarts), so a demo does not silently drop back to
-    // the patient view mid-walkthrough.
-    const saved = safeStorage.getItem("cityhealer_demo_role");
-    return saved === "DOCTOR" || saved === "HOSPITAL" || saved === "ADMIN" ? saved : "PATIENT";
-  });
+  // The account's role as issued by Supabase, set from the profile at sign-in.
+  const [activeRole, setActiveRole] = useState<"PATIENT" | "DOCTOR" | "HOSPITAL" | "ADMIN">("PATIENT");
   const [activeVerificationPill, setActiveVerificationPill] = useState<MedicineProduct | null>(null);
   const [userVerifColor, setUserVerifColor] = useState<string>("");
   const [userVerifShape, setUserVerifShape] = useState<string>("");
@@ -325,22 +320,20 @@ export default function App() {
   // ╔══════════════════════════════════════════════════════════════════╗
   // ║  AUTH BYPASS — set to `false` to re-enable the login screen.   ║
   // ╚══════════════════════════════════════════════════════════════════╝
-  // Bypass sign-in only while Supabase is not configured (local demo / sandbox).
-  // With real credentials in place the Supabase session and server-side role
-  // checks are authoritative, which is what the security spec promises.
-  const SKIP_AUTH = !isAuthConfigured;
 
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(SKIP_AUTH);
-  const [authLoading, setAuthLoading] = useState<boolean>(!SKIP_AUTH);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  // With no Supabase configuration there is no session to wait for: show the
+  // sign-in screen at once, where every attempt reports the missing setup.
+  const [authLoading, setAuthLoading] = useState<boolean>(isAuthConfigured);
   const [authMode, setAuthMode] = useState<"LOGIN" | "SIGNUP" | "FORGOT" | "OTP_VERIFY">("LOGIN");
   const [authError, setAuthError] = useState<{ code: string; message: string } | null>(null);
-  const [authEmail, setAuthEmail] = useState(SKIP_AUTH ? "demo@cityhealer.com" : "");
-  const [authPhone, setAuthPhone] = useState(SKIP_AUTH ? "+91 98101 22334" : "");
-  const [authName, setAuthName] = useState(SKIP_AUTH ? "Demo User" : "");
+  const [authEmail, setAuthEmail] = useState("");
+  const [authPhone, setAuthPhone] = useState("");
+  const [authName, setAuthName] = useState("");
   const [authOtpSent, setAuthOtpSent] = useState<string>("");
   const [authOtpInput, setAuthOtpInput] = useState("");
   const [authRoleSelection, setAuthRoleSelection] = useState<"PATIENT" | "DOCTOR" | "HOSPITAL" | "ADMIN">("PATIENT");
-  const [authPasscode, setAuthPasscode] = useState<string>("CityHealerPass123!");
+  const [authPasscode, setAuthPasscode] = useState<string>("SwasthAIPass123!");
   const [jwtToken, setJwtToken] = useState<string>("");
   const [rememberMe, setRememberMe] = useState<boolean>(true);
   const [failedAttempts, setFailedAttempts] = useState<number>(0);
@@ -556,7 +549,7 @@ export default function App() {
     handleAIInsuranceRecommendation();
   };
 
-  // City Healer Premium Sub-tabs states
+  // SwasthAI Premium Sub-tabs states
   const [recordsSubTab, setRecordsSubTab] = useState<"vault" | "abha" | "analyzer" | "vaccines">("vault");
   const [sosSubTab, setSosSubTab] = useState<"sos" | "blood">("sos");
   const [insuranceSubTab, setInsuranceSubTab] = useState<"private" | "welfare">("private");
@@ -795,17 +788,17 @@ export default function App() {
 
   // Module B: AI Health Copilot States
   const [appLanguage, setAppLanguage] = useState<LanguageCode>(() => {
-    const saved = safeStorage.getItem("cityhealer_lang");
+    const saved = safeStorage.getItem("swasthai_lang");
     return (saved === "hi" ? "hi" : "en") as LanguageCode;
   });
   const copilotGreetingText = (isHi: boolean, fullName: string) => {
     const firstName = (fullName || "").trim().split(/\s+/)[0] || "there";
     return isHi
-      ? `नमस्ते, ${firstName}! मैं आपका सिटी हीलर एआई स्वास्थ्य कोपायलट हूं। मैं जटिल मेडिकल लैब रिपोर्ट की व्याख्या कर सकता हूं, विश्लेषण कर सकता हूं, और डॉक्टरों से मिला सकता हूं। आप क्या तलाशना चाहेंगे?`
-      : `Namaste, ${firstName}! I am your City Healer AI Health Copilot. I can explain complex medical lab reports, analyze prescription dosages, track your recovery milestones, or match you with regional clinical specialists. What would you like to explore?`;
+      ? `नमस्ते, ${firstName}! मैं आपका SwasthAI एआई स्वास्थ्य कोपायलट हूं। मैं जटिल मेडिकल लैब रिपोर्ट की व्याख्या कर सकता हूं, विश्लेषण कर सकता हूं, और डॉक्टरों से मिला सकता हूं। आप क्या तलाशना चाहेंगे?`
+      : `Namaste, ${firstName}! I am your SwasthAI AI Health Copilot. I can explain complex medical lab reports, analyze prescription dosages, track your recovery milestones, or match you with regional clinical specialists. What would you like to explore?`;
   };
   const [copilotHistory, setCopilotHistory] = useState<Array<{ sender: "user" | "copilot"; text: string; time: string; attachment?: string }>>(() => {
-    const saved = safeStorage.getItem("cityhealer_lang");
+    const saved = safeStorage.getItem("swasthai_lang");
     return [
       {
         sender: "copilot",
@@ -816,7 +809,7 @@ export default function App() {
   });
 
   useEffect(() => {
-    safeStorage.setItem("cityhealer_lang", appLanguage);
+    safeStorage.setItem("swasthai_lang", appLanguage);
     // Keep the opening greeting synced to the active language and the logged-in user's name
     setCopilotHistory(prev => {
       if (prev.length === 0) return prev;
@@ -828,19 +821,6 @@ export default function App() {
     });
   }, [appLanguage, authName]);
 
-  // Keep the API's sandbox identity and the persisted workspace in step with the
-  // role switcher. Runs before the data-loading effect below on mount, so the
-  // first fetch already carries the restored role; afterwards a switch refetches
-  // so the doctor and hospital consoles show their own scoped data.
-  const roleSyncedOnceRef = useRef(false);
-  useEffect(() => {
-    setDemoRole(SKIP_AUTH ? activeRole : null);
-    safeStorage.setItem("cityhealer_demo_role", activeRole);
-    if (roleSyncedOnceRef.current) {
-      loadData();
-    }
-    roleSyncedOnceRef.current = true;
-  }, [activeRole]);
   const [copilotInputText, setCopilotInputText] = useState<string>("");
   const [copilotQuickAnalysisType, setCopilotQuickAnalysisType] = useState<string>("CBC");
   const [copilotSelectedDrug, setCopilotSelectedDrug] = useState<string>("Metformin");
@@ -931,20 +911,9 @@ export default function App() {
           setIsBiometricEnabled(true);
           showToast(`🔒 ${biometricVerifyType === "FINGERPRINT" ? "Fingerprint" : "Face ID"} Biometrics enrolled successfully!`);
         } else {
-          setIsAuthenticated(true);
-          setActiveRole(authRoleSelection);
-          const fakeJwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." + btoa(JSON.stringify({ name: authName, email: authEmail, role: authRoleSelection })) + ".signature";
-          setJwtToken(fakeJwtToken);
-          
-          if (authRoleSelection === "ADMIN" || authRoleSelection === "HOSPITAL") {
-            setActiveTab("admin");
-          } else if (authRoleSelection === "DOCTOR") {
-            setActiveTab("consultation");
-          } else {
-            setActiveTab("overview_classic");
-          }
-          
-          showToast(`🔒 Secure Biometric unlock approved! Welcome back, ${authName}. Role: ${authRoleSelection}`);
+          // Biometrics are a device-side convenience, never a session: only a
+          // Supabase sign-in can authenticate.
+          showToast("🔒 Biometric check passed. Sign in with your SwasthAI account to continue.");
         }
         setShowBiometricVerifyModal(false);
       }, 1000);
@@ -1002,17 +971,17 @@ export default function App() {
       } else if (lower.includes("doctor") || lower.includes("recommend") || lower.includes("best doctor")) {
         aiResponseText = isHindi
           ? "हाँ, मैं स्थान, बजट और बीमा कवर के आधार पर डॉक्टरों का मिलान कर सकता हूँ। हमारे 'स्मार्ट डॉक्टर नेटवर्क' पैनल पर जाएँ, अपने लक्षण दर्ज करें, और उपयुक्त डॉक्टर खोजें।"
-          : "Yes, I can match you with representing doctors based on location, budget, and insurance. Head over to our 'Doctor Matcher' tab, input your target symptoms, and let the City Healer Matrix cross-reference wait-times!";
+          : "Yes, I can match you with representing doctors based on location, budget, and insurance. Head over to our 'Doctor Matcher' tab, input your target symptoms, and let the SwasthAI Matrix cross-reference wait-times!";
       } else {
         const responseBankEn = [
           "Healthy habits prevent minor seasonal fluctuations! Remember to maintain proper hydration and monitor air quality levels when heading out in the Delhi NCR region.",
           "According to Gurgaon health protocols, it is highly recommended to undergo blood metabolic scanning once every six months to detect early cardiovascular tendencies.",
-          "City Healer is synchronized with 6 major regional hospitals. Your digital health record is encrypted to ensure safety. Let me know if I should detail any diagnostic file for you."
+          "SwasthAI is synchronized with 6 major regional hospitals. Your digital health record is encrypted to ensure safety. Let me know if I should detail any diagnostic file for you."
         ];
         const responseBankHi = [
           "स्वस्थ आदतें मौसमी बीमारियों से बचाव करती हैं! दिल्ली एनसीआर क्षेत्र में बाहर जाते समय उचित जलयोजन (हाइड्रेशन) और वायु गुणवत्ता स्तर की निगरानी रखें।",
           "स्वास्थ्य मानकों के अनुसार, हृदय से संबंधित जटिलताओं को टालने के लिए हर छह महीने में एक बार रक्त शर्करा और स्वास्थ्य जांच कराना उचित है।",
-          "सिटी हीलर दिल्ली एनसीआर के प्रमुख क्षेत्रीय अस्पतालों और डॉक्टरों से सिंक्रनाइज़ है। आपका डिजिटल स्वास्थ्य रिकॉर्ड पूरी तरह से सुरक्षित है।"
+          "SwasthAI दिल्ली एनसीआर के प्रमुख क्षेत्रीय अस्पतालों और डॉक्टरों से सिंक्रनाइज़ है। आपका डिजिटल स्वास्थ्य रिकॉर्ड पूरी तरह से सुरक्षित है।"
         ];
         if (isHindi) {
           aiResponseText = responseBankHi[Math.floor(Math.random() * responseBankHi.length)];
@@ -1055,7 +1024,7 @@ export default function App() {
         ...prev,
         { sender: "copilot" as const, text: analysisResult, time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) }
       ]);
-      showToast("🔬 Lab report processed securely through City Healer Clinical Parser!");
+      showToast("🔬 Lab report processed securely through SwasthAI Clinical Parser!");
     }, 1100);
   };
 
@@ -1468,11 +1437,8 @@ export default function App() {
    * restricts it to HOSPITAL/ADMIN. Mirror that here so patient sessions don't spam
    * requests they will always be denied. The server remains the enforcement point.
    */
-  // Same rule the server applies: only the hospital and admin workspaces may read
-  // the alert stream. activeRole is the account's server-issued role after sign-in
-  // (and the switcher's choice in the sandbox); the old city_healer_user key it
-  // used to read is never written by Supabase sessions, so every real hospital
-  // account was silently denied the stream.
+  // Same rule the server applies: only the hospital and admin roles may read the
+  // alert stream. activeRole is the account's Supabase-issued role.
   const canReadEmergencyStream = (): boolean => activeRole === "HOSPITAL" || activeRole === "ADMIN";
 
   // Scope loadData at component level so it can be re-triggered on network sync re-activation
@@ -1606,13 +1572,12 @@ export default function App() {
    */
   useEffect(() => {
     const onExpired = () => {
-      if (SKIP_AUTH) return; // Don't sign out in bypass mode
       sessionExpiredRef.current = true;
       // Synchronously, before the async signOut: onAuthStateChanged reads these keys and
       // would otherwise restore the very session the server just rejected.
       try {
-        localStorage.removeItem("city_healer_jwt");
-        localStorage.removeItem("city_healer_user");
+        localStorage.removeItem("swasthai_jwt");
+        localStorage.removeItem("swasthai_user");
       } catch { /* storage unavailable — the sign-out below still applies */ }
       setIsAuthenticated(false);
       setJwtToken("");
@@ -1675,8 +1640,6 @@ export default function App() {
     testConnection();
 
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      // When auth is bypassed, ignore Firebase state entirely.
-      if (SKIP_AUTH) { setAuthLoading(false); setLoading(false); return; }
       if (firebaseUser) {
         if (!firebaseUser.emailVerified && !isResendingVerificationRef.current) {
           await signOut(auth);
@@ -1694,7 +1657,7 @@ export default function App() {
           let profileData;
           if (userSnap.exists()) {
             profileData = userSnap.data();
-            setAuthName(profileData.name || firebaseUser.displayName || "City Healer User");
+            setAuthName(profileData.name || firebaseUser.displayName || "SwasthAI User");
             setAuthEmail(profileData.email || firebaseUser.email || "");
             setAuthPhone(profileData.phone || firebaseUser.phoneNumber || "");
             const userRole = profileData.role || "PATIENT";
@@ -1729,7 +1692,7 @@ export default function App() {
             
             profileData = {
               uid: firebaseUser.uid,
-              name: firebaseUser.displayName || authNameRef.current.trim() || "City Healer User",
+              name: firebaseUser.displayName || authNameRef.current.trim() || "SwasthAI User",
               email: emailValue,
               phone: firebaseUser.phoneNumber || authPhoneRef.current.trim() || "",
               role: authRoleSelectionRef.current || "PATIENT",
@@ -1795,7 +1758,7 @@ export default function App() {
           setLoading(false);
         }
       } else {
-        if (!SKIP_AUTH) {
+        {
           setIsAuthenticated(false);
           setJwtToken("");
           setLoading(false);
@@ -1808,9 +1771,7 @@ export default function App() {
 
     // Minor poll loop to keep live hospital metrics synced
     const interval = setInterval(async () => {
-      // Live refresh runs for a real session and for the demo sandbox alike;
-      // gating on auth.currentUser alone left the demo frozen at boot state.
-      if (auth.currentUser || SKIP_AUTH) {
+      if (auth.currentUser) {
         try {
           const [hData, alData, qData] = await Promise.all([
             api.getHospitals(),
@@ -1831,12 +1792,6 @@ export default function App() {
       clearInterval(interval);
     };
   }, [authRoleSelection]);
-
-  // When auth is bypassed, load data on mount since the normal auth→loadData flow is skipped.
-  useEffect(() => {
-    if (SKIP_AUTH) { loadData(); }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -2184,7 +2139,7 @@ export default function App() {
         gender: "Male",
         abhaAddress: mockAbhaAddress,
         abhaNumber: formattedAbhaNumber,
-        qrValue: `CITYHEALER-ABHA-${formattedAbhaNumber}`,
+        qrValue: `SWASTHAI-ABHA-${formattedAbhaNumber}`,
         createdDate: new Date().toLocaleDateString("en-IN"),
       });
       setAbhaLoading(false);
@@ -2211,7 +2166,7 @@ export default function App() {
     }, 800);
 
     setTimeout(() => {
-      setOcrLogs(prev => [...prev, "Performing clinical semantic parsing against Indian health standards...", "Routing to City Healer AI Cloud reasoning engine..."]);
+      setOcrLogs(prev => [...prev, "Performing clinical semantic parsing against Indian health standards...", "Routing to SwasthAI AI Cloud reasoning engine..."]);
     }, 1600);
 
     setTimeout(async () => {
@@ -2580,7 +2535,7 @@ export default function App() {
     }
   };
 
-  // --- ADDITIONAL CUSTOM LOGIC FOR CITY HEALER ---
+  // --- ADDITIONAL CUSTOM LOGIC FOR SWASTHAI ---
   
   // 1. Genuine Firebase Authentication & Session Verification Flow
   const handleGoogleLogin = async () => {
@@ -2626,7 +2581,7 @@ export default function App() {
 
     // 4. Otherwise, format the phone number as a patient email domain
     const cleanPhone = phoneVal.replace(/[^0-9]/g, "");
-    return `${cleanPhone || "user"}@cityhealer.com`;
+    return `${cleanPhone || "user"}@swasthai.com`;
   };
 
   const handleFirebaseLogin = async (passcode?: string) => {
@@ -2987,14 +2942,9 @@ export default function App() {
   // Server ids are per-session ("user-<ts>-<rand>"), so matching a literal patient id
   // silently emptied both widgets for every real account. Scope to the signed-in uid,
   // which also keeps these correct when a DOCTOR/HOSPITAL session loads every row.
-  // The account's role: server-issued at sign-in, and the switcher's choice in the
-  // sandbox (where the server binds the demo identity to the same role). The legacy
-  // city_healer_user key this used to read is never written by Supabase sessions,
-  // so real DOCTOR accounts saw an empty consult list.
+  // The account's role as issued by Supabase at sign-in.
   const accountRole: string = activeRole;
-  // The demo sandbox has no Supabase session; the server scopes its rows to the
-  // synthetic uid below, so the patient widgets must look for the same id.
-  const myPatientId = auth.currentUser?.uid ?? (SKIP_AUTH ? "demo-sandbox-user" : "");
+  const myPatientId = auth.currentUser?.uid ?? "";
   // A DOCTOR session's /api/appointments and /api/queue are already scoped server-side to
   // the doctor record this account is linked to, and those rows carry OTHER people's
   // patientIds. Filtering them by the viewer's own uid emptied the clinician's consult
@@ -3408,7 +3358,7 @@ export default function App() {
                   )}
                   <button
                     onClick={() => {
-                      const transitionFn = (window as any).cityHealerTransition;
+                      const transitionFn = (window as any).swasthAITransition;
                       if (transitionFn) {
                         transitionFn(tab.id);
                       } else {
@@ -3496,43 +3446,17 @@ export default function App() {
               />
             </div>
 
-            {/* DYNAMIC INTEGRATED SIMULATION SWITCHER */}
-            <div className={`rounded-xl p-1 flex items-center gap-1 w-full md:w-auto overflow-x-auto text-xs font-semibold transition-all ${isAppDarkMode ? "bg-slate-900" : "bg-slate-100"}`}>
-              <span className={`text-[12px] pl-2 pr-1 uppercase text-left shrink-0 ${isAppDarkMode ? "text-slate-450" : "text-slate-500"}`}>Role:</span>
-              {[
-                { id: "PATIENT", label: getTranslation(appLanguage, "rolePatient") },
-                { id: "DOCTOR", label: getTranslation(appLanguage, "roleDoctor") },
-                { id: "HOSPITAL", label: getTranslation(appLanguage, "roleHospital") },
-                { id: "ADMIN", label: getTranslation(appLanguage, "roleAdmin") }
-              ].map((role) => (
-                <button
-                  key={role.id}
-                  onClick={() => {
-                    setActiveRole(role.id as any);
-                    showToast(`Switched workspace identity to ${role.label}`);
-                    // Fast route adjustments to showcase views on role change.
-                    // NB: "overview" is the public marketing route ("/"), not the signed-in
-                    // board — sending a patient there logged them out of the app shell.
-                    // The in-app dashboard is "overview_classic" ("/dashboard").
-                    if (role.id === "ADMIN" || role.id === "HOSPITAL") {
-                      setActiveTab("admin");
-                    } else if (role.id === "DOCTOR") {
-                      setActiveTab("consultation");
-                    } else {
-                      setActiveTab("overview_classic");
-                    }
-                  }}
-                  className={`px-3 py-1.5 rounded-lg shrink-0 transition-all cursor-pointer ${
-                    activeRole === role.id 
-                      ? (isAppDarkMode ? "bg-slate-800 text-blue-400 shadow-sm" : "bg-white text-blue-600 shadow-sm") 
-                      : (isAppDarkMode ? "text-slate-400 hover:text-white" : "text-slate-500 hover:text-slate-900")
-                  }`}
-                >
-                  {role.label}
-                </button>
-              ))}
+            {/* Account role, as issued by Supabase. Not switchable: the server scopes every
+                request by the role stored on the profile. */}
+            <div className={`rounded-xl px-3 py-1.5 flex items-center gap-2 text-xs font-semibold shrink-0 ${isAppDarkMode ? "bg-slate-900 text-blue-400" : "bg-slate-100 text-blue-600"}`}>
+              <span className={`text-[12px] uppercase ${isAppDarkMode ? "text-slate-450" : "text-slate-500"}`}>Role:</span>
+              <span>
+                {getTranslation(
+                  appLanguage,
+                  activeRole === "DOCTOR" ? "roleDoctor" : activeRole === "HOSPITAL" ? "roleHospital" : activeRole === "ADMIN" ? "roleAdmin" : "rolePatient"
+                )}
+              </span>
             </div>
-
             {activeRole === "PATIENT" && (
               <div className="flex items-center gap-1.5 shrink-0">
                 <div className="bg-blue-50 border border-blue-100 rounded-xl px-2 py-1.5 flex items-center gap-1 text-xs shrink-0">
@@ -4642,7 +4566,7 @@ export default function App() {
                       {/* Chat screen feed */}
                       <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-3 p-3 bg-slate-50 rounded-2xl mb-4 border border-slate-100 shadow-inner">
                         <div className="p-3 bg-blue-50 text-blue-800 text-[12.5px] rounded-xl font-medium max-w-md">
-                          <strong>City Healer Assistant:</strong> Consultation Room initialized. Send a detailing prompt below. Doctor answers instantly representing specialized evaluation.
+                          <strong>SwasthAI Assistant:</strong> Consultation Room initialized. Send a detailing prompt below. Doctor answers instantly representing specialized evaluation.
                         </div>
 
                         {chatMessages.map((msg) => {
@@ -5916,7 +5840,7 @@ export default function App() {
                     <div className="bg-[#10857F] text-white rounded-3xl p-6 shadow-sm space-y-3 text-xs leading-relaxed">
                       <h4 className="text-[12px] font-black uppercase text-white tracking-wider">Metropolitan health credentials compliance</h4>
                       <p className="opacity-90">
-                        City Healer implements symmetric cryptographic encryption protocols for decentralized health document safety, protecting patient profiles from data breaches.
+                        SwasthAI implements symmetric cryptographic encryption protocols for decentralized health document safety, protecting patient profiles from data breaches.
                       </p>
                     </div>
                   </div>
@@ -5957,7 +5881,7 @@ export default function App() {
                         <div className="bg-slate-50 border border-slate-100 p-3 rounded-2xl flex items-start gap-2.5 text-[12.5px] text-slate-500 font-semibold leading-relaxed">
                           <span className="text-sm">🛡️</span>
                           <p>
-                            Consent authorization: I allow City Healer to coordinate with UIDAI National Portal rules to trigger verification OTP codes on my registered phone.
+                            Consent authorization: I allow SwasthAI to coordinate with UIDAI National Portal rules to trigger verification OTP codes on my registered phone.
                           </p>
                         </div>
 
@@ -6482,7 +6406,7 @@ export default function App() {
                       </span>
                       <span className="text-[12px] text-slate-400 font-bold">Managed Core: {hospitals.length} Units</span>
                     </div>
-                    <h2 className={`text-xl font-black mt-1 ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>City Healer Delhi NCR Partner Network Hub</h2>
+                    <h2 className={`text-xl font-black mt-1 ${isAppDarkMode ? "text-white" : "text-slate-900"}`}>SwasthAI Delhi NCR Partner Network Hub</h2>
                     <p className={`text-xs font-medium font-sans ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>
                       Onboard new hospitals into the official directory and administer live bed census, clinical staffing departments, and patient bookings.
                     </p>
@@ -6507,7 +6431,7 @@ export default function App() {
                       </h3>
                       <p className={`text-[12px] mt-1 font-semibold font-sans ${
                         isAppDarkMode ? "text-slate-400" : "text-slate-500"
-                      }`}>Integrate private or municipal clinical facilities into City Healer channels instantly.</p>
+                      }`}>Integrate private or municipal clinical facilities into SwasthAI channels instantly.</p>
                     </div>
 
                     <form onSubmit={handleOnboardHospital} className={`space-y-4 text-xs font-semibold ${
@@ -7191,7 +7115,7 @@ export default function App() {
                       <span className="text-[12px] text-slate-400">• NCR Grid Connected</span>
                     </div>
                     <h3 className={`text-xl font-black tracking-tight ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
-                      {translateText("City Healer Differentiators", appLanguage)}
+                      {translateText("SwasthAI Differentiators", appLanguage)}
                     </h3>
                     <p className={`text-xs ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>
                       Simulated proprietary high-fidelity clinical operating engine. Select feature modules below.
@@ -7636,7 +7560,7 @@ export default function App() {
                             <div>
                               <p className="text-[7px] tracking-widest font-bold font-mono text-indigo-300 uppercase">National Health Registry Node</p>
                               <h4 className="text-sm font-black tracking-tight flex items-center gap-1">
-                                <QrCode className="h-4 w-4 text-teal-400" /> CITY HEALER UNIFIED ID
+                                <QrCode className="h-4 w-4 text-teal-400" /> SWASTHAI UNIFIED ID
                               </h4>
                             </div>
                             <span className="text-[12px] uppercase font-mono font-black border border-emerald-400 bg-emerald-400/20 text-emerald-300 px-1.5 py-0.5 rounded leading-none flex items-center gap-1">
@@ -9249,8 +9173,8 @@ export default function App() {
           onSuccess={(u) => {
             setIsAuthenticated(true);
             setActiveRole((u.role as any) || "PATIENT");
-            setAuthName(u.name || "City Healer User");
-            setAuthEmail(u.email || "user@cityhealer.com");
+            setAuthName(u.name || "SwasthAI User");
+            setAuthEmail(u.email || "user@swasthai.com");
             showToast(`Welcome back, ${u.name}!`);
             loadData();
           }}

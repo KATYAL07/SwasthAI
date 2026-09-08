@@ -7,14 +7,12 @@ interface AuthErrorMessageProps {
     message: string;
   } | null;
   onClear?: () => void;
-  onBypass?: () => void;
   isDarkMode?: boolean;
 }
 
 export const AuthErrorMessage: React.FC<AuthErrorMessageProps> = ({
   error,
   onClear,
-  onBypass,
   isDarkMode = false,
 }) => {
   if (!error) return null;
@@ -56,22 +54,6 @@ export const AuthErrorMessage: React.FC<AuthErrorMessageProps> = ({
             </span>
           </div>
 
-          {onBypass && (normalizedCode === "auth/operation-not-allowed" || normalizedCode === "auth/unauthorized-domain") && (
-            <div className="mt-2.5">
-              <button
-                id="auth-error-bypass-btn"
-                type="button"
-                onClick={onBypass}
-                className={`text-[11px] font-bold px-3.5 py-1.5 rounded-lg border shadow-sm flex items-center gap-1.5 cursor-pointer transition-all duration-200 ${
-                  isDarkMode
-                    ? "bg-rose-900/30 hover:bg-rose-900/55 border-rose-800 text-rose-100 hover:scale-[1.02]"
-                    : "bg-white hover:bg-rose-100/40 border-rose-200 text-rose-900 hover:scale-[1.02]"
-                }`}
-              >
-                <span>🚀 Bypass with Demo Session (Offline)</span>
-              </button>
-            </div>
-          )}
         </div>
 
         {onClear && (

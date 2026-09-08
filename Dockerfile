@@ -30,6 +30,6 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY package.json ./
 
-# The database lives on a mounted volume; see DB_PATH.
+# All data lives in Supabase Postgres; see DATABASE_URL.
 EXPOSE 3000
 CMD ["node", "dist/server.cjs"]

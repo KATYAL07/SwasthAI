@@ -8,7 +8,7 @@
   "deploy": {
     "startCommand": "node dist/server.cjs",
     "healthcheckPath": "/api/health",
-    "_comment2": "First boot creates the SQLite schema and seeds baseline hospitals, doctors and medicines before the server accepts traffic, so allow well over the usual start time.",
+    "_comment2": "First boot verifies the Supabase schema and seeds baseline hospitals, doctors and medicines if those tables are empty before the server accepts traffic, so allow well over the usual start time.",
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3

@@ -368,7 +368,7 @@ describe("forged and malformed tokens are rejected", () => {
     const jwt = (await import("jsonwebtoken")).default;
     const forged = jwt.sign(
       { uid: "attacker", email: "a@b.c", role: "ADMIN" },
-      "city-healer-dev-only-secret",
+      "swasthai-dev-only-secret",
       { expiresIn: "7d" }
     );
     assert.equal((await api("GET", "/api/records", forged)).status, 401);

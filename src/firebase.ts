@@ -13,7 +13,7 @@
  *   getIdToken() hands back the live access token rather than a fixed string.
  *
  *   The localStorage sandbox is gone. It seeded three accounts — including
- *   admin@cityhealer.com / password123 — into every visitor's browser and signed
+ *   admin@swasthai.com / password123 — into every visitor's browser and signed
  *   people in against them whenever the API was unreachable. On a frontend-only
  *   deployment that was the entire authentication system. An outage now surfaces
  *   as an error instead of silently handing out an admin session.
@@ -252,9 +252,9 @@ export async function signOut(_authInst: any) {
   // Clear the previous implementation's keys so a browser carrying an old
   // session does not keep presenting a token this server will never accept.
   try {
-    localStorage.removeItem("city_healer_jwt");
-    localStorage.removeItem("city_healer_user");
-    localStorage.removeItem("city_healer_mock_users");
+    localStorage.removeItem("swasthai_jwt");
+    localStorage.removeItem("swasthai_user");
+    localStorage.removeItem("swasthai_mock_users");
   } catch { /* storage unavailable */ }
   throwMapped(error);
 }

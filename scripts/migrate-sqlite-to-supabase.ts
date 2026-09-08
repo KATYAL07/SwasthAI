@@ -1,8 +1,8 @@
 /**
- * One-off migration: SQLite (city_healer.db) -> Supabase Postgres.
+ * One-off migration: SQLite (swasthai.db) -> Supabase Postgres.
  *
- *   npx tsx scripts/migrate-sqlite-to-supabase.ts --db city_healer.db
- *   npx tsx scripts/migrate-sqlite-to-supabase.ts --db city_healer.db --commit
+ *   npx tsx scripts/migrate-sqlite-to-supabase.ts --db swasthai.db
+ *   npx tsx scripts/migrate-sqlite-to-supabase.ts --db swasthai.db --commit
  *
  * Dry run is the DEFAULT. Nothing is written until --commit is passed, because
  * the target is a live database and the failure mode of getting this wrong is
@@ -62,7 +62,7 @@ const COMMIT = args.commit === true;
 const INVITE = args.invite === true;
 const SQLITE_PATH = path.resolve(
   process.cwd(),
-  typeof args.db === "string" ? args.db : "city_healer.db"
+  typeof args.db === "string" ? args.db : "swasthai.db"
 );
 
 const { DATABASE_URL, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env;

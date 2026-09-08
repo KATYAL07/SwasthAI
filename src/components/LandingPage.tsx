@@ -206,7 +206,7 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
       showLocalToast("Please enter a valid email address.", "error");
       return;
     }
-    showLocalToast("Thank you for subscribing to City Healer metrics!", "success");
+    showLocalToast("Thank you for subscribing to SwasthAI metrics!", "success");
     setNewsletterEmail("");
   };
 
@@ -295,7 +295,7 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
   const [testIdx, setTestIdx] = useState(0);
   const testimonials = [
     {
-      text: "City Healer completely transformed our hospital's bed response pipelines. Emergency triage latency was reduced by 60% within days.",
+      text: "SwasthAI completely transformed our hospital's bed response pipelines. Emergency triage latency was reduced by 60% within days.",
       author: "Dr. Sandeep Vardhan",
       role: "Director of Emergency Medicine, Apollo Delhi Grid",
       avatarBg: "bg-teal-600"
@@ -401,8 +401,8 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
       admin: "/admin"
     };
     const targetPath = sectionToPath[section] || "/";
-    if ((window as any).cityHealerTransition) {
-      (window as any).cityHealerTransition(section);
+    if ((window as any).swasthAITransition) {
+      (window as any).swasthAITransition(section);
     } else {
       navigate(targetPath);
     }
@@ -505,7 +505,7 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
                   onClick={() => { handleTransitionNavigate("overview_classic"); setIsMobileMenuOpen(false); }}
                   className="sm:hidden w-full mt-2 rounded-full bg-gradient-to-r from-teal-900 to-teal-700 py-3 text-xs font-extrabold text-white shadow-md text-center"
                 >
-                  Launch City Healer
+                  Launch SwasthAI
                 </button>
               </nav>
             </div>
@@ -537,7 +537,7 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
             {/* Right Side */}
             <div className="w-full lg:w-1/2 flex flex-col items-start space-y-8">
               <p className="text-base md:text-lg leading-relaxed text-slate-600">
-                City Healer unifies municipal clinical data grids, real-time bed census trackers, smart telehealth suites, and emergency dispatch systems into one intuitive digital interface.
+                SwasthAI unifies municipal clinical data grids, real-time bed census trackers, smart telehealth suites, and emergency dispatch systems into one intuitive digital interface.
               </p>
 
               <form
@@ -596,7 +596,7 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
           <Marquee items={["AIIMS Delhi Core", "RML Regional Triage Grid", "Narayana Superspecialty", "Columbia Asia System Core", "Kailash Noida Core Systems", "Mata Chanan Devi Clinic"]} direction="right" speed={28} />
         </section>
 
-        {/* About City Healer Storytelling & Animated Timeline */}
+        {/* About SwasthAI Storytelling & Animated Timeline */}
         <section id="about-story" className={`py-24 px-6 md:px-12 relative transition-colors duration-300 ${
           isAppDarkMode ? "bg-slate-950 text-white" : "bg-white text-slate-900"
         }`}>
@@ -613,7 +613,7 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
                   Healthcare today is severely fragmented. Emergency services operate in isolation, hospital bed tracking is delayed, and critical records reside in inaccessible silos.
                 </p>
                 <p className={`text-base leading-relaxed ${isAppDarkMode ? "text-slate-300" : "text-slate-600"}`}>
-                  City Healer integrates these disjointed channels into a single connected platform. By matching patient clinical conditions with local hospital live assets, we ensure optimal health accessibility in real-time.
+                  SwasthAI integrates these disjointed channels into a single connected platform. By matching patient clinical conditions with local hospital live assets, we ensure optimal health accessibility in real-time.
                 </p>
 
                 {/* Animated timeline steps */}
@@ -661,7 +661,7 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
                 }`}>
                   <img
                     src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1200"
-                    alt="City Healer connected clinical care platform"
+                    alt="SwasthAI connected clinical care platform"
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
                   />
@@ -692,7 +692,7 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
                 A Unified Health Operating System
               </h2>
               <p className={`text-sm md:text-base leading-relaxed ${isAppDarkMode ? "text-slate-400" : "text-slate-500"}`}>
-                City Healer integrates 9 major modules into an adaptive smart framework, providing instant hospital resource tracking and AI diagnosis.
+                SwasthAI integrates 9 major modules into an adaptive smart framework, providing instant hospital resource tracking and AI diagnosis.
               </p>
             </div>
 
@@ -1346,7 +1346,7 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
               isAppDarkMode ? "border-slate-800" : "border-slate-200/60"
             }`}>
               <div className="space-y-3">
-                <span className={`text-xs font-black uppercase tracking-widest block leading-none ${isAppDarkMode ? "text-teal-400" : "text-teal-700"}`}>THE CITY HEALER MAGAZINE</span>
+                <span className={`text-xs font-black uppercase tracking-widest block leading-none ${isAppDarkMode ? "text-teal-400" : "text-teal-700"}`}>THE SWASTHAI MAGAZINE</span>
                 <h2 className={`font-heading text-3xl md:text-5xl font-extrabold tracking-tight ${isAppDarkMode ? "text-white" : "text-slate-950"}`}>
                   Medical AI & Public Health
                 </h2>
@@ -1442,7 +1442,7 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
             </h2>
 
             <p className="text-slate-350 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
-              Join thousands of clinical managers, specialists, and patients coordinating metropolitan health assets through the City Healer connected grid.
+              Join thousands of clinical managers, specialists, and patients coordinating metropolitan health assets through the SwasthAI connected grid.
             </p>
 
             <div className="flex flex-wrap gap-4 items-center justify-center pt-4">
@@ -1543,7 +1543,7 @@ export function LandingPage({ onNavigate, hospitals, isAppDarkMode }: LandingPro
           </div>
 
           <div className="max-w-7xl mx-auto pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-600 gap-4">
-            <p>&copy; 2026 City Healer Inc. All rights reserved. Redesigned Flagship Luxury Edition.</p>
+            <p>&copy; 2026 SwasthAI Inc. All rights reserved. Redesigned Flagship Luxury Edition.</p>
             <div className="flex gap-6">
               <button onClick={() => showLocalToast("Coming soon — HIPAA Certified verification portal is under construction.", "info")} className="hover:text-white transition-colors cursor-pointer text-left">HIPAA Certified</button>
               <button onClick={() => showLocalToast("Coming soon — Security Directive document is under construction.", "info")} className="hover:text-white transition-colors cursor-pointer text-left">Security Directive</button>

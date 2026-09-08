@@ -1,4 +1,4 @@
-# Security Specification: City Healer Healthcare Platform
+# Security Specification: SwasthAI Healthcare Platform
 
 ## 1. Zero-Trust Data Invariants
 

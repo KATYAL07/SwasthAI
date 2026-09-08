@@ -8,7 +8,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { createServer as createViteServer } from "vite";
 import dns from "dns";
 import jwt from "jsonwebtoken";
-import { dbRun, dbGet, dbAll, initializeDatabase } from "./database";
+import { dbRun, dbGet, dbAll, initializeDatabase, DB_KIND, DB_LOCATION } from "./database";
 
 // Fix node localhost resolution issues
 dns.setDefaultResultOrder("ipv4first");
@@ -26,19 +26,6 @@ const PORT = Number(process.env.PORT) || 3000;
  */
 app.set("trust proxy", 1);
 
-// Anonymous access is opt-in only. Defaults to false; must be set explicitly.
-const DEMO_MODE = process.env.DEMO_MODE === "true";
-if (DEMO_MODE) {
-  // A warning is not enough for a switch that turns authentication off: one stray
-  // variable on the wrong service would serve every anonymous caller a session.
-  // Fail the same way a missing JWT_SECRET does, rather than starting unsafely.
-  if (IS_PROD) {
-    console.error("[FATAL] DEMO_MODE=true binds unauthenticated callers to a shared identity. Refusing to start in production.");
-    process.exit(1);
-  }
-  console.warn("[Security] DEMO_MODE=true — anonymous callers are served a synthetic sandbox identity. Never enable this for a real deployment.");
-}
-
 /**
  * Resolve the secret used to verify Supabase session tokens.
  *
@@ -53,7 +40,7 @@ if (DEMO_MODE) {
  * is no fallback; a missing secret stops the server in every environment.
  */
 function resolveJwtSecret(): string {
-  const fromEnv = process.env.SUPABASE_JWT_SECRET || process.env.JWT_SECRET;
+  const fromEnv = process.env.SUPABASE_JWT_SECRET;
   if (!fromEnv) {
     console.error(
       "[FATAL] SUPABASE_JWT_SECRET is not set. Copy it from Supabase → Project " +
@@ -110,7 +97,7 @@ async function warnAboutUnlinkedDoctors() {
 // Initialize Database on Startup
 initializeDatabase()
   .then(async () => {
-    console.log("[Database] Schema initialized and seeded successfully.");
+    console.log(`[Database] ${DB_KIND} backend ready at ${DB_LOCATION}.`);
     await warnAboutUnlinkedDoctors();
   })
   .catch((err) => {
@@ -130,37 +117,7 @@ interface AuthUser {
   uid: string;
   email: string;
   role: Role;
-  isDemo?: boolean;
 }
-
-// The synthetic identity used only when DEMO_MODE=true. Its uid matches no real
-// patient, so ownership-scoped queries return nothing belonging to a real person.
-const DEMO_USER: AuthUser = {
-  uid: "demo-sandbox-user",
-  email: "demo@cityhealer.invalid",
-  role: "DOCTOR",
-  isDemo: true
-};
-
-// The seeded clinician the sandbox identity acts as when it is a DOCTOR, so the
-// doctor workspace has a queue and appointments to work with. Seed data books
-// its appointments and OPD tokens against doc-1.
-const DEMO_DOCTOR_ID = process.env.DEMO_DOCTOR_ID || "doc-1";
-
-const VALID_ROLES: Role[] = ["PATIENT", "DOCTOR", "HOSPITAL", "ADMIN"];
-
-/**
- * The sandbox identity for this request. The role switcher in the UI sends the
- * workspace it is simulating as `X-Demo-Role`, so the server-side role checks
- * follow it and a demo walkthrough of the doctor or hospital console actually
- * works end to end. Only reachable when DEMO_MODE=true; a real session never
- * gets here, so the header cannot escalate a signed-in caller.
- */
-const demoIdentity = (req: express.Request): AuthUser => {
-  const requested = String(req.headers["x-demo-role"] || "").toUpperCase() as Role;
-  const role = VALID_ROLES.includes(requested) ? requested : DEMO_USER.role;
-  return { ...DEMO_USER, role };
-};
 
 // Routes that carry no patient data and are reachable without a session.
 const PUBLIC_ROUTES: Array<{ method: string; pattern: RegExp }> = [
@@ -174,6 +131,43 @@ const PUBLIC_ROUTES: Array<{ method: string; pattern: RegExp }> = [
 const isPublicRoute = (method: string, path: string) =>
   PUBLIC_ROUTES.some((r) => r.method === method && r.pattern.test(path));
 
+/**
+ * Create the clinical profile for a verified session that has none yet.
+ *
+ * On Supabase the on_auth_user_created trigger in schema.sql does this at
+ * sign-up. On a project where that trigger was never applied nothing does, so a
+ * brand-new account's first request would be refused as
+ * "Session no longer valid" and the app signed the user straight back out.
+ *
+ * Mirrors the trigger exactly: name and phone from the token's user_metadata,
+ * role fixed at PATIENT. The client never gets to choose the role; promotion is
+ * an administrator's job (PUT /api/users/:uid as ADMIN, or link-doctor).
+ */
+async function provisionProfile(decoded: any): Promise<AuthUser | null> {
+  const uid = String(decoded.uid);
+  const meta = (decoded.user_metadata ?? {}) as Record<string, any>;
+  const email = String(decoded.email || `${uid}@swasthai.invalid`).toLowerCase();
+  const name = String(meta.name || meta.full_name || email.split("@")[0] || "SwasthAI User");
+  const phone = String(meta.phone || "");
+  const now = new Date().toISOString();
+  try {
+    await dbRun(
+      `INSERT INTO users (uid, name, email, phone, role, createdAt, updatedAt)
+       VALUES (?, ?, ?, ?, 'PATIENT', ?, ?)
+       ON CONFLICT (uid) DO NOTHING`,
+      [uid, name, email, phone, now, now]
+    );
+    const row = await dbGet("SELECT uid, email, role FROM users WHERE uid = ?", [uid]);
+    if (row) console.log(`[Auth] Provisioned PATIENT profile for ${email}.`);
+    return row ? { uid: row.uid, email: row.email, role: row.role } : null;
+  } catch (err: any) {
+    // Most likely the email already belongs to another uid (an account that was
+    // migrated under a different id). Refusing is safer than guessing.
+    console.error(`[Auth] Could not provision a profile for ${email}:`, err.message);
+    return null;
+  }
+}
+
 const authenticateUser = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (!req.path.startsWith("/api/") || isPublicRoute(req.method, req.path)) {
     return next();
@@ -183,10 +177,6 @@ const authenticateUser = async (req: express.Request, res: express.Response, nex
   const token = authHeader?.startsWith("Bearer ") ? authHeader.slice("Bearer ".length) : null;
 
   if (!token) {
-    if (DEMO_MODE) {
-      (req as any).user = demoIdentity(req);
-      return next();
-    }
     return res.status(401).json({ error: "Authentication required." });
   }
 
@@ -205,7 +195,10 @@ const authenticateUser = async (req: express.Request, res: express.Response, nex
     // The token's role is a stale snapshot from issue time. Re-read the account so a
     // deleted user is rejected immediately and a role change takes effect at once,
     // rather than persisting for the remaining lifetime of an already-issued token.
-    const account = await dbGet("SELECT uid, email, role FROM users WHERE uid = ?", [decoded.uid]);
+    let account = await dbGet("SELECT uid, email, role FROM users WHERE uid = ?", [decoded.uid]);
+    if (!account) {
+      account = await provisionProfile(decoded);
+    }
     if (!account) {
       return res.status(401).json({ error: "Session no longer valid." });
     }
@@ -213,12 +206,7 @@ const authenticateUser = async (req: express.Request, res: express.Response, nex
     (req as any).user = { uid: account.uid, email: account.email, role: account.role } as AuthUser;
     return next();
   } catch (error: any) {
-    // No guest fallback. An unverifiable token is rejected in every environment;
-    // DEMO_MODE downgrades to the synthetic sandbox identity, never to real data.
-    if (DEMO_MODE) {
-      (req as any).user = demoIdentity(req);
-      return next();
-    }
+    // No guest fallback: an unverifiable token is rejected in every environment.
     return res.status(401).json({ error: "Invalid or expired session token." });
   }
 };
@@ -267,7 +255,7 @@ const requireRole = (...roles: Role[]) =>
 /**
  * Per-user quota for routes that spend money on a Gemini call. Keyed by the verified
  * uid rather than IP, so one account cannot burn the budget from many addresses, and
- * so the shared DEMO_MODE identity has a single collective bucket.
+ * so a shared address (an office NAT) does not exhaust everyone's quota.
  */
 const AI_RATE_LIMIT = Number(process.env.AI_RATE_LIMIT) || 30;
 const AI_RATE_WINDOW_MS = 60 * 60 * 1000;
@@ -311,7 +299,6 @@ const aiRateLimit = (req: express.Request, res: express.Response, next: express.
  * is not linked, which callers must treat as "linked to no patients" (fail closed).
  */
 async function resolveDoctorId(uid: string): Promise<string | null> {
-  if (DEMO_MODE && uid === DEMO_USER.uid) return DEMO_DOCTOR_ID;
   const row = await dbGet("SELECT doctorId FROM users WHERE uid = ?", [uid]);
   return row?.doctorId || null;
 }
@@ -406,7 +393,7 @@ function cleanAndParseJSON(text: string): any {
   try {
     return JSON.parse(clean);
   } catch (err: any) {
-    console.warn("[City Healer API Warning] Direct JSON.parse failed, attempting custom block slicing extraction...", err);
+    console.warn("[SwasthAI API Warning] Direct JSON.parse failed, attempting custom block slicing extraction...", err);
     const firstBrace = clean.indexOf("{");
     const firstBracket = clean.indexOf("[");
     const firstIndex = (firstBrace !== -1 && firstBracket !== -1) ? Math.min(firstBrace, firstBracket) : (firstBrace !== -1 ? firstBrace : firstBracket);
@@ -420,7 +407,7 @@ function cleanAndParseJSON(text: string): any {
         const sliced = clean.substring(firstIndex, lastIndex + 1);
         return JSON.parse(sliced);
       } catch (innerErr) {
-        console.error("[City Healer API Warning] Custom block slicing extraction also failed:", innerErr);
+        console.error("[SwasthAI API Warning] Custom block slicing extraction also failed:", innerErr);
       }
     }
     throw err;
@@ -603,7 +590,7 @@ app.put("/api/users/:uid", async (req, res) => {
 });
 
 // ----------------------------------------------------------------
-// General API Routes (Querying SQLite Database)
+// General API Routes (Querying Supabase Postgres)
 // ----------------------------------------------------------------
 
 // Health route
@@ -997,7 +984,7 @@ app.put("/api/appointments/:id/status", requireRole("DOCTOR", "ADMIN"), async (r
     if (status === "ACCEPTED") {
       await dbRun("UPDATE doctors SET queueCount = queueCount + 1, waitTimeMin = waitTimeMin + 15 WHERE id = ?", [appointment.doctorId]);
     } else if (status === "COMPLETED" && appointment.status === "ACCEPTED") {
-      await dbRun("UPDATE doctors SET queueCount = MAX(0, queueCount - 1), waitTimeMin = MAX(0, waitTimeMin - 15) WHERE id = ?", [appointment.doctorId]);
+      await dbRun("UPDATE doctors SET queueCount = GREATEST(0, queueCount - 1), waitTimeMin = GREATEST(0, waitTimeMin - 15) WHERE id = ?", [appointment.doctorId]);
     }
 
     res.json({ success: true, status });
@@ -1037,7 +1024,7 @@ app.post("/api/appointments/:id/prescription", requireRole("DOCTOR", "ADMIN"), a
     ]);
 
     // Release queue
-    await dbRun("UPDATE doctors SET queueCount = MAX(0, queueCount - 1), waitTimeMin = MAX(0, waitTimeMin - 15) WHERE id = ?", [appt.doctorId]);
+    await dbRun("UPDATE doctors SET queueCount = GREATEST(0, queueCount - 1), waitTimeMin = GREATEST(0, waitTimeMin - 15) WHERE id = ?", [appt.doctorId]);
 
     // Create medical record automatic log
     const recId = "rec-rx-" + Date.now();
@@ -1193,7 +1180,7 @@ app.put("/api/queue/:id/status", requireRole("DOCTOR", "HOSPITAL", "ADMIN"), asy
     await dbRun("UPDATE queue_tokens SET status = ? WHERE id = ?", [status, id]);
 
     if (status === "COMPLETED" || status === "SKIPPED") {
-      await dbRun("UPDATE doctors SET queueCount = MAX(0, queueCount - 1), waitTimeMin = MAX(0, waitTimeMin - 12) WHERE id = ?", [tok.doctorId]);
+      await dbRun("UPDATE doctors SET queueCount = GREATEST(0, queueCount - 1), waitTimeMin = GREATEST(0, waitTimeMin - 12) WHERE id = ?", [tok.doctorId]);
     }
 
     res.json({ success: true, token: { ...tok, status } });
@@ -1233,7 +1220,7 @@ app.post("/api/medicines/search-nationwide", aiRateLimit, async (req, res) => {
     ).map(m => ({ ...m, requiresPrescription: !!m.requiresPrescription }));
 
     if (matched.length > 0) {
-      return res.json({ matches: matched, source: "local-sqlite-db" });
+      return res.json({ matches: matched, source: "catalogue" });
     }
 
     if (!ai) {
@@ -1319,7 +1306,7 @@ app.post("/api/medicines/order", async (req, res) => {
 
     // Update inventory stocks
     for (const item of items) {
-      await dbRun("UPDATE medicines SET stock = MAX(0, stock - ?) WHERE id = ?", [item.quantity, item.medicineId]);
+      await dbRun("UPDATE medicines SET stock = GREATEST(0, stock - ?) WHERE id = ?", [item.quantity, item.medicineId]);
     }
 
     res.json({ success: true, order: newOrder });
@@ -1378,7 +1365,7 @@ app.post("/api/emergency/sos", async (req, res) => {
     ]);
 
     // Dispatch ambulance from hospital
-    await dbRun("UPDATE hospitals SET ambulanceSupportCount = MAX(0, ambulanceSupportCount - 1) WHERE name = ?", [nearestHospital.name]);
+    await dbRun("UPDATE hospitals SET ambulanceSupportCount = GREATEST(0, ambulanceSupportCount - 1) WHERE name = ?", [nearestHospital.name]);
 
     res.json({ success: true, alert });
   } catch (err: any) {
@@ -1466,8 +1453,8 @@ app.post("/api/chat/:appointmentId", aiRateLimit, async (req, res) => {
     return res.status(400).json({ error: "Message text is required" });
   }
 
-  // sender is NOT NULL in chat_messages, so an omitted value used to surface as a 500
-  // carrying the raw SQLITE_CONSTRAINT text. Validate it here instead.
+  // sender is NOT NULL in chat_messages, so an omitted value would surface as a
+  // 500 carrying the raw Postgres constraint text. Validate it here instead.
   if (sender !== "PATIENT" && sender !== "DOCTOR") {
     return res.status(400).json({ error: "Message sender must be either PATIENT or DOCTOR." });
   }
@@ -1505,7 +1492,7 @@ app.post("/api/chat/:appointmentId", aiRateLimit, async (req, res) => {
             const chatHistory = await dbAll("SELECT * FROM chat_messages WHERE appointmentId = ? ORDER BY timestamp ASC LIMIT 8", [appointmentId]);
             const formattedHistory = chatHistory.map((m: any) => `${m.sender}: ${m.text}`).join("\n");
             
-            const promptText = `You are ${appt.doctorName}, specialized in ${appt.specialty} at City Healer Delhi.
+            const promptText = `You are ${appt.doctorName}, specialized in ${appt.specialty} at SwasthAI Delhi.
 The patient is asking: "${text}".
 Consultation details: Patient reported symptoms: "${appt.symptoms || 'none'}", Diagnosis: "${appt.diagnosis || 'General evaluation'}"
 Recent Chat History:
@@ -1608,7 +1595,7 @@ Relevant Medical History context: "${history || "None provided"}".`;
       model: "gemini-3.5-flash",
       contents: userPromptText,
       config: {
-        systemInstruction: `You are an expert AI clinical evaluation assistant at the "City Healer" healthcare hub.
+        systemInstruction: `You are an expert AI clinical evaluation assistant at the "SwasthAI" healthcare hub.
 Analyze the user's reported symptoms medically, safely, and objectively.
 Return a structured JSON report specifying physical diagnosis, educational reasoning, required medical specialist, urgency rating, immediate safety measures, and a trigger to launch an ambulance SOS.
 CRITICAL MANDATE: If the symptoms are representative of life-endangering status (severe acute chest pain, major neurological weakness, severe traumatic hemorrhage, choking/gasping), set urgencyLevel to "CRITICAL", flagUrgentSOS to true, and place strict alerts in recommendations.
@@ -1661,7 +1648,7 @@ Do not output conversational markdown preamble; return strictly the structured J
     parsedData.recommendedHospitals = await recommendHospitals(parsedData.specialistType || "General Physician", parsedData.urgencyLevel || "LOW", userLat, userLng);
     res.json(parsedData);
   } catch (err: any) {
-    console.warn("[City Healer API Warning] Gemini API computation failed:", err);
+    console.warn("[SwasthAI API Warning] Gemini API computation failed:", err);
     res.status(500).json({ error: "Symptom evaluator encountered a service failure: " + err.message });
   }
 });
@@ -1754,7 +1741,7 @@ Structure the response STRICTLY as JSON. No markdown commentary.`;
       model: "gemini-3.5-flash",
       contents: userPromptText,
       config: {
-        systemInstruction: `You are a clinical chief pathologist and AI medical interpreter at City Healer India.
+        systemInstruction: `You are a clinical chief pathologist and AI medical interpreter at SwasthAI India.
 Analyze the report biomarkers carefully to output medical wisdom. Ensure the response format maps exactly to these fields:
 {
   "reportType": string,
@@ -1774,7 +1761,7 @@ Analyze the report biomarkers carefully to output medical wisdom. Ensure the res
     const parsedData = cleanAndParseJSON(bodyText);
     res.json(parsedData);
   } catch (err: any) {
-    console.warn("[City Healer API Warning] Gemini OCR analysis failed:", err);
+    console.warn("[SwasthAI API Warning] Gemini OCR analysis failed:", err);
     const selectedResult = fallbackReports[templateId] || fallbackReports.blood_cbc;
     res.json(selectedResult);
   }
@@ -1842,7 +1829,7 @@ Output strictly as a JSON record conforming to the requested schema. No markdown
       model: "gemini-3.5-flash",
       contents: promptText,
       config: {
-        systemInstruction: `You are clinical pharmacist of City Healer Delhi and expert in Indian pharmacological guidelines.
+        systemInstruction: `You are clinical pharmacist of SwasthAI Delhi and expert in Indian pharmacological guidelines.
 Provide accurate, easy-to-read instructions for patients regarding drug administrations.
 Focus your local food interactions on common Indian culinary elements (e.g. sweet lime juice/Mosambi, strong Chai/Kaapi, heavy dairy like Lassi/Ghee, fermented Achar, or local alcoholic and herbal concoctions) so patients receive highly relevant advice.
 Output strictly JSON matching this schema:
@@ -1867,7 +1854,7 @@ Output strictly JSON matching this schema:
     const parsedData = cleanAndParseJSON(bodyText);
     res.json(parsedData);
   } catch (err: any) {
-    console.warn("[City Healer API Warning] Gemini Medicine Guide generation failed:", err);
+    console.warn("[SwasthAI API Warning] Gemini Medicine Guide generation failed:", err);
     res.json(matchedFallback);
   }
 });
@@ -1925,7 +1912,7 @@ Output strictly as a JSON record. No markdown preamble.`;
       model: "gemini-3.5-flash",
       contents: userPromptText,
       config: {
-        systemInstruction: `You are clinical chief dietician, Ayurvedic physician, and Indian food expert at City Healer Delhi.
+        systemInstruction: `You are clinical chief dietician, Ayurvedic physician, and Indian food expert at SwasthAI Delhi.
 Generate beautiful nutrition charts utilizing accessible, warm, comforting Indian recipe ingredients mapped with therapeutic advantages.
 Output strictly JSON matching this schema:
 {
@@ -1943,7 +1930,7 @@ Output strictly JSON matching this schema:
     const parsedData = cleanAndParseJSON(response.text || "{}");
     res.json(parsedData);
   } catch (err: any) {
-    console.warn("[City Healer API Warning] Gemini Diet generation failed:", err);
+    console.warn("[SwasthAI API Warning] Gemini Diet generation failed:", err);
     res.json(matchedPlan);
   }
 });
@@ -1990,7 +1977,7 @@ app.post("/api/developer/ai-pipeline", aiRateLimit, async (req, res) => {
     } else if (intent === "SOS_EMERGENCY") {
       result = "SOS Emergency Fallback: Emergency Trauma centers are active. Medanta has 14 ICU beds, Fortis has 18 available.";
     } else {
-      result = "General Info Fallback: Welcome to City Healer Delhi console. Set up your GEMINI_API_KEY environment variable to enable live generative responses.";
+      result = "General Info Fallback: Welcome to SwasthAI Delhi console. Set up your GEMINI_API_KEY environment variable to enable live generative responses.";
     }
 
     return res.json({
@@ -2134,7 +2121,7 @@ async function initServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`[City Healer Service Online] Listening securely on port ${PORT}`);
+    console.log(`[SwasthAI Service Online] Listening securely on port ${PORT}`);
   });
 }
 

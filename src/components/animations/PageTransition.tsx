@@ -52,9 +52,9 @@ export function PageTransition({ activeTab, onChangeTab }: PageTransitionProps) 
   };
 
   useEffect(() => {
-    (window as any).cityHealerTransition = startLoading;
+    (window as any).swasthAITransition = startLoading;
     return () => {
-      delete (window as any).cityHealerTransition;
+      delete (window as any).swasthAITransition;
     };
   }, [activeTab, onChangeTab]);
 

@@ -457,7 +457,7 @@ export default function DeveloperHub({ isAppDarkMode = false }: { isAppDarkMode?
                 <Layers className="h-5 w-5 text-indigo-500" /> Interactive Platform Architecture Map
               </h4>
               <p className="text-xs text-slate-500 mt-1">
-                Visual representation of City Healer's full stack data flows. Click nodes to trace their roles, framework APIs, and databases.
+                Visual representation of SwasthAI's full stack data flows. Click nodes to trace their roles, framework APIs, and databases.
               </p>
             </div>
 
@@ -1245,7 +1245,7 @@ export default function DeveloperHub({ isAppDarkMode = false }: { isAppDarkMode?
                 <Code className="h-5 w-5 text-indigo-500" /> Zustand Global State Inspector
               </h4>
               <p className="text-xs text-slate-500 mt-1">
-                Visualizes active state variables managed globally in City Healer's reactive Zustand store hook.
+                Visualizes active state variables managed globally in SwasthAI's reactive Zustand store hook.
               </p>
             </div>
 
